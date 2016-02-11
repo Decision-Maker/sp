@@ -18,14 +18,15 @@
         <h1>Decision Maker!</h1>
       </div>
 
-      <div ng-repeat="room in rooms">
-        <span style="font-size:20px; margin-left:10px;">
-          <span>
+      <div ng-repeat="room in rooms"><!-- ng-repeat-start and ng-repeat-end span multiple html tags allowing for nested repeats-->
+        <h3>
             {{room.title}}
-        </span>
-        <span ng-repeat="option in room.options">
-            {{option}}
-        </span>
+        </h3>
+        <ul>
+          <li ng-repeat="option in room.options" style="font-size:15px; margin-left:8px;">
+              {{option}}
+            </li>
+        </ul>
       </div>
 
       <form id="form"
@@ -39,8 +40,8 @@
             ng-model="title" ng-keyup="addOption($event)"></input>
 
 
-            <div ng-repeat="option in options">
-                 <input type="text" class="form-control option" placeholder="Option" ng-model="option.title" ng-keyup="addOption($event)"></input>
+            <div ng-repeat="option in options track by $index">
+                 <input type="text" class="form-control option" placeholder="Option" ng-model="options[$index]" ng-keyup="addOption($event)"></input>
             </div>
 
 
@@ -49,6 +50,7 @@
       </form>
       <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
       <button ng-click="addOption($event, true)" class="btn btn-primary">Add Option</button>
+      <button ng-click="foo()" class"btn btn-primary">Foo</button>
     </div>
   </div>
 </body>

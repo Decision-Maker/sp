@@ -18,17 +18,19 @@
         <h1>Decision Maker!</h1>
       </div>
 
-      <div ng-repeat="post in posts | orderBy:'-upvotes'">
+      <div ng-repeat="room in rooms">
         <span style="font-size:20px; margin-left:10px;">
           <span>
-            {{post.title}}
-          </span>
+            {{room.title}}
+        </span>
+        <span ng-repeat="option in room.options">
+            {{option}}
         </span>
       </div>
 
       <form id="form"
         style="margin-top:30px;">
-        <h3>Add a new post</h3>
+        <h3>Add voting options!</h3>
 
         <div class="form-group">
           <input type="text"
@@ -38,14 +40,14 @@
 
 
             <div ng-repeat="option in options">
-                 <input type="text" class="form-control" placeholder="Option" ng-model="option.title" ng-keyup="addOption($event)"></input>
+                 <input type="text" class="form-control option" placeholder="Option" ng-model="option.title" ng-keyup="addOption($event)"></input>
             </div>
 
 
         </div>
 
       </form>
-      <button type="submit" ng-click="addPost()" class="btn btn-primary">Post</button>
+      <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
       <button ng-click="addOption($event, true)" class="btn btn-primary">Add Option</button>
     </div>
   </div>

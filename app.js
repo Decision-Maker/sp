@@ -1,25 +1,42 @@
- 
+
 var app = angular.module('decisionMaker', []);
 
 
+
+app.factory('room', [function(){
+  var o = {
+    rooms: []
+  };
+  return o;
+}])
+
 app.controller('MainCtrl', [
 '$scope',
-function($scope){
-  $scope.options = [];
-  $scope.posts = [];
-  
-  $scope.addPost = function(){
+'room',
+function($scope, room){
+  $scope.rooms = room.rooms;
+  $scope.options = []
+
+  $scope.addRoom = function(){
     if(!$scope.title || $scope.title === '') { return; }
-    $scope.posts.push({
-        title: $scope.title
-    });
-    $scope.title = '';
+
     var forms = document.getElementsByClassName("option");
     var length = forms.length;
     var seen = [];
     var valid = true;
-    alert(length);
-    
+    r = []
+    for (i = 0; i < length; i++){
+      r.push(forms[i].value)
+    }
+
+    alert(r)
+    $scope.rooms.push(
+      {
+        title: $scope.title,
+        options: r
+      }
+    );
+    $scope.title = '';
   };
 
   $scope.addOption = function(event, limit = false){
@@ -27,5 +44,5 @@ function($scope){
         $scope.options.push({title: ""});
     }
   };
-      
+
 }]);

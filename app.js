@@ -10,7 +10,7 @@ app.factory('room', [function(){
   return o;
 }]);
 
-//we should eventually have our controllers not have alot of code, but just install funcitons from factorys and service
+//we should eventually have our controllers not have alot of code, but just install funcitons from factorys and services
 app.controller('MainCtrl', [
 '$scope',
 'room',

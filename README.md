@@ -1,4 +1,5 @@
 # sp
 Main Senior Project
 
-edit
+Recomended Tutorial Viewing:
+AngularJs Fundementals: https://www.youtube.com/watch?v=i9MHigUZKEM, 1-hour AngularJs fundemental video tutorial

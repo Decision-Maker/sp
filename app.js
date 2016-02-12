@@ -10,6 +10,7 @@ app.factory('room', [function(){
   return o;
 }]);
 
+//we should eventually have our controllers not have alot of code, but just install funcitons from factorys and service
 app.controller('MainCtrl', [
 '$scope',
 'room',
@@ -42,7 +43,7 @@ function($scope, room){
       r.push(forms[i].value)
     }*/
 
-    alert(uniqueOptions);
+    //alert(uniqueOptions);
     $scope.rooms.push(
       {
         title: $scope.title,
@@ -60,7 +61,7 @@ function($scope, room){
     }
   };
 
-  $scope.foo = function(){
+  /*$scope.foo = function(){
     var j = ['','a','b','c'];
     var k = [];
     for(i in j){
@@ -68,6 +69,6 @@ function($scope, room){
     }
     alert(k);
 
-  };
+  };*/
 
 }]);

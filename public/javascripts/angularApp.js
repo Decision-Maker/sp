@@ -1,7 +1,27 @@
 
-var app = angular.module('decisionMaker', []);
+var app = angular.module('decisionMaker', ['ui.router']);
 
+app.config([
+'$stateProvider',
+'$urlRouterProvider',
+function($stateProvider, $urlRouterProvider) {
 
+  $stateProvider
+    .state('home', {
+      url: '/home',
+      templateUrl: '/home.html',
+      controller: 'MainCtrl'
+    });
+
+    $stateProvider
+    .state('vote', {
+      url: '/vote/{id}',
+      templateUrl: '/vote.html',
+      controller: 'VoteCtrl'
+    });
+
+  $urlRouterProvider.otherwise('home');
+}]);
 
 app.factory('room', [function(){
   var o = {
@@ -70,5 +90,16 @@ function($scope, room){
     alert(k);
 
   };*/
+
+}]);
+
+app.controller('VoteCtrl', [
+'$scope',
+'$stateParams',
+'room',
+function($scope, $stateParams, room){
+  alert(room.rooms.length);
+  $scope.room = room.rooms[$stateParams.id];
+
 
 }]);

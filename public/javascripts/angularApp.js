@@ -20,6 +20,13 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'VoteCtrl'
     });
 
+    $stateProvider
+    .state('result', {
+      url: '/result/{id}',
+      templateUrl: '/result.html',
+      controller: 'ResultCtrl'
+    });
+
   $urlRouterProvider.otherwise('home');
 }]);
 
@@ -47,7 +54,7 @@ function($scope, room){
     //var valid = true;
     var uniqueOptions = $scope.options.filter(function(item, pos, self){
       for(i = pos + 1; i < self.length; i++){
-        if(self[i] == item){
+        if(self[i].name == item.name){
           return false;
         }
       }
@@ -77,7 +84,7 @@ function($scope, room){
   $scope.addOption = function(event, limit = false){
     //alert(event.keyCode);
     if(limit || event.keyCode == 13){
-        $scope.options.push('');
+        $scope.options.push({name: "", count: 0});
     }
   };
 
@@ -98,8 +105,17 @@ app.controller('VoteCtrl', [
 '$stateParams',
 'room',
 function($scope, $stateParams, room){
-  alert(room.rooms.length);
   $scope.room = room.rooms[$stateParams.id];
 
+  $scope.incrementVote = function(option){
+    option.count++;
+  }
+}]);
 
+app.controller('ResultCtrl', [
+'$scope',
+'$stateParams',
+'room',
+function($scope, $stateParams, room){
+  $scope.room = room.rooms[$stateParams.id];
 }]);

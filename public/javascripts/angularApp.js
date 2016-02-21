@@ -1,5 +1,5 @@
 
-var app = angular.module('decisionMaker', ['ui.router']);
+var app = angular.module('decisionMaker', ['ui.router', 'ng-sortable']);
 
 app.config([
 '$stateProvider',
@@ -44,6 +44,14 @@ app.controller('MainCtrl', [
 function($scope, room){
   $scope.rooms = room.rooms;
   $scope.options = [];
+
+  $scope.barConfig = {
+      animation: 150,
+      onSort: function (/** ngSortEvent */evt){
+          // @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
+      }
+  };
+
 
   $scope.addRoom = function(){
     if(!$scope.title || $scope.title === '') { return; }

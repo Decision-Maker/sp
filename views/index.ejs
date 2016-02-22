@@ -48,13 +48,12 @@
           placeholder="Title"
           ng-model="title" ng-keyup="addOption($event)"></input>
 
-          <ol ng-sortable="barConfig">
-            <li ng-repeat="option in options track by $index">
-              <div>
-                   <input type="text" class="form-control option" placeholder="Option" ng-model="options[$index].name" ng-keyup="addOption($event)"></input>
+          <div ng-sortable="barConfig">
+              <div ng-repeat="option in options track by $index">
+                <span ng-click="remove(option)" class="formLabel">{{$index+1}}</span>
+                <input type="text" class="form-control option" placeholder="Option" ng-model="options[$index].name" ng-keyup="addOption($event)"></input>
               </div>
-            </li>
-          </ol>
+          </div>
 
 
       </div>

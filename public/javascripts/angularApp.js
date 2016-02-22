@@ -45,12 +45,30 @@ function($scope, room){
   $scope.rooms = room.rooms;
   $scope.options = [];
 
+  //The room starts with 2 blank options
+  $scope.options.push(
+    {name: "", count: 0},
+    {name: "", count: 0}
+  );
+
+
+
+  //Used for drag and drop
   $scope.barConfig = {
       animation: 150,
       onSort: function (/** ngSortEvent */evt){
           // @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
       }
   };
+
+  //Used to remove options from scope.options
+  $scope.remove = function(item) {
+    if($scope.options.length <= 2){
+      return
+    }
+    var index = $scope.options.indexOf(item);
+    $scope.options.splice(index, 1);
+  }
 
 
   $scope.addRoom = function(){

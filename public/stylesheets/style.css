@@ -1,12 +1,16 @@
 body {
   padding: 50px;
-  font: "Roboto", 400;
+  font: 'Roboto', 400 !important;
   background-color: #1cdb95;
   border-width: .2em;
 }
 
+a {
+  font-family: 'Roboto';
+}
+
 h1 {
-  font: "Montserrat";
+  font-family: 'Montserrat'
   font-size: 2em;
   color: white;
   letter-spacing: .2em;
@@ -14,7 +18,7 @@ h1 {
 }
 
 h3 {
-  font: "Roboto", 800;
+  font: 'Roboto', 800 !important;
   font-size: 1em;
   letter-spacing: .15em;
   color: white;
@@ -30,4 +34,9 @@ h3 {
   width: 10%;
   float: left;
   cursor: pointer;
+}
+
+.btn {
+  background-color: rgba(255,255,255,.5);
+  border-style: hidden;
 }

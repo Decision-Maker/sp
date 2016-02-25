@@ -1,10 +1,24 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: "Roboto", 400;
+  background-color: #1cdb95;
+  border-width: .2em;
 }
 
-a {
-  color: #00B7FF;
+h1 {
+  font: "Montserrat";
+  font-size: 2em;
+  color: white;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+h3 {
+  font: "Roboto", 800;
+  font-size: 1em;
+  letter-spacing: .15em;
+  color: white;
+  text-transform: uppercase;
 }
 
 .option{

@@ -4,8 +4,10 @@
   <meta charset="utf-8">
   <title>Decision Maker</title>
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link href="/stylesheets/bootstrap.css" rel="stylesheet">
   <link href="/stylesheets/style.css" rel="stylesheet">
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
@@ -34,35 +36,49 @@
           {{room.title}}
       </h3>
       <ul>
-        <li ng-repeat="option in room.options" style="font-size:15px; margin-left:8px;">
+        <li ng-repeat="option in room.options">
             {{option.name}}
           </li>
       </ul>
     </div>
 
-    <form id="form"
-      style="margin-top:30px;">
-      <h3>Add voting options</h3>
 
-      <div class="form-group">
-        <input type="text"
+  <div class="form-group">
+    <form id="form">
+        <h3>Create a room.</h3>
+        <span class="input input--isao">
+        <input class="input__field input__field--isao" type="text" id="input-1"
           class="form-control"
-          placeholder="Title"
-          ng-model="title" ng-keyup="addOption($event)"></input>
-
-          <div ng-sortable="barConfig">
-              <div ng-repeat="option in options track by $index">
-                <span ng-click="remove(option)" class="formLabel">{{$index+1}}</span>
-                <input type="text" class="form-control option" placeholder="Option" ng-model="options[$index].name" ng-keyup="addOption($event)"></input>
-              </div>
-          </div>
+          placeholder=""
+          ng-model="title" ng-keyup="addOption($event)">
+        </input>
+        <label class="input__label input__label--isao" for="input-1">
+						<span class="input__label-content input__label-content--isao" data-content="Room Title">Room Title</span>
+				</label>
+        </span>
 
 
-      </div>
+        <div ng-sortable="barConfig" class="optionblock">
+            <div ng-repeat="option in options track by $index">
+                <span class="input input--isao">
+                <input class="input__field input__field--isao" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index].name" ng-keyup="addOption($event)"></input>
+                <label class="input__label input__label--isao" for="input-5">
+        						<span class="input__label-content2 input__label-content--isao" data-content="Option">Option</span>
+        				</label>
+                </span>
+                <span ng-click="remove(option)" ng-hover="toggleHandle(this)" class="formLabelHandle"><i class="fa fa-times"></i></span>
+            </div>
+        </div>
 
     </form>
+    <div class="createoptionbutton">
+      <i class="fa fa-plus" ng-click="addOption($event, true)"></i>
+    </div>
+    <br>
+  </div>
+  <div class="createroombutton">
     <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
-    <button ng-click="addOption($event, true)" class="btn btn-primary">Add Option</button>
+  </div>
   </script>
 
   <script type="text/ng-template" id="/vote.html">
@@ -93,5 +109,41 @@
     </ul>
   </script>
 
+
+  <script>
+    (function() {
+      // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+      if (!String.prototype.trim) {
+        (function() {
+          // Make sure we trim BOM and NBSP
+          var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+          String.prototype.trim = function() {
+            return this.replace(rtrim, '');
+          };
+        })();
+      }
+
+      [].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+        // in case the input is already filled..
+        if( inputEl.value.trim() !== '' ) {
+          classie.add( inputEl.parentNode, 'input--filled' );
+        }
+
+        // events:
+        inputEl.addEventListener( 'focus', onInputFocus );
+        inputEl.addEventListener( 'blur', onInputBlur );
+      } );
+
+      function onInputFocus( ev ) {
+        classie.add( ev.target.parentNode, 'input--filled' );
+      }
+
+      function onInputBlur( ev ) {
+        if( ev.target.value.trim() === '' ) {
+          classie.remove( ev.target.parentNode, 'input--filled' );
+        }
+      }
+    })();
+  </script>
 </body>
 </html>

@@ -56,7 +56,7 @@ function($scope, room){
   //Used for drag and drop
   $scope.barConfig = {
       animation: 150,
-      handle: ".handle",
+      //handle: ".handle",
       onSort: function (/** ngSortEvent */evt){
           // @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
       }

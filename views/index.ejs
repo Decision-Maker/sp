@@ -56,12 +56,9 @@
         <div ng-sortable="barConfig" class="optionblock">
             <div ng-repeat="option in options track by $index">
                 <span class="input input--isao">
-                <input class="input__field input__field--isao input" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index].name" ng-keyup="addOption($event)"></input>
-                <label class="input__label input__label--isao" for="input-5">
-        						<span class="input__label-content2 input__label-content--isao" data-content="Option">Option</span>
-        				</label>
+
                 </span>
-                <span ng-click="remove(option)" ng-hover="toggleHandle(this)" class="formLabelHandle"><i class="fa fa-times"></i></span>
+                <span ng-click="remove(option)" class="formLabelHandle"><i class="fa fa-times"></i></span>
             </div>
         </div>
 

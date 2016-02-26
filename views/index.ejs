@@ -45,23 +45,18 @@
 
   <div class="form-group">
     <form id="form">
-        <h3>Create a room.</h3>
-        <span class="input input--isao">
-        <input class="input__field input__field--isao" type="text" id="input-1"
+        <input type="text"
+          class="inputtitle"
           class="form-control"
-          placeholder=""
+          placeholder="What are you deciding on?"
           ng-model="title" ng-keyup="addOption($event)">
         </input>
-        <label class="input__label input__label--isao" for="input-1">
-						<span class="input__label-content input__label-content--isao" data-content="Room Title">Room Title</span>
-				</label>
-        </span>
 
 
         <div ng-sortable="barConfig" class="optionblock">
             <div ng-repeat="option in options track by $index">
                 <span class="input input--isao">
-                <input class="input__field input__field--isao" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index].name" ng-keyup="addOption($event)"></input>
+                <input class="input__field input__field--isao input" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index].name" ng-keyup="addOption($event)"></input>
                 <label class="input__label input__label--isao" for="input-5">
         						<span class="input__label-content2 input__label-content--isao" data-content="Option">Option</span>
         				</label>

@@ -2,7 +2,7 @@ body {
   padding: 50px;
   font-family: 'Roboto', Arial, sans-serif;
   background: #43cea2; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #43cea2 , #185a9d); /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to bottom, #43cea2 , #185a9d); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to bottom, #43cea2 , #185a9d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   border-width: .2em;
 }
@@ -36,6 +36,16 @@ h3 {
   padding: 2em;
   background-color: rgba(255,255,255,.3);
 }
+
+.inputtitle {
+  background:none;
+  border-style: hidden;
+}
+
+/* all */
+::-webkit-input-placeholder { color:#f00; font-size: 2em;}
+::-moz-placeholder { olor:#f00; font-size: 2em; } /* firefox 19+ */
+input:-moz-placeholder { olor:#f00; font-size: 2em; }
 
 .btn-primary {
   font: 'Roboto', 800 !important;

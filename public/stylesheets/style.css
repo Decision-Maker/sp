@@ -42,11 +42,6 @@ h3 {
   background-color: rgba(255,255,255,.3);
 }
 
-.inputtitle {
-  background:none;
-  border-style: hidden;
-}
-
 /* all */
 ::-webkit-input-placeholder { color:#f00; font-size: 2em;}
 ::-moz-placeholder { olor:#f00; font-size: 2em; } /* firefox 19+ */
@@ -78,6 +73,7 @@ input:-moz-placeholder { olor:#f00; font-size: 2em; }
    border-color: white;
 }
 
+
 .btn-primary:active{
   background-color: rgba(255,255,255, .3) !important;
   border-color: white;
@@ -85,7 +81,67 @@ input:-moz-placeholder { olor:#f00; font-size: 2em; }
 
 .fa {
   color:white;
+}
+.fa-times {
+  color:white;
   font-size: 1.2em;
+  float: left;
+  padding-right: 3em;
+}
+
+.fa-plus {
+  font-size: 1.2em;
+}
+
+.inputtitle {
+  width:80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+input[type="title"] {
+  line-height: 3em;
+  width: 100%;
+  margin-bottom: .5em;
+  border-style: none;
+  background:none;
+  text-align: center;
+  font-size: 1.8em;
+  font: 'Roboto', 800 !important;
+  color: white;
+}
+
+.title-control:focus::-webkit-input-placeholder { /* WebKit browsers */
+  opacity: 0;
+}
+.title-control:focus:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  opacity: 0;
+}
+.title-control:focus::-moz-placeholder { /* Mozilla Firefox 19+ */
+  opacity: 0;
+}
+.title-control:focus:-ms-input-placeholder { /* Internet Explorer 10+ */
+  opacity: 0;
+}
+
+.title-control::-webkit-input-placeholder { /* WebKit browsers */
+  text-align: center;
+  color: white;
+  font-size: 1.1em;
+}
+.title-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  text-align: center;
+  color: white;
+  font-size: 1.1em;
+}
+.title-control::-moz-placeholder { /* Mozilla Firefox 19+ */
+  text-align: center;
+  color: white;
+  font-size: 1.1em;
+}
+.title-control:-ms-input-placeholder { /* Internet Explorer 10+ */
+  text-align: center;
+  color: white;
+  font-size: 1.3em;
 }
 
 
@@ -104,9 +160,8 @@ input:-moz-placeholder { olor:#f00; font-size: 2em; }
 .input__field {
 	position: relative;
 	display: block;
-	float: right;
 	padding: 0.8em;
-	width: 60%;
+	width: 100%;
 	border: none;
 	border-radius: 0;
 	background: #f0f0f0;
@@ -381,7 +436,6 @@ input:-moz-placeholder { olor:#f00; font-size: 2em; }
 	background: transparent;
 	color: #9196A1;
 	opacity: 0;
-	text-align: center;
 	-webkit-transition: opacity 0.3s;
 	transition: opacity 0.3s;
 }
@@ -774,7 +828,6 @@ input:-moz-placeholder { olor:#f00; font-size: 2em; }
 	width: 100%;
 	height: 100%;
 	background: transparent;
-	text-align: center;
 }
 
 .input__label--akira {
@@ -1151,8 +1204,7 @@ input:-moz-placeholder { olor:#f00; font-size: 2em; }
 /* Isao */
 .input__field--isao {
 	z-index: 10;
-	padding: 0.75em 0.1em 0.25em;
-	width: 100%;
+	padding: 0.5em 0 0.1em;
 	background: transparent;
 	color: white;
 }

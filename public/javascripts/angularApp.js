@@ -94,24 +94,20 @@ function($scope, room){
       return true;
     });
 
-    /*for(option in $scope.options){
-
-    }*/
-
-    /*r = []
-    for (i = 0; i < length; i++){
-      r.push(forms[i].value)
-    }*/
-
-    //alert(uniqueOptions);
+    //save the room
     $scope.rooms.push(
       {
         title: $scope.title,
         options: uniqueOptions
       }
     );
+    //reset the form
     $scope.title = '';
-    $scope.options = [];
+    $scope.options = [
+      {name: "", count: 0},
+      {name: "", count: 0}
+    ];
+
   };
 
   $scope.addOption = function(event, limit = false){
@@ -120,17 +116,7 @@ function($scope, room){
         $scope.options.push({name: "", count: 0});
     }
   };
-
-  /*$scope.foo = function(){
-    var j = ['','a','b','c'];
-    var k = [];
-    for(i in j){
-      k.push(j[i]);
-    }
-    alert(k);
-
-  };*/
-
+  
 }]);
 
 app.controller('VoteCtrl', [

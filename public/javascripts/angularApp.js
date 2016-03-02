@@ -51,8 +51,6 @@ function($scope, room){
     {name: "", count: 0}
   );
 
-
-
   //Used for drag and drop
   $scope.barConfig = {
       animation: 150,
@@ -85,6 +83,9 @@ function($scope, room){
     //var seen = [];
     //var valid = true;
     var uniqueOptions = $scope.options.filter(function(item, pos, self){
+      if(item.name == ""){
+        return false;
+      }
       for(i = pos + 1; i < self.length; i++){
         if(self[i].name == item.name){
           return false;

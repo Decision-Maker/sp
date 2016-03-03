@@ -29,5 +29,14 @@ var Participant = mongoose.model('Participant', participantSchema);
 mongoose.model('User', userSchema);
 
 optionSchema.virtual('count').get(function(){
-  return Participant.where({'roomId':this.roomId,'optionId':this.optionId} ).count();
+  var total = 0;
+  Participant.count({roomId = this.roomId, optionId = this.optionId}, function(err, count){
+      if (err) {
+        console.log("error on count of room: " + this.roomId + " and option: " + this.name);
+      }
+      else {
+        total = count;
+      }
+  });
+  return total;
 });

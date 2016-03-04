@@ -1,14 +1,8 @@
-<!doctype html>
-<html ng-app="decisionMaker">
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>Decision Maker</title>
+  <title>Decision Maker!</title>
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-  <link href="/stylesheets/bootstrap.css" rel="stylesheet">
-  <link href="/stylesheets/style.css" rel="stylesheet">
+
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
   <!-- sortable.js -->
@@ -18,128 +12,65 @@
   <script src="/javascripts/angularApp.js"></script>
   <style> .glyphicon-thumbs-up { cursor:pointer } </style>
 </head>
-
-<body ng-controller="MainCtrl">
+<body ng-app="flapperNews" ng-controller="MainCtrl">
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
-        <ui-view></ui-view>
+      <ui-view></ui-view>
     </div>
   </div>
-
-  <script type="text/ng-template" id="/home.html">
-    <div class="page-header">
-      <h1>Create a room</h1>
-    </div>
-
-    <div ng-repeat="room in rooms">
-      <h3>
-          {{room.title}}
-      </h3>
-      <ul>
-        <li ng-repeat="option in room.options">
-            {{option.name}}
-          </li>
-      </ul>
-    </div>
-
-
-  <div class="form-group">
-    <form id="form">
-        <div class="inputtitle">
-        <input type="title"
-          class="title-control"
-          placeholder="Decision title"
-          ng-model="title" ng-keyup="addOption($event)">
-        </input>
-        </div>
-
-
-        <div ng-sortable="barConfig" class="optionblock">
-            <div ng-repeat="option in options track by $index">
-                <span class="input input--isao">
-                <input class="input__field input__field--isao input" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index].name" ng-keyup="addOption($event)"></input>
-                <label class="input__label input__label--isao" for="input-5">
-        						<span class="input__label-content2 input__label-content--isao" data-content="Option">Option</span>
-        				</label>
-                </span>
-                <span ng-click="remove(option)" ng-hover="toggleHandle(this)" class="formLabelHandle"><i class="fa fa-times"></i></span>
-            </div>
-        </div>
-
-    </form>
-    <div class="createoptionbutton">
-      <i class="fa fa-plus" ng-click="addOption($event, true)"></i>
-    </div>
-    <br>
-  </div>
-  <div class="createroombutton">
-    <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
-  </div>
-  </script>
-
-  <script type="text/ng-template" id="/vote.html">
-      <div class="page-header">
-      <h3>
-          {{room.title}}
-      </h3>
-    </div>
-
-    <ul ng-repeat="option in room.options">
-      <li>
-        <button ng-click="incrementVote(option)">{{option.name}}</button>: {{option.count}}
-      </li>
-    </ul>
-  </script>
-
-  <script type="text/ng-template" id="/result.html">
-      <div class="page-header">
-      <h3>
-          {{room.title}}
-      </h3>
-    </div>
-
-    <ul ng-repeat="option in room.options | orderBy: '-count'">
-      <li>
-         {{option.name + " " + option.count}}
-      </li>
-    </ul>
-  </script>
-
-
-  <script>
-    (function() {
-      // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
-      if (!String.prototype.trim) {
-        (function() {
-          // Make sure we trim BOM and NBSP
-          var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
-          String.prototype.trim = function() {
-            return this.replace(rtrim, '');
-          };
-        })();
-      }
-
-      [].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
-        // in case the input is already filled..
-        if( inputEl.value.trim() !== '' ) {
-          classie.add( inputEl.parentNode, 'input--filled' );
-        }
-
-        // events:
-        inputEl.addEventListener( 'focus', onInputFocus );
-        inputEl.addEventListener( 'blur', onInputBlur );
-      } );
-
-      function onInputFocus( ev ) {
-        classie.add( ev.target.parentNode, 'input--filled' );
-      }
-
-      function onInputBlur( ev ) {
-        if( ev.target.value.trim() === '' ) {
-          classie.remove( ev.target.parentNode, 'input--filled' );
-        }
-      }
-    })();
-  </script>
 </body>
+
+<script type="text/ng-template" id="/results.html">
+  <div class="page-header">
+    <h3>
+      {{room.title}}
+    </h3>
+  </div>
+
+  <div ng-repeat="vote in votes track by $index">
+    Vote {{$index+1}}: {{vote.data}}
+  </div>
+
+</script>
+
+<script type="text/ng-template" id="/rooms.html">
+  <div class="page-header">
+    <h3>
+      {{room.title}}
+    </h3>
+  </div>
+
+  <div ng-sortable="barConfig">
+    <div ng-repeat="option in vote track by $index">
+      Option {{$index+1}}: {{option}}
+    </div>
+  </div>
+
+  <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
+  <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
+</script>
+
+<script type="text/ng-template" id="/home.html">
+  <div class="page-header">
+    <h1>Decision Maker!</h1>
+  </div>
+
+  <div ng-repeat="room in rooms">
+    <span style="font-size:20px;">{{room.title}}</span>
+    - <a href="#/rooms/{{room._id}}">Vote</a>
+  </div>
+
+  <h3>Add a new Room</h3>
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Title" ng-model="title"></input>
+  </div>
+
+  <form ng-submit="addRoom()">
+    <div class="form-group" ng-repeat="option in options track by $index">
+      <input type="text" class="form-control" placeholder="Option" ng-model="options[$index]"></input>
+    </div>
+    <button type="submit" class="btn btn-primary">Post</button>
+  </form>
+  <button class="btn btn-primary" ng-click="addOption($event)">Add Option</button>
+</script>
 </html>

@@ -28,6 +28,12 @@ app.factory('rooms', ['$http', function($http){
     console.log("vote: " + vote);
     return $http.post('/rooms/' + id + '/votes', vote);
   };
+  
+  o.getResults = function(id) {
+	return $http.get('/rooms/' + id + '/results').then(function(res){
+		return res.data;
+    })
+  };
 
   return o;
 }]);
@@ -69,7 +75,10 @@ function($stateProvider, $urlRouterProvider) {
       resolve: {
         room: ['$stateParams', 'rooms', function($stateParams, rooms) {
           return rooms.get($stateParams.id);
-        }]
+        }],
+		results: ['$stateParams', 'rooms', function($stateParams, rooms) {
+		  return rooms.getResults($stateParams.id);
+		}]
       }
     });
 
@@ -80,14 +89,15 @@ app.controller('ResultsCtrl', [
 '$scope',
 'rooms',
 'room',
-function($scope, rooms, room){
+'results',
+function($scope, rooms, room, results){
 
   $scope.room = room;
-  $scope.votes = angular.copy($scope.room.votes);
-  voteCount = $scope.votes.length;
-  finish = voteCount/2 + 1;
+  //$scope.votes = angular.copy($scope.room.votes);
+  //voteCount = $scope.votes.length;
+  //finish = voteCount/2 + 1;
 
-
+  $scope.results = results
 
 }]);
 
@@ -135,11 +145,11 @@ function($scope, rooms){
     }
 
     var uniqueOptions = $scope.options.filter(function(item, pos, self){
-      if(item == ""){
+      if(item === ""){
         return false;
       }
       for(i = pos + 1; i < self.length; i++){
-        if(self[i]== item){
+        if(self[i] === item){
           return false;
         }
       }

@@ -59,8 +59,8 @@ router.get('/:room', function(req, res) {
   
   db.model.Option.find({room: req.room._id}, function(err, ops){
 	  if (err) handleError(err);
-	  for (op in ops){
-		  o.options.push(op);
+	  for (i = 0; i < ops.length; i++){
+		  o.options.push(ops[i]);
 	  }
 	  res.json(o);
   });
@@ -112,6 +112,7 @@ router.post('/', function(req, res, next) {
 //======================================================================================
 
 //get current results of the room
+//results is a list of objects with the fields: {title: String, _id: ObjectID, count: int, room: ObjectID}
 
 router.get('/:room/results', function(req, res, next) {
 	FPP.getResult(req.room._id, function(err, results){

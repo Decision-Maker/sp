@@ -7,9 +7,9 @@ o.schema.user = new Schema({
   name: String
 });
 
-o.schema.usage = new Schema({
+o.schema.vote = new Schema({
   user: {type: Schema.Types.ObjectId, ref: 'User' },
-  room: {type: Schema.Types.ObjectId, ref 'Room'},
+  room: {type: Schema.Types.ObjectId, ref: 'Room'},
   option: {type: Schema.Types.ObjectId, ref: 'Option'}
 });
 
@@ -18,20 +18,20 @@ o.schema.room = new Schema({
 });
 
 o.schema.option = new Schema({
-  title: String
-  room: {type: Schema.Types.ObjectId, ref 'Room'},
+  title: String,
+  room: {type: Schema.Types.ObjectId, ref: 'Room'},
 });
 
 o.model.Option = mongoose.model('Option', o.schema.option, 'options');
 o.model.Room = mongoose.model('Room', o.schema.room, 'rooms');
-o.model.Usage = mongoose.model('Usage', o.schema.usage, 'usage');
+o.model.Vote = mongoose.model('Vote', o.schema.usage, 'votes');
 o.model.User = mongoose.model('User', o.schema.user, 'users');
 
 o.schema.option.virtual('count').get(function () {
 	var id = this._id;
 	var room = this.room;
 	var c;
-	o.model.Usage.count({'option': id, 'room': room}, function(err, count){
+	o.model.Vote.count({'option': id, 'room': room}, function(err, count){
 		if(err) return handleError(err);
 		c = count;
 	});

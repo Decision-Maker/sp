@@ -1,11 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var Room = mongoose.model('Room');
-var Vote = mongoose.model('Vote');
+var db = require('../models/models');
+//var Room = mongoose.model('Room');
+//var Vote = mongoose.model('Vote');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
+router.get('/home', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
@@ -13,9 +18,12 @@ router.get('/', function(req, res, next) {
 // Param Functions==============================================================
 // =============================================================================
 
+//Commented out to use rooms.json
+/*
+
 //Preload a specific room
 router.param('room', function(req, res, next, id) {
-  var query = Room.findById(id);
+  var query = db.model.Room.findById(id);
 
   query.exec(function (err, room){
     if (err) { return next(err); }
@@ -32,7 +40,7 @@ router.param('room', function(req, res, next, id) {
 
 router.post('/rooms/:room/votes', function(req, res, next) {
 
-  var vote = new Vote(req.body);
+  var vote = new db.model.Vote(req.body);
   vote.room =  req.room;
   vote.data = req.body
 
@@ -62,7 +70,7 @@ router.get('/rooms/:room', function(req, res) {
 
 //Gets all room, used for home page
 router.get('/rooms', function(req, res, next) {
-  Room.find(function(err, posts){
+  db.model.Room.find(function(err, posts){
     if(err){ return next(err); }
 
     res.json(posts);
@@ -71,7 +79,7 @@ router.get('/rooms', function(req, res, next) {
 
 //Save a room to the database
 router.post('/rooms', function(req, res, next) {
-  var post = new Room(req.body);
+  var post = new db.model.Room(req.body);
 
   post.save(function(err, post){
     if(err){ return next(err); }
@@ -79,5 +87,5 @@ router.post('/rooms', function(req, res, next) {
     res.json(post);
   });
 });
-
+*/
 module.exports = router;

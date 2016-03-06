@@ -6,4 +6,4 @@ var RoomSchema = new mongoose.Schema({
   votes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vote' }]
 });
 
-mongoose.model('Room', RoomSchema);
+//mongoose.model('Room', RoomSchema);

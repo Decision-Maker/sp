@@ -1,33 +1,45 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
-  name: String,
-  id: ObjectId
-});
+var o = {schema:{}, model:{}};
 
-var participantSchema = new Schema({
-  userId: ObjectId,
-  roomId: ObjectId,
-  optionId: ObjectId
-});
-
-var roomSchema = new Schema({
-  title: String,
-  roomId: ObjectId
-});
-
-var optionSchema = new Schema({
-  optionId: ObjectId,
-  roomId: ObjectId,
+o.schema.user = new Schema({
   name: String
 });
 
-mongoose.model('Option', optionSchema);
-mongoose.model('Room', roomSchema);
-var Participant = mongoose.model('Participant', participantSchema);
-mongoose.model('User', userSchema);
-
-optionSchema.virtual('count').get(function(){
-  return Participant.where({'roomId':this.roomId,'optionId':this.optionId} ).count();
+o.schema.usage = new Schema({
+  user: {type: Schema.Types.ObjectId, ref: 'User' },
+  room: {type: Schema.Types.ObjectId, ref 'Room'},
+  option: {type: Schema.Types.ObjectId, ref: 'Option'}
 });
+
+o.schema.room = new Schema({
+  title: String
+});
+
+o.schema.option = new Schema({
+  title: String
+  room: {type: Schema.Types.ObjectId, ref 'Room'},
+});
+
+o.model.Option = mongoose.model('Option', o.schema.option, 'options');
+o.model.Room = mongoose.model('Room', o.schema.room, 'rooms');
+o.model.Usage = mongoose.model('Usage', o.schema.usage, 'usage');
+o.model.User = mongoose.model('User', o.schema.user, 'users');
+
+o.schema.option.virtual('count').get(function () {
+	var id = this._id;
+	var room = this.room;
+	var c;
+	o.model.Usage.count({'option': id, 'room': room}, function(err, count){
+		if(err) return handleError(err);
+		c = count;
+	});
+	return c;
+});
+
+/*optionSchema.virtual('count').get(function(){
+  return Participant.where({'roomId':this.roomId,'optionId':this.optionId} ).count();
+});*/
+
+module.exports = o;

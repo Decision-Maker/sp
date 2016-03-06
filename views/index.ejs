@@ -33,9 +33,7 @@
     </h3>
   </div>
 
-  <div ng-repeat="result in results track by $index">
-    {{$index+1}}: {{result.title}}, with: {{result.count}} votes
-  </div>
+    The Winrar is {{results[0].title}}, with: {{results[0].count}} votes
 
 </script>
 
@@ -81,7 +79,7 @@
   <div ng-sortable="barConfig" class="optionblock">
           <div ng-repeat="option in options track by $index">
               <span class="input input--isao">
-              <input class="input__field input__field--isao input" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index].name"></input>
+              <input class="input__field input__field--isao input" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index]"></input>
               <label class="input__label input__label--isao" for="input-5">
                   <span class="input__label-content2 input__label-content--isao" data-content="Option">Option</span>
               </label>

@@ -27,7 +27,7 @@ o.model.Room = mongoose.model('Room', o.schema.room, 'c_rooms');
 o.model.Vote = mongoose.model('Vote', o.schema.vote, 'c_votes');
 o.model.User = mongoose.model('User', o.schema.user, 'c_users');
 
-o.schema.option.virtual('count').get(function () {
+/*o.schema.option.virtual('count').get(function () {
 	var id = this._id;
 	var room = this.room;
 	var c;

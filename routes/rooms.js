@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../models/models');
+var FPP = require('../node_modules/voting-util/FPP');
 
 function handleError(err){
 	console.log("ERROR");
@@ -89,7 +90,7 @@ router.get('/', function(req, res, next) {
 });
 
 //Save a room to the database
-//***** responces should be built from saved object returns rather than req data ******
+//***** responces should be built from saved object returns, rather than req data fix in final version******
 router.post('/', function(req, res, next) {
   //console.log(req.body.title);
   var new_room = new db.model.Room({title: req.body.title});
@@ -106,5 +107,17 @@ router.post('/', function(req, res, next) {
 	res.json(o);
   });
 });
+
+//RESULT REQUESTS=======================================================================
+//======================================================================================
+
+//get current results of the room
+
+router.get('/:room/results', function(req, res, next) {
+	FPP.getResult(req.room._id, function(err, results){
+		res.json(results);
+	});
+});
+
 
 module.exports = router;

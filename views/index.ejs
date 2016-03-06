@@ -34,7 +34,7 @@
   </div>
 
   <div ng-repeat="result in results track by $index">
-    {{$index+1}}: {{result.title}}, with: {{result.count}}
+    {{$index+1}}: {{result.title}}, with: {{result.count}} votes
   </div>
 
 </script>
@@ -48,7 +48,7 @@
 
   <div ng-sortable="barConfig">
     <div ng-repeat="option in room.options track by $index">
-      Option {{$index+1}}: {{option}}
+      Option {{$index+1}}: {{option.title}}
     </div>
   </div>
 

@@ -28,7 +28,7 @@ app.factory('rooms', ['$http', function($http){
     console.log("vote: " + vote);
     return $http.post('/rooms/' + id + '/votes', vote);
   };
-  
+
   o.getResults = function(id) {
 	return $http.get('/rooms/' + id + '/results').then(function(res){
 		return res.data;
@@ -98,6 +98,7 @@ function($scope, rooms, room, results){
   //finish = voteCount/2 + 1;
 
   $scope.results = results
+  console.log(results);
 
 }]);
 

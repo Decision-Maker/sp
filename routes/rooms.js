@@ -33,17 +33,18 @@ var userCount = 0;
 router.post('/:room/votes', function(req, res, next) {
 
   userCount = userCount + 1;
-  //console.log('user: ' + userCount.toString());
+  console.log('user: ' + userCount.toString());
   var newUser = new db.model.User({name: userCount.toString()});
   newUser.save(function(err, u){
-	  //console.log('user saved');
-	  db.model.Option.findOne({title: req.body[0], room: req.room._id}, function(err, op){
+	  // console.log('user saved');
+		// console.log("body[0]: ", req.body[0]);
+	  db.model.Option.findOne({title: req.body[0].title, room: req.room._id}, function(err, op){
 	    if (err) {return handleError(err);}
-		var vote;
+			var vote;
 	    vote = new db.model.Vote({room: req.room._id, user: u._id, option: op._id});
 	    vote.save(function(err){
 	      if(err) {handleError(err);}
-		  //console.log('vote saved');
+		  console.log('vote saved');
 		  res.json({});
 	    });
       });
@@ -56,7 +57,7 @@ router.post('/:room/votes', function(req, res, next) {
 //Gets the correct room for given id
 router.get('/:room', function(req, res) {
   var o = {title: req.room.title, options: [], votes: [], _id: req.room._id};
-  
+
   db.model.Option.find({room: req.room._id}, function(err, ops){
 	  if (err) handleError(err);
 	  for (i = 0; i < ops.length; i++){
@@ -64,7 +65,7 @@ router.get('/:room', function(req, res) {
 	  }
 	  res.json(o);
   });
-  
+
 });
 
 //Gets all room, used for home page
@@ -80,7 +81,7 @@ router.get('/', function(req, res, next) {
 		db.model.Option.find({room: rooms[i]._id}, function(err, options){
 			for(j = 0; j < options.length; j++){
 				p.options.push(options[j].title);
-				
+
 			}
 		});
 		posts.push(p);
@@ -94,17 +95,17 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   //console.log(req.body.title);
   var new_room = new db.model.Room({title: req.body.title});
-  new_room.save(function(err, r){
-	if(err) {handleError(err);} 
+    new_room.save(function(err, r){
+	  if(err) {handleError(err);}
     //console.log("room saved");
-	var o = {votes: [], title: r.title, _id: r._id, options: []};
-	var om;
-	for (op in req.body.options){
-	  om = new db.model.Option({title: op, room: r._id});
-	  om.save(function(err){if(err) {handleError(err);} /*console.log("option created")*/});
-	  o.options.push(op);
-    }
-	res.json(o);
+	  var o = {votes: [], title: r.title, _id: r._id, options: []};
+	  var om;
+	  for (i = 0; i < req.body.options.length; i++){
+	    om = new db.model.Option({title: req.body.options[i], room: r._id});
+	    om.save(function(err){if(err) {handleError(err);} /*console.log("option created")*/});
+	    o.options.push(req.body.options[i]);
+      }
+	  res.json(o);
   });
 });
 

@@ -1,4 +1,4 @@
-var app = angular.module('flapperNews', ['ui.router', 'ng-sortable']);
+var app = angular.module('decisionMaker', ['ui.router', 'ng-sortable']);
 
 app.factory('rooms', ['$http', function($http){
   var o = {

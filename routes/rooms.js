@@ -3,6 +3,11 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../models/models');
 
+function handleError(err){
+	console.log("ERROR");
+	console.log(err.toString());
+}
+
 // Param Functions==============================================================
 // =============================================================================
 
@@ -27,14 +32,20 @@ var userCount = 0;
 router.post('/:room/votes', function(req, res, next) {
 
   userCount = userCount + 1;
+  //console.log('user: ' + userCount.toString());
   var newUser = new db.model.User({name: userCount.toString()});
-  var vote;
-  db.model.Option.findOne({title: req.body[0], room: req.room._id}, function(err, op){
-	  if (err) return handleError(err);
-	  vote = new db.model.Vote({room: req.room._id, user: newUser._id, option: op._id});
-	  vote.save(function(err){
-	    if(err) handleError(err);
-	  });
+  newUser.save(function(err, u){
+	  //console.log('user saved');
+	  db.model.Option.findOne({title: req.body[0], room: req.room._id}, function(err, op){
+	    if (err) {return handleError(err);}
+		var vote;
+	    vote = new db.model.Vote({room: req.room._id, user: u._id, option: op._id});
+	    vote.save(function(err){
+	      if(err) {handleError(err);}
+		  //console.log('vote saved');
+		  res.json({});
+	    });
+      });
   });
 });
 
@@ -43,7 +54,7 @@ router.post('/:room/votes', function(req, res, next) {
 
 //Gets the correct room for given id
 router.get('/:room', function(req, res) {
-  var o = {title: req.room.title, options: []};
+  var o = {title: req.room.title, options: [], votes: [], _id: req.room._id};
   
   db.model.Option.find({room: req.room._id}, function(err, ops){
 	  if (err) handleError(err);
@@ -57,28 +68,43 @@ router.get('/:room', function(req, res) {
 
 //Gets all room, used for home page
 router.get('/', function(req, res, next) {
-  db.model.Room.find(function(err, posts){
-    if(err){ return next(err); }
-
-    res.json(posts);
-  });
+	//console.log("hello");
+    db.model.Room.find(function(err, rooms){
+      if(err){ return handleError(err); }
+	  var posts = [];
+	  for (i = 0; i < rooms.length; i++){
+	  	//console.log(rooms[i].title);
+	  	//console.log(rooms[i]._id);
+		var p = {votes: [], title: rooms[i].title, options:[], _id: rooms[i]._id};
+		db.model.Option.find({room: rooms[i]._id}, function(err, options){
+			for(j = 0; j < options.length; j++){
+				p.options.push(options[j].title);
+				
+			}
+		});
+		posts.push(p);
+	  }
+	  res.json(posts);
+    });
 });
 
 //Save a room to the database
-//Devon's version
+//***** responces should be built from saved object returns rather than req data ******
 router.post('/', function(req, res, next) {
+  //console.log(req.body.title);
   var new_room = new db.model.Room({title: req.body.title});
-  new_room.save(function(err){if(err) handleError(err)});
-  var o = {};  
-  o.title = new_room.title;
-  o.options = [];
-  
-  for (op in req.body.options){
-	  db.model.Option.create({title: op, room: new_room._id}).save(function(err){if(err) handleError(err)});
+  new_room.save(function(err, r){
+	if(err) {handleError(err);} 
+    //console.log("room saved");
+	var o = {votes: [], title: r.title, _id: r._id, options: []};
+	var om;
+	for (op in req.body.options){
+	  om = new db.model.Option({title: op, room: r._id});
+	  om.save(function(err){if(err) {handleError(err);} /*console.log("option created")*/});
 	  o.options.push(op);
-  }
-  
-  res.json(o);
+    }
+	res.json(o);
+  });
 });
 
 module.exports = router;

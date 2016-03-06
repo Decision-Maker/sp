@@ -23,7 +23,7 @@ router.get('/home', function(req, res, next) {
 
 //Preload a specific room
 router.param('room', function(req, res, next, id) {
-  var query = db.model.Room.findById(id);
+  var query = Room.findById(id);
 
   query.exec(function (err, room){
     if (err) { return next(err); }
@@ -40,7 +40,7 @@ router.param('room', function(req, res, next, id) {
 
 router.post('/rooms/:room/votes', function(req, res, next) {
 
-  var vote = new db.model.Vote(req.body);
+  var vote = new Vote(req.body);
   vote.room =  req.room;
   vote.data = req.body
 
@@ -70,7 +70,7 @@ router.get('/rooms/:room', function(req, res) {
 
 //Gets all room, used for home page
 router.get('/rooms', function(req, res, next) {
-  db.model.Room.find(function(err, posts){
+  Room.find(function(err, posts){
     if(err){ return next(err); }
 
     res.json(posts);
@@ -79,7 +79,7 @@ router.get('/rooms', function(req, res, next) {
 
 //Save a room to the database
 router.post('/rooms', function(req, res, next) {
-  var post = new db.model.Room(req.body);
+  var post = new Room(req.body);
 
   post.save(function(err, post){
     if(err){ return next(err); }

@@ -22,10 +22,10 @@ o.schema.option = new Schema({
   room: {type: Schema.Types.ObjectId, ref: 'Room'},
 });
 
-o.model.Option = mongoose.model('Option', o.schema.option, 'options');
-o.model.Room = mongoose.model('Room', o.schema.room, 'rooms');
-o.model.Vote = mongoose.model('Vote', o.schema.usage, 'votes');
-o.model.User = mongoose.model('User', o.schema.user, 'users');
+o.model.Option = mongoose.model('Option', o.schema.option, 'c_options');
+o.model.Room = mongoose.model('Room', o.schema.room, 'c_rooms');
+o.model.Vote = mongoose.model('Vote', o.schema.vote, 'c_votes');
+o.model.User = mongoose.model('User', o.schema.user, 'c_users');
 
 o.schema.option.virtual('count').get(function () {
 	var id = this._id;

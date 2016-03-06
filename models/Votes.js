@@ -5,4 +5,4 @@ var VoteSchema = new mongoose.Schema({
   room: { type: mongoose.Schema.Types.ObjectId, ref: 'Room' }
 });
 
-mongoose.model('Vote', VoteSchema);
+//mongoose.model('Vote', VoteSchema);

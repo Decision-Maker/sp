@@ -108,6 +108,7 @@ app.controller('RoomsCtrl', [
 'room',
 function($scope, rooms, room){
 
+
   $scope.room = room;
   $scope.vote = angular.copy($scope.room.options);
 
@@ -121,6 +122,10 @@ function($scope, rooms, room){
   };
 
   $scope.addVote = function(){
+    console.log("original order")
+    for (i = 0; i < room.options.length; i++){
+      console.log(room.options[i].title);
+    }
     var vote = angular.copy($scope.vote);
     console.log(vote);
     rooms.addVote(room._id, vote)

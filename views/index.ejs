@@ -2,7 +2,13 @@
 <head>
   <title>Decision Maker!</title>
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Dosis:400,500,700' rel='stylesheet' type='text/css'>
+  <link href="/stylesheets/style.css" rel="stylesheet">
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
   <!-- sortable.js -->
@@ -52,25 +58,44 @@
 
 <script type="text/ng-template" id="/home.html">
   <div class="page-header">
-    <h1>Decision Maker!</h1>
+    <h1>DECISION MAKER</h1>
   </div>
 
   <div ng-repeat="room in rooms">
-    <span style="font-size:20px;">{{room.title}}</span>
+    <h3>
+       {{room.title}}
+    </h3>
     - <a href="#/rooms/{{room._id}}">Vote</a>
   </div>
 
-  <h3>Add a new Room</h3>
-  <div class="form-group">
-    <input type="text" class="form-control" placeholder="Title" ng-model="title"></input>
-  </div>
 
+  <div class="form-group">
+  <div class="inputtitle">
+        <input type="title"
+          class="title-control"
+          placeholder="Decision title..."
+          ng-model="title">
+        </input>
+  </div>
   <form ng-submit="addRoom()">
-    <div class="form-group" ng-repeat="option in options track by $index">
-      <input type="text" class="form-control" placeholder="Option" ng-model="options[$index]"></input>
+  <div ng-sortable="barConfig" class="optionblock">
+          <div ng-repeat="option in options track by $index">
+              <span class="input input--isao">
+              <input class="input__field input__field--isao input" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index].name"></input>
+              <label class="input__label input__label--isao" for="input-5">
+                  <span class="input__label-content2 input__label-content--isao" data-content="Option">Option</span>
+              </label>
+              </span>
+              <span ng-click="remove(option)" ng-hover="toggleHandle(this)" class="formLabelHandle"><i class="fa fa-times"></i></span>
+          </div>
     </div>
-    <button type="submit" class="btn btn-primary">Post</button>
+    <div class="createoptionbutton">
+    <i class="fa fa-plus" ng-click="addOption($event)"></i>
+    </div>
   </form>
-  <button class="btn btn-primary" ng-click="addOption($event)">Add Option</button>
+  <div class="createroombutton">
+  <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
+  </div>
+  </div>
 </script>
 </html>

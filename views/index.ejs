@@ -28,30 +28,35 @@
 
 <script type="text/ng-template" id="/results.html">
   <div class="page-header">
-    <h3>
+    <h1>
       {{room.title}}
-    </h3>
+    </h1>
   </div>
-
-    The Winrar is {{results[0].title}}, with: {{results[0].count}} votes
+   <div class="decisionresult">
+    <div><h2>Final Decision &middot; {{results[0].count}} Votes </h2></div>
+    <div><h4>{{results[0].title}}</h4></div>
+   </div>
 
 </script>
 
 <script type="text/ng-template" id="/rooms.html">
   <div class="page-header">
-    <h3>
+    <h1>
       {{room.title}}
-    </h3>
+    </h1>
   </div>
-
+  <div class="directions">
+    <h2>Drag and drop to vote on top option</h2>
+  </div>
   <div ng-sortable="barConfig">
-    <div ng-repeat="option in vote track by $index">
-      Option {{$index+1}}: {{option.title}}
+    <div class="voteoption" ng-repeat="option in vote track by $index">
+       <h3>{{option.title}}</h3>
     </div>
   </div>
-
-  <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
-  <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
+  <div class="votebuttongroup">
+      <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
+      <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
+  </div>
 </script>
 
 <script type="text/ng-template" id="/home.html">
@@ -59,41 +64,44 @@
     <h1>DECISION MAKER</h1>
   </div>
 
-  <div ng-repeat="room in rooms">
-    <h3>
-       {{room.title}}
-    </h3>
-    - <a href="#/rooms/{{room._id}}">Vote</a>
+  <div class="createroomblock">
+      <div class="form-group">
+      <div class="inputtitle">
+            <input type="title"
+              class="title-control"
+              placeholder="Decision title..."
+              ng-model="title">
+            </input>
+      </div>
+      <form ng-submit="addRoom()">
+           <div ng-sortable="barConfig" class="optionblock">
+                  <div ng-repeat="option in options track by $index">
+                      <span class="input input--isao">
+                      <input class="input__field input__field--isao input" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index]"></input>
+                      <label class="input__label input__label--isao" for="input-5">
+                          <span class="input__label-content2 input__label-content--isao" data-content="Option">Option</span>
+                      </label>
+                      </span>
+                      <span ng-click="remove(option)" ng-hover="toggleHandle(this)" class="formLabelHandle"><i class="fa fa-times"></i></span>
+                  </div>
+            </div>
+            <div class="createoptionbutton">
+            <i class="fa fa-plus" ng-click="addOption($event)"></i>
+            </div>
+      </form>
+      </div>
+      <div class="createroombutton">
+      <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
+      </div>
   </div>
 
-
-  <div class="form-group">
-  <div class="inputtitle">
-        <input type="title"
-          class="title-control"
-          placeholder="Decision title..."
-          ng-model="title">
-        </input>
-  </div>
-  <form ng-submit="addRoom()">
-  <div ng-sortable="barConfig" class="optionblock">
-          <div ng-repeat="option in options track by $index">
-              <span class="input input--isao">
-              <input class="input__field input__field--isao input" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index]"></input>
-              <label class="input__label input__label--isao" for="input-5">
-                  <span class="input__label-content2 input__label-content--isao" data-content="Option">Option</span>
-              </label>
-              </span>
-              <span ng-click="remove(option)" ng-hover="toggleHandle(this)" class="formLabelHandle"><i class="fa fa-times"></i></span>
-          </div>
-    </div>
-    <div class="createoptionbutton">
-    <i class="fa fa-plus" ng-click="addOption($event)"></i>
-    </div>
-  </form>
-  <div class="createroombutton">
-  <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
-  </div>
+  <div class="roomlist" ng-repeat="room in rooms">
+        <div class="roomtitle">
+            <h3>{{room.title}}</h3>
+        </div>
+        <div class="govote">
+            <a href="#/rooms/{{room._id}}"><button class="btn btn-primary">Vote</button></a>
+        </div>
   </div>
 </script>
 </html>

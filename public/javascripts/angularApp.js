@@ -1,5 +1,11 @@
 var app = angular.module('decisionMaker', ['ui.router', 'ng-sortable']);
 
+app.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
+});
+
 app.factory('rooms', ['$http', function($http){
   var o = {
     rooms: []

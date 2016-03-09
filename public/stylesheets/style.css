@@ -1,3 +1,7 @@
+*:focus{
+  outline: none
+}
+
 body {
   padding: 50px;
   font-family: 'Source Sans Pro', sans-serif;

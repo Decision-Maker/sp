@@ -30,24 +30,37 @@ router.param('room', function(req, res, next, id) {
 // =============================================================================
 var userCount = 0;
 
+//server is sent a list of votes in req.body
 router.post('/:room/votes', function(req, res, next) {
 
   userCount = userCount + 1;
-  console.log('user: ' + userCount.toString());
+  //console.log('user: ' + userCount.toString());
   var newUser = new db.model.User({name: userCount.toString()});
   newUser.save(function(err, u){
 	  // console.log('user saved');
 		// console.log("body[0]: ", req.body[0]);
-	  db.model.Option.findOne({title: req.body[0].title, room: req.room._id}, function(err, op){
+		switch(req.room.voteType){
+			case 'FPP':
+				FPP.vote(u, req.room, req.body[0], function(err){
+						if(err) {handleError(err);}
+						res.json({});
+					});
+				break;
+			default:
+				console.log('vote type not recognized');
+				break;
+		}
+		/*
+	    db.model.Option.findOne({title: req.body[0].title, room: req.room._id}, function(err, op){
 	    if (err) {return handleError(err);}
 			var vote;
 	    vote = new db.model.Vote({room: req.room._id, user: u._id, option: op._id});
 	    vote.save(function(err){
 	      if(err) {handleError(err);}
-		  console.log('vote saved');
+		  //console.log('vote saved');
 		  res.json({});
 	    });
-      });
+      });*/
   });
 });
 
@@ -68,7 +81,7 @@ router.get('/:room', function(req, res) {
 
 });
 
-//Gets all room, used for home page
+//Gets all rooms, 
 router.get('/', function(req, res, next) {
 	//console.log("hello");
     db.model.Room.find(function(err, rooms){

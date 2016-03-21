@@ -10,11 +10,13 @@ o.schema.user = new Schema({
 o.schema.vote = new Schema({
   user: {type: Schema.Types.ObjectId, ref: 'User' },
   room: {type: Schema.Types.ObjectId, ref: 'Room'},
-  option: {type: Schema.Types.ObjectId, ref: 'Option'}
+  option: {type: Schema.Types.ObjectId, ref: 'Option'},
+  next: {type: Schema.Types.ObjectId, ref: 'Vote', default: null}
 });
 
 o.schema.room = new Schema({
-  title: String
+  title: String,
+  voteType: {type: String, default: 'FPP'}
 });
 
 o.schema.option = new Schema({
@@ -22,24 +24,9 @@ o.schema.option = new Schema({
   room: {type: Schema.Types.ObjectId, ref: 'Room'},
 });
 
-o.model.Option = mongoose.model('Option', o.schema.option, 'c_options');
-o.model.Room = mongoose.model('Room', o.schema.room, 'c_rooms');
-o.model.Vote = mongoose.model('Vote', o.schema.vote, 'c_votes');
-o.model.User = mongoose.model('User', o.schema.user, 'c_users');
-
-/*o.schema.option.virtual('count').get(function () {
-	var id = this._id;
-	var room = this.room;
-	var c;
-	o.model.Vote.count({'option': id, 'room': room}, function(err, count){
-		if(err) return handleError(err);
-		c = count;
-	});
-	return c;
-});
-
-/*optionSchema.virtual('count').get(function(){
-  return Participant.where({'roomId':this.roomId,'optionId':this.optionId} ).count();
-});*/
+o.model.Option = mongoose.model('Option', o.schema.option, 'test_options');
+o.model.Room = mongoose.model('Room', o.schema.room, 'test_rooms');
+o.model.Vote = mongoose.model('Vote', o.schema.vote, 'test_votes');
+o.model.User = mongoose.model('User', o.schema.user, 'test_users');
 
 module.exports = o;

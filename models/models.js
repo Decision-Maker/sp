@@ -19,6 +19,8 @@ o.schema.room = new Schema({
   voteType: {type: String, default: 'FPP'}
 });
 
+//voting systems: perferential, point based
+
 o.schema.option = new Schema({
   title: String,
   room: {type: Schema.Types.ObjectId, ref: 'Room'},

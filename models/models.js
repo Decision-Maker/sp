@@ -26,6 +26,7 @@ o.schema.option = new Schema({
   room: {type: Schema.Types.ObjectId, ref: 'Room'},
 });
 
+//change names of collections for final production model
 o.model.Option = mongoose.model('Option', o.schema.option, 'test_options');
 o.model.Room = mongoose.model('Room', o.schema.room, 'test_rooms');
 o.model.Vote = mongoose.model('Vote', o.schema.vote, 'test_votes');

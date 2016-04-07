@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../models/models');
-var FPP = require('../node_modules/voting-util/FPP');
+var FPP = require('../voting-util/FPP');
 
 function handleError(err){
 	console.log("ERROR");

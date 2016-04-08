@@ -46,7 +46,7 @@ FPP.vote = function(user, room, option, callback){
 	}
 	db.model.Option.findOne({title: option.title, room: room._id}, function(err, op){
 	    if (err) {return handleError(err);}
-		var vote;
+		  var vote;
 	    vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});
 	    vote.save(function(err){
 	      //if(err) {handleError(err);}

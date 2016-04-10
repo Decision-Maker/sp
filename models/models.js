@@ -29,5 +29,5 @@ var Participant = mongoose.model('Participant', participantSchema);
 mongoose.model('User', userSchema);
 
 optionSchema.virtual('count').get(function(){
-  return Participant.where({'roomId':this.roomId,'optionId':this.optionId} ).count();
+  return Participant.find({'roomId':this.roomId,'optionId':this.optionId} ).count();
 });

@@ -1,33 +1,44 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
-  name: String,
-  id: ObjectId
-});
+var o = {schema:{}, model:{}};
 
-var participantSchema = new Schema({
-  userId: ObjectId,
-  roomId: ObjectId,
-  optionId: ObjectId
-});
-
-var roomSchema = new Schema({
-  title: String,
-  roomId: ObjectId
-});
-
-var optionSchema = new Schema({
-  optionId: ObjectId,
-  roomId: ObjectId,
+o.schema.user = new Schema({
   name: String
 });
 
-mongoose.model('Option', optionSchema);
-mongoose.model('Room', roomSchema);
-var Participant = mongoose.model('Participant', participantSchema);
-mongoose.model('User', userSchema);
-
-optionSchema.virtual('count').get(function(){
-  return Participant.find({'roomId':this.roomId,'optionId':this.optionId} ).count();
+o.schema.vote = new Schema({
+  user: {type: Schema.Types.ObjectId, ref: 'User' },
+  room: {type: Schema.Types.ObjectId, ref: 'Room'},
+  option: {type: Schema.Types.ObjectId, ref: 'Option'},
+  next: {type: Schema.Types.ObjectId, ref: 'Vote', default: null},
+  head: {type: Boolean, default: false}
 });
+
+o.schema.room = new Schema({
+  title: String,
+  voteType: {type: String, default: 'FPP'},
+  created: {type: Schema.Types.ObjectId, ref: 'User', default: null}
+});
+
+//voting systems: perferential, point based
+
+o.schema.option = new Schema({
+  title: String,
+  room: {type: Schema.Types.ObjectId, ref: 'Room'},
+});
+
+
+o.schema.observe = new Schema({
+	user: {type: Schema.Types.ObjectId, ref: 'User'},
+	room: {type: Schema.Types.ObjectId, ref: 'Room'}
+});
+
+//change names of collections for final production model
+o.model.Option = mongoose.model('Option', o.schema.option, 'test_options');
+o.model.Room = mongoose.model('Room', o.schema.room, 'test_rooms');
+o.model.Vote = mongoose.model('Vote', o.schema.vote, 'test_votes');
+o.model.User = mongoose.model('User', o.schema.user, 'test_users');
+o.model.Observe = mongoose.model('Observe', o.schema.observe, 'test_observe');
+
+module.exports = o;

@@ -1,5 +1,48 @@
-
 var app = angular.module('decisionMaker', ['ui.router', 'ng-sortable']);
+
+app.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
+});
+
+app.factory('rooms', ['$http', function($http){
+  var o = {
+    rooms: []
+  };
+
+  o.getAll = function() {
+    return $http.get('/rooms').success(function(data){
+      angular.copy(data, o.rooms);
+    });
+  };
+
+  o.create = function(room) {
+    return $http.post('/rooms', room).success(function(data){
+      o.rooms.push(data);
+    });
+  };
+
+  o.get = function(id) {
+    return $http.get('/rooms/' + id).then(function(res){
+      return res.data;
+    });
+  };
+
+  o.addVote = function(id, vote) {
+    console.log("id: " + id);
+    console.log("vote: " + vote);
+    return $http.post('/rooms/' + id + '/votes', vote);
+  };
+
+  o.getResults = function(id) {
+	return $http.get('/rooms/' + id + '/results').then(function(res){
+		return res.data;
+    })
+  };
+
+  return o;
+}]);
 
 app.config([
 '$stateProvider',
@@ -10,46 +53,70 @@ function($stateProvider, $urlRouterProvider) {
     .state('home', {
       url: '/home',
       templateUrl: '/home.html',
-      controller: 'MainCtrl'
+      controller: 'MainCtrl',
+      resolve: {
+        roomPromise: ['rooms', function(rooms){
+          return rooms.getAll();
+        }]
+      }
     });
 
     $stateProvider
-    .state('vote', {
-      url: '/vote/{id}',
-      templateUrl: '/vote.html',
-      controller: 'VoteCtrl'
+    .state('rooms', {
+      url: '/rooms/{id}',
+      templateUrl: '/rooms.html',
+      controller: 'RoomsCtrl',
+      resolve: {
+        room: ['$stateParams', 'rooms', function($stateParams, rooms) {
+          return rooms.get($stateParams.id);
+        }]
+      }
     });
 
     $stateProvider
-    .state('result', {
-      url: '/result/{id}',
-      templateUrl: '/result.html',
-      controller: 'ResultCtrl'
+    .state('results', {
+      url: '/results/{id}',
+      templateUrl: '/results.html',
+      controller: 'ResultsCtrl',
+      resolve: {
+        room: ['$stateParams', 'rooms', function($stateParams, rooms) {
+          return rooms.get($stateParams.id);
+        }],
+		results: ['$stateParams', 'rooms', function($stateParams, rooms) {
+		  return rooms.getResults($stateParams.id);
+		}]
+      }
     });
 
   $urlRouterProvider.otherwise('home');
 }]);
 
-app.factory('room', [function(){
-  var o = {
-    rooms: []
-  };
-  return o;
+app.controller('ResultsCtrl', [
+'$scope',
+'rooms',
+'room',
+'results',
+function($scope, rooms, room, results){
+
+  $scope.room = room;
+  //$scope.votes = angular.copy($scope.room.votes);
+  //voteCount = $scope.votes.length;
+  //finish = voteCount/2 + 1;
+
+  $scope.results = results
+  console.log(results);
+
 }]);
 
-//we should eventually have our controllers not have alot of code, but just install funcitons from factorys and services
-app.controller('MainCtrl', [
+app.controller('RoomsCtrl', [
 '$scope',
+'rooms',
 'room',
-function($scope, room){
-  $scope.rooms = room.rooms;
-  $scope.options = [];
+function($scope, rooms, room){
 
-  //The room starts with 2 blank options
-  $scope.options.push(
-    {name: "", count: 0},
-    {name: "", count: 0}
-  );
+
+  $scope.room = room;
+  $scope.vote = angular.copy($scope.room.options);
 
   //Used for drag and drop
   $scope.barConfig = {
@@ -60,162 +127,67 @@ function($scope, room){
       }
   };
 
-  //Used to remove options from scope.options
-  $scope.toggleHandle = function(repeatScope) {
-    console.log("hello");
-  }
-
-  //Used to remove options from scope.options
-  $scope.remove = function(item) {
-    if($scope.options.length <= 2){
-      return
+  $scope.addVote = function(){
+    console.log("original order")
+    for (i = 0; i < room.options.length; i++){
+      console.log(room.options[i].title);
     }
-    var index = $scope.options.indexOf(item);
-    $scope.options.splice(index, 1);
-  }
+    var vote = angular.copy($scope.vote);
+    console.log(vote);
+    rooms.addVote(room._id, vote)
+    .success(function(vote) {
+      $scope.room.votes.push(vote);
+    });
+    //$scope.body = '';
+  };
+
+}]);
+
+app.controller('MainCtrl', [
+'$scope',
+'rooms',
+function($scope, rooms){
+  $scope.rooms = rooms.rooms;
+  $scope.options = ["",""];
+
+  //Used for drag and drop
+  $scope.barConfig = {
+      animation: 150,
+      //handle: ".handle",
+      onSort: function (/** ngSortEvent */evt){
+          // @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
+      }
+  };
 
 
   $scope.addRoom = function(){
-    if(!$scope.title || $scope.title === '') { return; }
+    if(!$scope.title){
+      return;
+    }
 
-    //var forms = document.getElementsByClassName("option");
-    //var length = forms.length;
-    //var seen = [];
-    //var valid = true;
     var uniqueOptions = $scope.options.filter(function(item, pos, self){
-      if(item.name == ""){
+      if(item === ""){
         return false;
       }
       for(i = pos + 1; i < self.length; i++){
-        if(self[i].name == item.name){
+        if(self[i] === item){
           return false;
         }
       }
       return true;
     });
 
-    //save the room
-    $scope.rooms.push(
-      {
-        title: $scope.title,
-        options: uniqueOptions
-      }
-    );
-    //reset the form
-    $scope.title = '';
-    $scope.options = [
-      {name: "", count: 0},
-      {name: "", count: 0}
-    ];
-
+    rooms.create({
+      title: $scope.title,
+      options: uniqueOptions,
+      votes: []
+    });
+    $scope.options = ["",""];
+    $scope.title = "";
   };
 
-  $scope.addOption = function(event, limit = false){
-    //alert(event.keyCode);
-    if(limit || event.keyCode == 13){
-        $scope.options.push({name: "", count: 0});
-    }
+  $scope.addOption = function(event){
+      $scope.options.push("");
   };
-  
+
 }]);
-
-app.controller('VoteCtrl', [
-'$scope',
-'$stateParams',
-'room',
-function($scope, $stateParams, room){
-  $scope.room = room.rooms[$stateParams.id];
-
-  $scope.incrementVote = function(option){
-    option.count++;
-  }
-}]);
-
-app.controller('ResultCtrl', [
-'$scope',
-'$stateParams',
-'room',
-function($scope, $stateParams, room){
-  $scope.room = room.rooms[$stateParams.id];
-}]);
-
-/*!
- * classie - class helper functions
- * from bonzo https://github.com/ded/bonzo
- *
- * classie.has( elem, 'my-class' ) -> true/false
- * classie.add( elem, 'my-new-class' )
- * classie.remove( elem, 'my-unwanted-class' )
- * classie.toggle( elem, 'my-class' )
- */
-
-/*jshint browser: true, strict: true, undef: true */
-/*global define: false */
-
-( function( window ) {
-
-'use strict';
-
-// class helper functions from bonzo https://github.com/ded/bonzo
-
-function classReg( className ) {
-  return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
-}
-
-// classList support for class management
-// altho to be fair, the api sucks because it won't accept multiple classes at once
-var hasClass, addClass, removeClass;
-
-if ( 'classList' in document.documentElement ) {
-  hasClass = function( elem, c ) {
-    return elem.classList.contains( c );
-  };
-  addClass = function( elem, c ) {
-    elem.classList.add( c );
-  };
-  removeClass = function( elem, c ) {
-    elem.classList.remove( c );
-  };
-}
-else {
-  hasClass = function( elem, c ) {
-    return classReg( c ).test( elem.className );
-  };
-  addClass = function( elem, c ) {
-    if ( !hasClass( elem, c ) ) {
-      elem.className = elem.className + ' ' + c;
-    }
-  };
-  removeClass = function( elem, c ) {
-    elem.className = elem.className.replace( classReg( c ), ' ' );
-  };
-}
-
-function toggleClass( elem, c ) {
-  var fn = hasClass( elem, c ) ? removeClass : addClass;
-  fn( elem, c );
-}
-
-var classie = {
-  // full names
-  hasClass: hasClass,
-  addClass: addClass,
-  removeClass: removeClass,
-  toggleClass: toggleClass,
-  // short names
-  has: hasClass,
-  add: addClass,
-  remove: removeClass,
-  toggle: toggleClass
-};
-
-// transport
-if ( typeof define === 'function' && define.amd ) {
-  // AMD
-  define( classie );
-} else {
-  // browser global
-  window.classie = classie;
-}
-
-})( window );

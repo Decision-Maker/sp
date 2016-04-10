@@ -1,6 +1,10 @@
+*:focus{
+  outline: none
+}
+
 body {
   padding: 50px;
-  font-family: 'Roboto', Arial, sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   background: #43cea2; /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #43cea2 , #185a9d); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to bottom, #43cea2 , #185a9d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -12,16 +16,36 @@ html{
   min-height: 100%;
 }
 
+a {
+  color: white;
+}
 
 h1 {
-  font-size: 2em;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  font-size: 1.8em;
   color: white;
-  letter-spacing: .05em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  font-size: 1em;
+  color: white;
+  letter-spacing: .1em;
   text-transform: uppercase;
 }
 
 h3 {
   font-size: 1.5em;
+  color: white;
+  letter-spacing: normal;
+}
+
+h4 {
+  font-size: 1.8em;
   color: white;
   letter-spacing: normal;
 }
@@ -37,7 +61,29 @@ h3 {
   cursor: pointer;
 }
 
+.govote {
+  float:right;
+  margin-top: 1em;
+}
+
+.roomtitle {
+  float:left;
+}
+
+
+.roomlist {
+  width: 100%;
+  overflow: hidden;
+}
+
 .form-group {
+  margin-top: 2em;
+  padding: 2em;
+  background-color: rgba(255,255,255,.3);
+}
+
+.roomlist {
+  margin-top: 2em;
   padding: 2em;
   background-color: rgba(255,255,255,.3);
 }
@@ -47,10 +93,62 @@ h3 {
 ::-moz-placeholder { olor:#f00; font-size: 2em; } /* firefox 19+ */
 input:-moz-placeholder { olor:#f00; font-size: 2em; }
 
-.btn-primary {
-  font: 'Roboto', 800 !important;
+.btn {
+  font-family: 'Source Sans Pro', sans-serif !important;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: .1em;
   font-size: 1em;
-  text-transform: capitalize;
+  background: none;
+  border-style: solid;
+  border-radius: 0;
+  border-color: white;
+  border-width: .2em;
+}
+
+.votebtn {
+  border-color: #185a9d;
+  position: inherit;
+}
+
+.directions {
+  text-align: center;
+  padding: .5em;
+}
+.votebutton {
+  margin-right: 2em;
+}
+
+.votebuttongroup {
+  float:right;
+  margin-top:2em;
+}
+
+.voteoption {
+  margin-top: 1.2em;
+  padding: 2em;
+  padding-top: .5em;
+  padding-bottom: 1em;
+  background-color: rgba(255,255,255,.3);
+}
+
+.createroomblock {
+  overflow: hidden;
+}
+
+.decisionresult {
+  margin-top: 2em;
+  padding: 2em;
+  background-color: rgba(255,255,255,.3);
+  font-family: 'Source Sans Pro', sans-serif !important;
+  text-align: center;
+  color: white;
+  margin-top: 2em;
+
+}
+.votebutton {
+  font-family: 'Source Sans Pro', sans-serif !important;
+  font-size: 1em;
   background: none;
   border-style: solid;
   border-radius: 0;
@@ -59,8 +157,19 @@ input:-moz-placeholder { olor:#f00; font-size: 2em; }
   margin-top: 2em;
 }
 
+.votebutton:hover{
+   background-color: rgba(255,255,255, .3);
+   border-color: white;
+}
+
 .createroombutton {
   float: right;
+  margin-bottom: 2em;
+  margin-top: 1em;
+}
+
+li {
+  list-style: none;
 }
 
 .createoptionbutton {
@@ -106,6 +215,7 @@ input[type="title"] {
   background:none;
   text-align: center;
   font-size: 1.8em;
+  letter-spacing: .05em;
   font: 'Roboto', 800 !important;
   color: white;
 }
@@ -130,11 +240,13 @@ input[type="title"] {
 }
 .title-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
   text-align: center;
+  font-family: 'Source Sans Pro', sans-serif;
   color: white;
   font-size: 1.1em;
 }
 .title-control::-moz-placeholder { /* Mozilla Firefox 19+ */
   text-align: center;
+  font-family: 'Source Sans Pro', sans-serif;
   color: white;
   font-size: 1.1em;
 }
@@ -1207,6 +1319,7 @@ input[type="title"] {
 	padding: 0.5em 0 0.1em;
 	background: transparent;
 	color: white;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .input__label--isao {
@@ -1216,6 +1329,7 @@ input[type="title"] {
 	width: 100%;
 	color: white;
 	text-align: left;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .input__label--isao::before {

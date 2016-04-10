@@ -17,6 +17,16 @@ var rooms = require('./routes/rooms');
 
 var app = express();
 
+//Configuring Passport
+/*
+var passport = require('passport');
+var expressSession = require('express-session');
+app.use(expressSession({secret: 'dm_key'}));
+app.use(passport.initialize());
+app.use(passport.session());
+var initPassport = require('./passport/init');
+initPassport(passport);
+*/
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

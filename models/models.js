@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 var o = {schema:{}, model:{}};
 
 o.schema.user = new Schema({
-  name: String
+  name: String;
+  password : String
 });
 
 o.schema.vote = new Schema({

@@ -45,6 +45,12 @@ router.get('/:user', function(req, res, next){
 	});
 });
 
+//just expoecting a name field in body currently
+router.post('/', function(req, res, next){
+  nu = new db.model.User({name: req.body.name});
+  nu.save(function(err, u){if(err) new Error("problem saving user")});
+});
+
 //make new user
 
 module.exports = router;

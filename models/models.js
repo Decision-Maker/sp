@@ -4,8 +4,8 @@ var Schema = mongoose.Schema;
 var o = {schema:{}, model:{}};
 
 o.schema.user = new Schema({
-  name: String;
-  password : String
+  name: String,
+  password : {type: String, default: null} // defaults to null till password setup, reminder we shouldn't be storing unhashed passwords, probably just storing what is necessary to match user to what returns after user logs into facebook
 });
 
 o.schema.vote = new Schema({

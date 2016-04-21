@@ -1,6 +1,7 @@
+var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var db = require('../models/models');
-
+module = {};
 module.exports = function(passport){
     passport.use('login', new LocalStrategy({
       passReqToCallback : true;
@@ -17,20 +18,14 @@ module.exports = function(passport){
                 console.log('Username not found');
                 return done(null, false, {message: 'Incorrect username.'});
               }
-              if (!isValidPassword(user, password)){
+              if (!user.validPassword(password)){
                 console.log('Invalid password');
-                return done(null, false, {message: Incorrect password});
+                return done(null, false, {message: 'Incorrect password.'});
               }
               return done(null, user);
           });
     }
   );
-  var isValidPassword = function(user, password){
-    if (password == user.password){
-      return true;
-    } else {
-      return false;
-    }
-  };
 
 }
+export(module);

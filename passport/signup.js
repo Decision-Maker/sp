@@ -1,6 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var db = require('../models/models');
-
+var crypto = require('crypto');
+module = {};
 module.exports = function(passport){
     passport.use('signup', new LocalStrategy({
         passReqToCallback : true;
@@ -20,7 +21,7 @@ module.exports = function(passport){
           //create new user
           var newUser = new db.models.User();
           newUser.username = username;
-          newUser.password = password;
+          newUser.setPassword(password);
           newUser.save(function(err) {
               if (err){
                 console.log('Error in savin user:'+err);
@@ -32,3 +33,7 @@ module.exports = function(passport){
         }
       })
     }
+
+}
+
+export(module);

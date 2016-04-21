@@ -68,7 +68,7 @@ router.post('/:room/votes', function(req, res, next) {
 // =============================================================================
 
 //Gets the correct room for given id
-router.get('/:room', function(req, res) {
+router.get('/:room', auth, function(req, res) {
   var o = {title: req.room.title, options: [], votes: [], _id: req.room._id};
 
   db.model.Option.find({room: req.room._id}, function(err, ops){
@@ -81,7 +81,7 @@ router.get('/:room', function(req, res) {
 
 });
 
-//Gets all rooms, 
+//Gets all rooms,
 router.get('/', function(req, res, next) {
 	//console.log("hello");
     db.model.Room.find(function(err, rooms){
@@ -105,7 +105,7 @@ router.get('/', function(req, res, next) {
 
 //Save a room to the database
 //***** responces should be built from saved object returns, rather than req data fix in final version******
-router.post('/', function(req, res, next) {
+router.post('/', auth, function(req, res, next) {
   //console.log(req.body.title);
   var new_room = new db.model.Room({title: req.body.title});
     new_room.save(function(err, r){
@@ -128,7 +128,7 @@ router.post('/', function(req, res, next) {
 //get current results of the room
 //results is a list of objects with the fields: {title: String, _id: ObjectID, count: int, room: ObjectID}
 
-router.get('/:room/results', function(req, res, next) {
+router.get('/:room/results', auth, function(req, res, next) {
 	FPP.getResult(req.room._id, function(err, results){
 		res.json(results);
 	});

@@ -1,12 +1,38 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
+var crypto = require('crypto');
+var jwt = require('jsonwebtoken');
 var o = {schema:{}, model:{}};
 
 o.schema.user = new Schema({
   name: String,
-  password : {type: String, default: null} // defaults to null till password setup, reminder we shouldn't be storing unhashed passwords, probably just storing what is necessary to match user to what returns after user logs into facebook
+  hash: {type: String, default: null},
+  salt: {type: String, default: null}
 });
+
+o.schema.user.methods.setPassword = function(password){
+  this.salt = crypto.randomBytes(16).toString('hex');
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+};
+
+o.schema.user.methods.validPassword = function(passport){
+  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+  return this.hash === hash;
+};
+
+o.schema.user.methods.generateJWT = function() {
+  // set expiration to 60 days
+  var today = new Date();
+  var exp = new Date(today);
+  exp.setDate(today.getDate() + 60);
+
+  return jwt.sign({
+    _id: this._id,
+    username: this.username,
+    exp: parseInt(exp.getTime() / 1000),
+  }, 'SECRET');
+
+};
 
 o.schema.vote = new Schema({
   user: {type: Schema.Types.ObjectId, ref: 'User' },

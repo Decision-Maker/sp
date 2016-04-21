@@ -1,9 +1,52 @@
-Create a User - POST to /users
+Create a User, signup page - POST to /users
 
 {
-  name: ""
-  email: ""
-  password: ""
+  name: "STRING"
+  email: "STRING"
+  password: "STRING"
 }
 
-Server will respond True if username is not taken, False otherwise
+Server will respond with a not_taken boolen, true if username is not taken, False otherwise
+
+{
+  not_taken: Boolean
+}
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Login user, POST to (users/:username, data) where data is the name
+
+{
+  password: "STRING"
+}
+
+Server will return a json object with a found field. If the found field is true, then the object
+also contains other fields:
+
+{
+  found: FALSE
+}
+
+or
+
+{
+  found: true
+  uname: "STRING"
+  created: [{Rooms}]
+  voted: [{Rooms}]
+  observed: [{Rooms}]
+}
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Log out, POST to (users/:username/logout, data) where data is the username
+
+pass this url the network token
+
+Server will respond with a json object, this is still in the works
+
+{
+  net_tok: NETWORK TOKEN
+}

@@ -54,11 +54,12 @@ router.post('/', function(req, res, next){
       return res.status(400).json({message: 'Please fill out all fields'});
   }
   var nu = new db.model.User();
+  //check if unique
   nu.name = req.body.name;
   nu.setPassword(req.body.password);
   nu.save(function(err, u){
     if(err){return next(err);}
-    return res.json({token: user.generateToken()})
+    return res.json({not_taken: true, token: user.generateToken()});
   });
 });
 

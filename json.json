@@ -9,7 +9,8 @@ Create a User, signup page - POST to /users
 Server will respond with a not_taken boolen, true if username is not taken, False otherwise
 
 {
-  not_taken: Boolean
+  not_taken: Boolean,
+  token: jsonwebtoken
 }
 
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

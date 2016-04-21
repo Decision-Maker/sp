@@ -1,0 +1,9 @@
+Create a User - POST to /users
+
+{
+  name: ""
+  email: ""
+  password: ""
+}
+
+Server will respond True if username is not taken, False otherwise

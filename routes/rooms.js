@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../models/models');
+var jwt = require('express-jwt');
+var auth = jwt({secret: 'SECRET'});
 var FPP = require('../voting-util/FPP');
 
 function handleError(err){
@@ -13,7 +15,7 @@ function handleError(err){
 // =============================================================================
 
 //Preload a specific room
-router.param('room', function(req, res, next, id) {
+router.param('room', auth, function(req, res, next, id) {
   var query = db.model.Room.findById(id);
 
   query.exec(function (err, room){
@@ -31,7 +33,7 @@ router.param('room', function(req, res, next, id) {
 var userCount = 0;
 
 //server is sent a list of votes in req.body
-router.post('/:room/votes', function(req, res, next) {
+router.post('/:room/votes', auth, function(req, res, next) {
 
   userCount = userCount + 1;
   //console.log('user: ' + userCount.toString());

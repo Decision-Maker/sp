@@ -4,16 +4,16 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../models/models');
 var jwt = require('express-jwt');
-var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+var auth = jwt({secret: 'SECRET'});
 //var Room = mongoose.model('Room');
 //var Vote = mongoose.model('Vote');
 
 /* GET home page. */
-router.get('/', auth, function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/home', auth, function(req, res, next) {
+router.get('/home', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 

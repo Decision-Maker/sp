@@ -5,7 +5,7 @@ var db = require('../models/models');
 var FPP = require('../voting-util/FPP');
 var passport = require('passport');
 var jwt = require('express-jwt');
-var auth = jwt({secret: 'SECRET', userProperty: 'payload'})
+var auth = jwt({secret: 'SECRET'})
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {

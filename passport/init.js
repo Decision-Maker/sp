@@ -1,7 +1,7 @@
 var login = require('./login');
 var signup = require('./signup');
 var db = require('../models/models');
-
+module = {};
 module.exports = function(passport){
 
   passport.serializeUser(function(user, done){
@@ -20,7 +20,7 @@ module.exports = function(passport){
 
 }
 
-
+export(module);
 //to do:
 //install passport stuff on server
 //encryption

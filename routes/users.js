@@ -34,19 +34,20 @@ router.get('/:user', function(req, res, next){
 	db.model.Room.find({created: req.user._id},function(err, rooms){
 		if(err){new Error('error in finding user created rooms');}
 		data.created = rooms;
+  }
 		db.model.Vote.find({user: req.user._id}).populate('room').exec(function(err, votes){
       for (i = 0; i < votes.length; i++){
         data.voted.push(votes[i].room);
       }
-      db.model.Observe.find({user: req.user._id}).populate('room').exec(function(err, obs){
-        for(i = 0; i < obs.length; i++){
-          data.observe.push(obs[i].room);
-        }
-        res.json(data);
-      });
-		});
+    });
+    db.model.Observe.find({user: req.user._id}).populate('room').exec(function(err, obs){
+      for(i = 0; i < obs.length; i++){
+        data.observe.push(obs[i].room);
+      }
+    });
+    res.json(data);
 	});
-});
+
 
 //make new user
 router.post('/register', function(req, res, next){   //make sure '/register' is the same as in auth factory

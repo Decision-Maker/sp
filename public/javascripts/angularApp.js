@@ -81,13 +81,13 @@ app.factory('auth', ['$http', '$window', function($http,$window){
     };
 
     auth.logIn = function(user) {
-      return $http.post('/:uname', user).success(function(data){
+      return $http.post('/' + user.name, user).success(function(data){
         auth.saveToken(data.token);
       });
     };
 
     auth.logOut = function() {
-        $windown.localStorage.removeItem('usertoken');
+        $window.localStorage.removeItem('usertoken');
     };
 
     return auth;

@@ -3,9 +3,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var db = require('../models/models');
 
-passport.use(new LocalStrategy({
-    passReqToCallback : true;
-  },
+passport.use(new LocalStrategy(
   function(req, username, password, done) {
       db.models.user.findOne({'username' : username},
         function(err, user) {
@@ -24,5 +22,5 @@ passport.use(new LocalStrategy({
             }
             return done(null, user);
         });
-  }
+  })
 );

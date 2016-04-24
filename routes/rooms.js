@@ -16,7 +16,7 @@ function handleError(err){
 // =============================================================================
 
 //Preload a specific room
-router.param('room', auth, function(req, res, next, id) {
+router.param('room',  function(req, res, next, id) {
   var query = db.model.Room.findById(id);
 
   query.exec(function (err, room){
@@ -28,7 +28,15 @@ router.param('room', auth, function(req, res, next, id) {
   });
 });
 
-
+//Observer
+router.post('/:room/observe', auth, function(req, res, next){
+	var obs = new db.model.Observer();
+	obs.user = req.payload._id;
+	obs.room = req.room._id;
+	obs.save(function(err, o){
+		if(err) {handleError(err)};
+	};
+});
 // Vote requests ===============================================================
 // =============================================================================
 
@@ -39,7 +47,7 @@ router.post('/:room/votes', auth, function(req, res, next) {
 		if (err) {return handleError(err)};
 		switch(req.room.voteType){
 			case 'FPP':
-				FPP.vote(u, req.room, req.body[0], function(err){
+				FPP.vote(u, req.room, req.body.options[0], function(err){
 						if(err) {handleError(err);}
 						res.json({});
 					});
@@ -103,7 +111,7 @@ router.post('/', auth, function(req, res, next) {
   //console.log(req.body.title);
   var new_room = new db.model.Room({title: req.body.title, created: req.payload._id});
     new_room.save(function(err, r){
-	  if(err) {handleError(err);}
+	  if(err) {handleError(err)};
     //console.log("room saved");
 	  var o = {votes: [], title: r.title, _id: r._id, options: []};
 	  var om;
@@ -123,9 +131,22 @@ router.post('/', auth, function(req, res, next) {
 //results is a list of objects with the fields: {title: String, _id: ObjectID, count: int, room: ObjectID}
 
 router.get('/:room/results', function(req, res, next) {
-	FPP.getResult(req.room._id, function(err, results){
-		res.json(results);
-	});
+	switch(req.room.voteType){
+		case 'FPP':
+			FPP.getResult(req.room._id, function(err, results){
+				res.json(results);
+			});
+			break;
+		case 'IRV':
+			IRV.getResult(req.room._id, function(err, results){
+				res.json(results);
+			});
+			break;
+		default:
+			console.log('vote type not recognized');
+			break;
+	}
+
 });
 
 

@@ -7,15 +7,10 @@ var passport = require('passport');
 var jwt = require('express-jwt');
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  db.model.User.find({}, function(err, users){
-    res.json(users);
-  });
-});
 
-router.param('user', function(req, res, next, id){
-	db.model.User.findById(id, function(err, user){
+
+router.param('uname', function(req, res, next, id){
+	db.model.User.findOne({name: id}, function(err, user){
 		if(err) {next(err);}
 		req.user = user;
 		next();
@@ -24,29 +19,30 @@ router.param('user', function(req, res, next, id){
 
 //unfinished\
 //get user data
-router.get('/:user', function(req, res, next){
+router.get('/:user', auth, function(req, res, next){
 	var data = {
-		user: req.user,
+		user: {},
 		created: [],
 		voted: [],
 		observe: []
 	};
-	db.model.Room.find({created: req.user._id},function(err, rooms){
-		if(err){new Error('error in finding user created rooms');}
-		data.created = rooms;
-  }
-		db.model.Vote.find({user: req.user._id}).populate('room').exec(function(err, votes){
-      for (i = 0; i < votes.length; i++){
-        data.voted.push(votes[i].room);
-      }
+  db.model.User.findOne({_id: req.payload._id}, function(err, user){
+    db.model.Room.find({created: user},function(err, rooms){
+  		if(err){new Error('error in finding user created rooms');}
+  		data.created = rooms;
+      db.model.Vote.find({user: user}).populate('room').exec(function(err, votes){
+        for (i = 0; i < votes.length; i++){
+          data.voted.push(votes[i].room);
+        }
+        db.model.Observe.find({user: user}).populate('room').exec(function(err, obs){
+          for(i = 0; i < obs.length; i++){
+            data.observe.push(obs[i].room);
+          }
+          res.json(data);
+        });
     });
-    db.model.Observe.find({user: req.user._id}).populate('room').exec(function(err, obs){
-      for(i = 0; i < obs.length; i++){
-        data.observe.push(obs[i].room);
-      }
-    });
-    res.json(data);
 	});
+});
 
 
 //make new user

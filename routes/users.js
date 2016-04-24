@@ -3,10 +3,15 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../models/models');
 var FPP = require('../voting-util/FPP');
+var passport = require('passport');
+var jwt = require('express-jwt');
+var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  db.model.User.find({}, function(err, users){
+    res.json(users);
+  });
 });
 
 router.param('user', function(req, res, next, id){
@@ -17,7 +22,8 @@ router.param('user', function(req, res, next, id){
 	});
 });
 
-//unfinished
+//unfinished\
+//get user data
 router.get('/:user', function(req, res, next){
 	var data = {
 		user: req.user,
@@ -28,10 +34,50 @@ router.get('/:user', function(req, res, next){
 	db.model.Room.find({created: req.user._id},function(err, rooms){
 		if(err){new Error('error in finding user created rooms');}
 		data.created = rooms;
-		db.model.Vote.populate({user: req.user._id}, function(err, votes){
-			
+		db.model.Vote.find({user: req.user._id}).populate('room').exec(function(err, votes){
+      for (i = 0; i < votes.length; i++){
+        data.voted.push(votes[i].room);
+      }
+      db.model.Observe.find({user: req.user._id}).populate('room').exec(function(err, obs){
+        for(i = 0; i < obs.length; i++){
+          data.observe.push(obs[i].room);
+        }
+        res.json(data);
+      });
 		});
 	});
 });
+
+//make new user
+router.post('/register', function(req, res, next){   //make sure '/register' is the same as in auth factory
+  if(!req.body.name || !req.body.password){
+      return res.status(400).json({message: 'Please fill out all fields'});
+  }
+  var nu = new db.model.User();
+  //check if unique
+  nu.name = req.body.name;
+  nu.setPassword(req.body.password);
+  nu.save(function(err, u){
+    if(err){return next(err);}
+    return res.json({not_taken: true, token: user.generateToken()});
+  });
+});
+
+//login
+router.post('/:uname', function(req, res, next){  //make sure ':uname' is the same as in auth factory
+  if(!req.body.username || !req.body.password){
+    return res.status(400).json({message: 'Please fill out all fields'});
+  }
+  passport.authenticate('local', function(err, user, info){
+    if(err){ return next(err); }
+
+    if(user){
+      return res.json({token: user.generateJWT()});
+    } else {
+      return res.status(401).json(info);
+    }
+  })(req, res, next);
+})
+
 
 module.exports = router;

@@ -8,14 +8,21 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 //require('./models/Rooms.js');
 //require('./models/Votes.js');
-//mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
-mongoose.connect('mongodb://localhost/DMdata');
+mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
+//mongoose.connect('mongodb://localhost/DMdata');
+var db = require('../models/models');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var rooms = require('./routes/rooms');
 
 var app = express();
+
+//Configuring Passport
+var passport = require('passport');
+require('./passport/passport');
+app.use(passport.initialize());
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

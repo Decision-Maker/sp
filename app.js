@@ -20,7 +20,7 @@ var app = express();
 
 //Configuring Passport
 var passport = require('passport');
-require('./passport/passport.js');
+require('./passport/passport');
 app.use(passport.initialize());
 
 

@@ -5,7 +5,7 @@ var db = require('../models/models');
 var FPP = require('../voting-util/FPP');
 var passport = require('passport');
 var jwt = require('express-jwt');
-var auth = jwt({secret: 'SECRET'})
+var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -49,7 +49,7 @@ router.get('/:user', function(req, res, next){
 });
 
 //make new user
-router.post('/', function(req, res, next){
+router.post('/register', function(req, res, next){   //make sure '/register' is the same as in auth factory
   if(!req.body.name || !req.body.password){
       return res.status(400).json({message: 'Please fill out all fields'});
   }
@@ -64,7 +64,7 @@ router.post('/', function(req, res, next){
 });
 
 //login
-router.post('/:uname', function(req, res, next){
+router.post('/:uname', function(req, res, next){  //make sure ':uname' is the same as in auth factory
   if(!req.body.username || !req.body.password){
     return res.status(400).json({message: 'Please fill out all fields'});
   }
@@ -72,7 +72,7 @@ router.post('/:uname', function(req, res, next){
     if(err){ return next(err); }
 
     if(user){
-      return res.json({token: user.generateToken()});
+      return res.json({token: user.generateJWT()});
     } else {
       return res.status(401).json(info);
     }

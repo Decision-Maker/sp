@@ -33,9 +33,9 @@ router.post('/:room/observe', auth, function(req, res, next){
 	var obs = new db.model.Observer();
 	obs.user = req.payload._id;
 	obs.room = req.room._id;
-	obs.save(function(err, o){
+	obs.save(function(err){
 		if(err) {handleError(err)};
-	};
+	});
 });
 // Vote requests ===============================================================
 // =============================================================================

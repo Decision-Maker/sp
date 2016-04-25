@@ -74,7 +74,8 @@ router.post('/:uname', function(req, res, next){  //make sure ':uname' is the sa
       return res.status(401).json(info);
     }
   })(req, res, next);
-})
+});
+
 
 
 module.exports = router;

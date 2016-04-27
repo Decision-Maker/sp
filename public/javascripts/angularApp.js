@@ -238,7 +238,7 @@ function($scope, $state, auth){
       $state.go('home');
     });
   };
-}])
+}]);
 
 app.controller('NavCtrl', [
 '$scope',

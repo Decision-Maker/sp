@@ -40,7 +40,8 @@ router.get('/:user', auth, function(req, res, next){
           }
           res.json(data);
         });
-    });
+	    });
+		});
 	});
 });
 

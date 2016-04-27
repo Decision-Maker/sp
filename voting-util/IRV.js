@@ -101,7 +101,7 @@ IRV.vote = function(user, room, options, callback){
 			vote.save();
 			previousVote = vote;
 		}
-		vote = new db.model.Vote({room: room._id, user._id, option: find(options[0].title, op)._id, next: previousVote._id, head: true})
+		vote = new db.model.Vote({room: room._id, user: user._id, option: find(options[0].title, op)._id, next: previousVote._id, head: true})
 		vote.save();
 
 		callback();

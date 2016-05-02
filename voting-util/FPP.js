@@ -44,10 +44,16 @@ FPP.vote = function(user, room, option, callback){
 	if(!callback){
 		callback = function(err){};
 	}
-	db.model.Option.findOne({title: option.title, room: room._id}, function(err, op){
+	db.model.Option.find({room: room._id}, function(err, ops){
 	    if (err) {return handleError(err);}
 		  var vote;
-	    vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});
+			var match = ops.filter(function(e){return e.user.equals(user._id);});
+			if(match.length > 0){
+				db.model.Vote.update({user: user._id}, {$set: {option: match[0]._id}}, callback(false));
+			}else{
+				var op = ops.filter(function(e){return e.title === option.title})[0]
+	    	vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});
+			}
 	    vote.save(function(err){
 	      //if(err) {handleError(err);}
 		  callback(err);

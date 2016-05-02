@@ -18,7 +18,7 @@ router.param('uname', function(req, res, next, id){
 
 //unfinished\
 //get user data
-router.post('/:uname/profile', auth, function(req, res, next){
+router.post('/profile', auth, function(req, res, next){
 	var data = {
 		user: {},
 		created: [],

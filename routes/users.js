@@ -58,9 +58,9 @@ router.post('/register', function(req, res, next){   //make sure '/register' is 
 	}
   nu.name = req.body.name;
   nu.setPassword(req.body.password);
-  nu.save(function(err, u){
+  nu.save(function(err, user){
     if(err){return next(err);}
-    return res.json({not_taken: true, token: user.generateToken()});
+    return res.json({not_taken: true, token: user.generateJWT()});
   });
 });
 

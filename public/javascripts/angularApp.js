@@ -254,7 +254,8 @@ function($scope, auth){
 app.controller('MainCtrl', [
 '$scope',
 'rooms',
-function($scope, rooms){
+'auth',
+function($scope, rooms, auth){
   $scope.rooms = rooms.rooms;
   $scope.options = ["",""];
 
@@ -266,7 +267,6 @@ function($scope, rooms){
           // @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
       }
   };
-
 
   $scope.addRoom = function(){
     if(!$scope.title){

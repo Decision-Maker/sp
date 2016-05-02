@@ -71,7 +71,7 @@ router.post('/:uname', function(req, res, next){  //make sure ':uname' is the sa
   }
   passport.authenticate('local', function(err, user, info){
     if(err){ return next(err); }
-
+		
     if(user){
       return res.json({token: user.generateJWT()});
     } else {

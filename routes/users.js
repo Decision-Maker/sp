@@ -66,7 +66,7 @@ router.post('/register', function(req, res, next){   //make sure '/register' is 
 
 //login
 router.post('/:uname', function(req, res, next){  //make sure ':uname' is the same as in auth factory
-  if(!req.body.username || !req.body.password){
+  if(!req.body.name || !req.body.password){
     return res.status(400).json({message: 'Please fill out all fields'});
   }
   passport.authenticate('local', function(err, user, info){

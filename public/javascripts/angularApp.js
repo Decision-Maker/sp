@@ -53,7 +53,7 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
   return o;
 }]);
 
-app.factory('auth', ['$http', '$window', function($http,$window){
+app.factory('auth', ['$http', '$window', '$state', function($http,$window,$state){
     var auth = {};
 
     auth.saveToken = function(token) {
@@ -97,6 +97,16 @@ app.factory('auth', ['$http', '$window', function($http,$window){
 
     auth.logOut = function() {
         $window.localStorage.removeItem('usertoken');
+        $state.go('login');
+    };
+
+    auth.getUser = function(){
+      if(auth.isLoggedIn()){
+        var token = auth.getToken();
+        return $http.post('/users/profile', {}, {headers: {Authorization: 'Bearer '+auth.getToken()}}).success(function(data){
+          return data;
+        });
+      }
     };
 
     return auth;
@@ -144,6 +154,13 @@ function($stateProvider, $urlRouterProvider) {
     });
 
     $stateProvider
+    .state('profile', {
+      url: '/profile',
+      templateUrl: '/profile.html',
+      controller: 'ProfileCtrl',
+    });
+
+    $stateProvider
     .state('rooms', {
       url: '/rooms/{id}',
       templateUrl: '/rooms.html',
@@ -187,6 +204,19 @@ function($scope, rooms, room, results){
 
   $scope.results = results
   console.log(results);
+
+}]);
+
+app.controller('ProfileCtrl', [
+'$scope',
+'auth',
+function($scope, auth){
+
+  var data = auth.getUser();
+  $scope.created = data.created;
+  $scope.voted = data.voted;
+
+  console.log("Voted: " + $scope.created);
 
 }]);
 

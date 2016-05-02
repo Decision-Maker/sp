@@ -25,12 +25,16 @@ router.post('/profile', auth, function(req, res, next){
 		voted: [],
 		observe: []
 	};
+	console.log('code reached')
   db.model.User.findOne({_id: req.payload._id}, function(err, user){
     db.model.Room.find({created: user},function(err, rooms){
-  		if(err){new Error('error in finding user created rooms');}
+  		if(err){console.log('error in room.find');
+				new Error('error in finding user created rooms');}
+			console.log('room.find.success');
   		data.created = rooms;
       db.model.Vote.find({user: user}).populate('room').exec(function(err, votes){
-        for (i = 0; i < votes.length; i++){
+				console.log('vote.find.success');
+				for (i = 0; i < votes.length; i++){
           data.voted.push(votes[i].room);
         }
         db.model.Observe.find({user: user}).populate('room').exec(function(err, obs){

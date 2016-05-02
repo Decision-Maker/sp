@@ -109,7 +109,7 @@ router.get('/', function(req, res, next) {
 //***** responces should be built from saved object returns, rather than req data fix in final version******
 router.post('/', auth, function(req, res, next) {
   //console.log(req.body.title);
-  var new_room = new db.model.Room({title: req.body.title, created: req.payload._id});
+  var new_room = new db.model.Room({title: req.body.title, created: req.payload._id, voteType: req.body.type});
     new_room.save(function(err, r){
 	  if(err) {handleError(err)};
     //console.log("room saved");

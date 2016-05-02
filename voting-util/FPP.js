@@ -47,7 +47,7 @@ FPP.vote = function(user, room, option, callback){
 	db.model.Option.find({room: room._id}, function(err, ops){
 	    if (err) {return handleError(err);}
 		  var vote;
-			var match = ops.filter(function(e){return e.user.equals(user._id);});
+			var match = ops.filter(function(e){return e.user === user._id;});
 			if(match.length > 0){
 				db.model.Vote.update({user: user._id}, {$set: {option: match[0]._id}}, callback(false));
 			}else{

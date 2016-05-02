@@ -34,10 +34,12 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
   };
 
   o.addVote = function(id, vote) {
-    console.log("TEST" + id + " " + vote);
-    console.log("id: " + id);
-    console.log("vote: " + vote);
-    return $http.post('/rooms/' + id + '/votes', vote, {
+    //console.log("id: " + id);
+    //console.log("vote: " + vote);
+    for(var i = 0; i < vote.length; i++){
+      console.log(vote[i]);
+    }
+    return $http.post('/rooms/' + id + '/votes', {options: vote}, {
       headers: {Authorization: 'Bearer '+auth.getToken()}
     });
   };
@@ -294,7 +296,8 @@ function($scope, rooms, auth){
     rooms.create({
       title: $scope.title,
       options: uniqueOptions,
-      votes: []
+      votes: [],
+      type: "FPP"
     });
     $scope.options = ["",""];
     $scope.title = "";

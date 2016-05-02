@@ -104,7 +104,8 @@ app.factory('auth', ['$http', '$window', '$state', function($http,$window,$state
       if(auth.isLoggedIn()){
         var token = auth.getToken();
         return $http.post('/users/profile', {}, {headers: {Authorization: 'Bearer '+auth.getToken()}}).success(function(data){
-          return data;
+          console.log(data);
+          return data.data;
         });
       }
     };
@@ -216,7 +217,7 @@ function($scope, auth){
   $scope.created = data.created;
   $scope.voted = data.voted;
 
-  console.log("Voted: " + $scope.created);
+  console.log(data);
 
 }]);
 

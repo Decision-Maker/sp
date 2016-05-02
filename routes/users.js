@@ -25,7 +25,6 @@ router.post('/profile', auth, function(req, res, next){
 		voted: [],
 		observe: []
 	};
-	console.log('code reached')
   db.model.User.findOne({_id: req.payload._id}, function(err, user){
     db.model.Room.find({created: user},function(err, rooms){
   		if(err){console.log('error in room.find');
@@ -41,6 +40,9 @@ router.post('/profile', auth, function(req, res, next){
           for(i = 0; i < obs.length; i++){
             data.observe.push(obs[i].room);
           }
+					console.log(data.created);
+					console.log(data.voted);
+					console.log(data.observe);
           res.json(data);
         });
 	    });

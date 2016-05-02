@@ -51,7 +51,11 @@ router.post('/register', function(req, res, next){   //make sure '/register' is 
       return res.status(400).json({message: 'Please fill out all fields'});
   }
   var nu = new db.model.User();
-  //check if unique
+  db.model.User.findOne({name: req.body.name}, function(err, user){
+		if (user){
+			return res.status(400).json({message: 'Username is already taken'});
+		}
+	}
   nu.name = req.body.name;
   nu.setPassword(req.body.password);
   nu.save(function(err, u){

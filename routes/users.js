@@ -47,16 +47,16 @@ router.get('/:user', auth, function(req, res, next){
 
 //make new user
 router.post('/register', function(req, res, next){   //make sure '/register' is the same as in auth factory
-  if(!req.body.name || !req.body.password){
+  if(!req.body.username || !req.body.password){
       return res.status(400).json({message: 'Please fill out all fields'});
   }
   var nu = new db.model.User();
-  db.model.User.findOne({name: req.body.name}, function(err, user){
+  db.model.User.findOne({name: req.body.username}, function(err, user){
 		if (user){
 			return res.status(400).json({message: 'Username is already taken'});
 		}
 	});
-  nu.name = req.body.name;
+  nu.name = req.body.username;
   nu.setPassword(req.body.password);
   nu.save(function(err, user){
     if(err){return next(err);}
@@ -65,13 +65,13 @@ router.post('/register', function(req, res, next){   //make sure '/register' is 
 });
 
 //login
-router.post('/:uname', function(req, res, next){  //make sure ':uname' is the same as in auth factory
-  if(!req.body.name || !req.body.password){
+router.post('/:uname', function(req, res, next){
+	console.log("login: " + req.body.username);  //make sure ':uname' is the same as in auth factory
+  if(!req.body.username || !req.body.password){
     return res.status(400).json({message: 'Please fill out all fields'});
   }
   passport.authenticate('local', function(err, user, info){
     if(err){ return next(err); }
-		
     if(user){
       return res.json({token: user.generateJWT()});
     } else {

@@ -83,7 +83,7 @@ app.factory('auth', ['$http', '$window', function($http,$window){
     };
 
     auth.logIn = function(user) {
-      return $http.post('/users/' + user.name, user).success(function(data){
+      return $http.post('/users/' + user.username, user).success(function(data){
         auth.saveToken(data.token);
       });
     };
@@ -234,6 +234,7 @@ function($scope, $state, auth){
   };
 
   $scope.logIn = function(){
+    console.log($scope.user);
     auth.logIn($scope.user).error(function(error){
       $scope.error = error;
     }).then(function(){

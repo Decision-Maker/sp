@@ -8,7 +8,7 @@ app.filter('reverse', function() {
   };
 });
 
-app.factory('rooms', ['$http', function($http){
+app.factory('rooms', ['$http', 'auth', function($http, auth){
   var o = {
     rooms: []
   };
@@ -20,7 +20,9 @@ app.factory('rooms', ['$http', function($http){
   };
 
   o.create = function(room) {
-    return $http.post('/rooms', room).success(function(data){
+    return $http.post('/rooms', room,{
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    }).success(function(data){
       o.rooms.push(data);
     });
   };
@@ -32,9 +34,12 @@ app.factory('rooms', ['$http', function($http){
   };
 
   o.addVote = function(id, vote) {
+    console.log("TEST" + id + " " + vote);
     console.log("id: " + id);
     console.log("vote: " + vote);
-    return $http.post('/rooms/' + id + '/votes', vote);
+    return $http.post('/rooms/' + id + '/votes', vote, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    });
   };
 
   o.getResults = function(id) {

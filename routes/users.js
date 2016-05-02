@@ -55,7 +55,7 @@ router.post('/register', function(req, res, next){   //make sure '/register' is 
 		if (user){
 			return res.status(400).json({message: 'Username is already taken'});
 		}
-	}
+	});
   nu.name = req.body.name;
   nu.setPassword(req.body.password);
   nu.save(function(err, user){

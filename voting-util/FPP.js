@@ -44,24 +44,28 @@ FPP.vote = function(user, room, option, callback){
 	if(!callback){
 		callback = function(err){};
 	}
-	db.model.Vote.find({room: room._id}, function(err, votes){
+	db.model.Vote.find({room: room._id}).populate('option user').exec(function(err, votes){
 	    if (err) {return handleError(err);}
-		  var vote;
-			var match = votes.filter(function(e){return e.user === user._id;});
-			if(match.length > 0){
-				db.model.Vote.update({user: user._id}, {$set: {option: match[0]._id}}, callback(false));
-			}else{
-				//var op = ops.filter(function(e){return e.title === option.title})[0]
-				db.model.Option.findOne({title: option, room: room._id}, function(err, op){
-					if (err) {return handleError(err);}
-					vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});
-				});
+		//console.log(votes);
+		var match = votes.filter(function(e){return e.user.name === user.name;});
+		if(match.length > 0){
+			//console.log("user matched");
+			//console.log(match.option);
+			db.model.Vote.update({user: user._id}, {$set: {option: match[0].option._id}}, callback);
+		}else{
+			//console.log("user not found, making new vote");
+			//console.log(votes);
+			db.model.Option.findOne({room: room._id, title: option.title}, function(err, op){
+				//console.log(op.title);
+				var vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});
 				vote.save(function(err){
 					//if(err) {handleError(err);}
 					callback(err);
+					//console.log('save');
 				});
-			}
-  });
+			});
+		}
+	});
 }
 
 module.exports = FPP;

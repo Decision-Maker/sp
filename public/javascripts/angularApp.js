@@ -1,4 +1,4 @@
- var app = angular.module('decisionMaker', ['ui.router', 'ng-sortable']);
+var app = angular.module('decisionMaker', ['ui.router', 'ng-sortable']);
 
 
 
@@ -8,7 +8,7 @@ app.filter('reverse', function() {
   };
 });
 
-app.factory('rooms', ['$http', function($http){
+app.factory('rooms', ['$http', 'auth', function($http, auth){
   var o = {
     rooms: []
   };
@@ -20,7 +20,9 @@ app.factory('rooms', ['$http', function($http){
   };
 
   o.create = function(room) {
-    return $http.post('/rooms', room).success(function(data){
+    return $http.post('/rooms', room,{
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    }).success(function(data){
       o.rooms.push(data);
     });
   };
@@ -32,9 +34,14 @@ app.factory('rooms', ['$http', function($http){
   };
 
   o.addVote = function(id, vote) {
-    console.log("id: " + id);
-    console.log("vote: " + vote);
-    return $http.post('/rooms/' + id + '/votes', vote);
+    //console.log("id: " + id);
+    //console.log("vote: " + vote);
+    for(var i = 0; i < vote.length; i++){
+      console.log(vote[i]);
+    }
+    return $http.post('/rooms/' + id + '/votes', {options: vote}, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    });
   };
 
   o.getResults = function(id) {
@@ -89,7 +96,7 @@ app.factory('auth', ['$http', '$window', '$state', function($http,$window,$state
     };
 
     auth.logIn = function(user) {
-      return $http.post('/' + user.name, user).success(function(data){
+      return $http.post('/users/' + user.username, user).success(function(data){
         auth.saveToken(data.token);
       });
     };
@@ -274,6 +281,7 @@ function($scope, $state, auth){
   };
 
   $scope.logIn = function(){
+    console.log($scope.user);
     auth.logIn($scope.user).error(function(error){
       $scope.error = error;
     }).then(function(){
@@ -328,7 +336,8 @@ function($scope, rooms, auth){
     rooms.create({
       title: $scope.title,
       options: uniqueOptions,
-      votes: []
+      votes: [],
+      type: "FPP"
     });
     $scope.options = ["",""];
     $scope.title = "";

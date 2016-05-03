@@ -44,24 +44,21 @@ FPP.vote = function(user, room, option, callback){
 	if(!callback){
 		callback = function(err){};
 	}
-	db.model.Vote.find({room: room._id}, function(err, votes){
+	db.model.Option.find({room: room._id}, function(err, ops){
 	    if (err) {return handleError(err);}
 		  var vote;
-			var match = votes.filter(function(e){return e.user === user._id;});
+			var match = ops.filter(function(e){return e.user === user._id;});
 			if(match.length > 0){
 				db.model.Vote.update({user: user._id}, {$set: {option: match[0]._id}}, callback(false));
 			}else{
-				//var op = ops.filter(function(e){return e.title === option.title})[0]
-				db.model.Option.findOne({title: option, room: room._id}, function(err, op){
-					if (err) {return handleError(err);}
-					vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});
-				});
-				vote.save(function(err){
-					//if(err) {handleError(err);}
-					callback(err);
-				});
+				var op = ops.filter(function(e){return e.title === option.title})[0]
+	    	vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});
 			}
-  });
+	    vote.save(function(err){
+	      //if(err) {handleError(err);}
+		  callback(err);
+	    });
+      });
 }
 
 module.exports = FPP;

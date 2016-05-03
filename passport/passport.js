@@ -7,6 +7,7 @@ var db = require('../models/models');
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
+      console.log("login called");
       db.model.User.findOne({name: username},
         function(err, user) {
            //console.log("model.user.find: " + err);

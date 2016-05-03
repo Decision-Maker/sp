@@ -48,6 +48,12 @@ app.factory('rooms', ['$http', function($http){
 
 app.factory('auth', ['$http', '$window', '$state', function($http,$window,$state){
     var auth = {};
+    var profile = {
+      user: {},
+      created : [],
+      voted: [],
+      observe: []
+    };
 
     auth.saveToken = function(token) {
       $window.localStorage['usertoken'] = token;
@@ -96,9 +102,14 @@ app.factory('auth', ['$http', '$window', '$state', function($http,$window,$state
     auth.getUser = function(){
       if(auth.isLoggedIn()){
         var token = auth.getToken();
-        return $http.post('/users/profile', {}, {headers: {Authorization: 'Bearer '+auth.getToken()}}).success(function(data){
-          return data;
+        $http.post('/users/profile', {}, {headers: {Authorization: 'Bearer '+auth.getToken()}}).success(function(data){
+          console.log(data);
+          profile.user = data.user;
+          profile.created = data.created;
+          profile.voted = data.voted;
+          profile.observe = data.observe;
         });
+        return profile;
       }
     };
 
@@ -195,7 +206,7 @@ function($scope, rooms, room, results){
   //voteCount = $scope.votes.length;
   //finish = voteCount/2 + 1;
 
-  $scope.results = results
+  $scope.results = results;
   console.log(results);
 
 }]);
@@ -205,11 +216,10 @@ app.controller('ProfileCtrl', [
 'auth',
 function($scope, auth){
 
-  var data = auth.getUser();
-  $scope.created = data.created;
-  $scope.voted = data.voted;
+  $scope.profile = auth.getUser();
 
-  console.log("Voted: " + $scope.created);
+
+  console.log($scope.profile);
 
 }]);
 

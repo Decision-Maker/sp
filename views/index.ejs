@@ -170,8 +170,8 @@
     <h1>Myrge</h1>
   </div>
   <p>hello world! :)</p>
-  <div ng-repeat="room in voted track by $index">
-      {{room}}
+  <div ng-repeat="room in profile.voted track by $index">
+      <p>{{room.title}}</p>
   </div>
 </script>
 

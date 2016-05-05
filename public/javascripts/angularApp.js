@@ -128,9 +128,9 @@ app.config([
 function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
-    .state('home', {
-      url: '/home',
-      templateUrl: '/home.html',
+    .state('create', {
+      url: '/create',
+      templateUrl: '/create.html',
       controller: 'MainCtrl',
       resolve: {
         roomPromise: ['rooms', function(rooms){
@@ -197,7 +197,7 @@ function($stateProvider, $urlRouterProvider) {
       }
     });
 
-  $urlRouterProvider.otherwise('home');
+  $urlRouterProvider.otherwise('create');
 }]);
 
 app.controller('ResultsCtrl', [

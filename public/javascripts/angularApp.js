@@ -207,7 +207,7 @@ function($stateProvider, $urlRouterProvider) {
       }
     });
 
-  $urlRouterProvider.otherwise('create');
+  $urlRouterProvider.otherwise('home');
 }]);
 
 app.controller('ResultsCtrl', [

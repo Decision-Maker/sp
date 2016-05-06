@@ -1,7 +1,5 @@
 var app = angular.module('decisionMaker', ['ui.router', 'ng-sortable']);
 
-
-
 app.filter('reverse', function() {
   return function(items) {
     return items.slice().reverse();
@@ -128,10 +126,22 @@ app.config([
 function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
+  .state('home', {
+    url: '/home',
+    templateUrl: '/home.html',
+    controller: 'HomeCtrl',
+  });
+
+  $stateProvider
     .state('create', {
       url: '/create',
       templateUrl: '/create.html',
       controller: 'MainCtrl',
+      onEnter: ['$state', 'auth', function($state, auth){
+        if(!auth.isLoggedIn()){
+          $state.go('login');
+        }
+      }],
       resolve: {
         roomPromise: ['rooms', function(rooms){
           return rooms.getAll();
@@ -146,7 +156,7 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'AuthCtrl',
       onEnter: ['$state', 'auth', function($state, auth){
         if(auth.isLoggedIn()){
-          $state.go('home');
+          $state.go('profile');
         }
       }]
     })
@@ -158,7 +168,7 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'AuthCtrl',
       onEnter: ['$state', 'auth', function($state, auth){
         if(auth.isLoggedIn()){
-          $state.go('home');
+          $state.go('profile');
         }
       }]
     });
@@ -311,11 +321,24 @@ function($scope, auth){
   $scope.logOut = auth.logOut;
 }]);
 
+app.controller('HomeCtrl');
+
+app.controller('FooterCtrl', [
+'$scope',
+'auth',
+function($scope, auth){
+  $scope.isLoggedIn = auth.isLoggedIn;
+  $scope.currentUser = auth.currentUser;
+  $scope.logOut = auth.logOut;
+}]);
+
 app.controller('MainCtrl', [
 '$scope',
+'$state',
 'rooms',
 'auth',
 function($scope, rooms, auth){
+
   $scope.rooms = rooms.rooms;
   $scope.options = ["",""];
 

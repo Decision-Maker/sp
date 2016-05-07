@@ -151,6 +151,13 @@ function($stateProvider, $urlRouterProvider) {
       }]
     })
 
+    //will be a static page, no controller right now.
+    $stateProvider
+    .state('home', {
+      url: '/home',
+      templateUrl: '/home.html'
+    })
+
     $stateProvider
     .state('register', {
       url: '/register',
@@ -206,7 +213,7 @@ function($stateProvider, $urlRouterProvider) {
       }
     });
 
-  $urlRouterProvider.otherwise('create');
+  $urlRouterProvider.otherwise('home');
 }]);
 
 app.controller('ResultsCtrl', [

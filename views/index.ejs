@@ -189,4 +189,14 @@
   </div>
 </script>
 
+<script type="text/ng-template" id="/home.html">
+  <div class="page-header">
+    <h1>Myrge</h1>
+  </div>
+  <p>Home</p>
+  <div ng-repeat="room in profile.voted track by $index">
+      <p>{{room.title}}</p>
+  </div>
+</script>
+
 </html>

@@ -178,7 +178,11 @@ function($stateProvider, $urlRouterProvider) {
       resolve: {
         room: ['$stateParams', 'rooms', function($stateParams, rooms) {
           return rooms.get($stateParams.id);
+        }],
+        user: ['$stateParams', 'auth', function($stateParams, auth) {
+          return auth.getUser();
         }]
+
       }
     });
 
@@ -236,19 +240,20 @@ app.controller('RoomsCtrl', [
 'rooms',
 'room',
 'auth',
-function($scope, $stateParams, $location, rooms, room, auth){
+'user',
+function($scope, $stateParams, $location, rooms, room, auth, user){
 
 
   $scope.room = room;
   $scope.vote = angular.copy($scope.room.options);
+  $scope.user = user;
   $scope.message = "";
-  auth.getUser().then(function(response){
-    for(var i = 0; i < response.data.voted.length; i++){
-      if(response.data.voted[i]._id == $stateParams.id){
-        $scope.message = "You have already voted in this poll. Voting again will update your previous vote";
-      }
+  //alert(user);
+  for(var i = 0; i < user.data.voted.length; i++){
+    if(user.data.voted[i]._id == $stateParams.id){
+      $scope.message = "You have already voted in this poll. Voting again will update your previous vote";
     }
-  });
+  }
 
 
   //Used for drag and drop

@@ -9,13 +9,11 @@ body {
   background: -webkit-linear-gradient(to bottom, #43cea2 , #185a9d); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to bottom, #43cea2 , #185a9d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   border-width: .2em;
-  margin-bottom: 100px;
 }
 
 html{
   width: 100%;
   min-height: 100%;
-  position: relative;
 }
 
 a {
@@ -256,17 +254,6 @@ input[type="title"] {
   text-align: center;
   color: white;
   font-size: 1.3em;
-}
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  padding: 1em;
-  padding-top: 1.5em;
-  background-color: #185a9d;
-  z-index: 5;
 }
 
 

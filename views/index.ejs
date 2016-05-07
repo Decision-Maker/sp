@@ -21,14 +21,12 @@
 <body ng-app="decisionMaker" ng-controller="MainCtrl">
   <nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
     <ul class="nav navbar-nav">
-      <li ng-show="isLoggedIn()"><a href="/#/profile">{{ currentUser() }}</a></li>
+      <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
       <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
       <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
       <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
-      <li ng-show="isLoggedIn()"><a href="/#/create">Create a Poll</a></li>
     </ul>
   </nav>
-
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <ui-view></ui-view>
@@ -55,6 +53,11 @@
       {{room.title}}
     </h1>
   </div>
+
+  <div ng-show="message" class="alert alert-warning row">
+    <span>{{message}}</span>
+  </div>
+
   <div class="directions">
     <h2>Drag and drop to vote on top option</h2>
   </div>
@@ -176,24 +179,5 @@
       <p>{{room.title}}</p>
   </div>
 </script>
-
-<script type="text/ng-template" id="/home.html">
-  <div class="page-header">
-    <h1>Home</h1>
-  <a href="#/create"><button class="btn btn-primary">Create a Poll</button></a>
-  <a href="#/register"><button class="btn btn-primary">Register</button></a>
-  </div>
-</script>
-
-<footer class="footer navbar-fixed-bottom" ng-controller="NavCtrl">
-    <ul>
-      <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
-      <li ng-show="isLoggedIn()"><a href="/#/create">Create a Poll</a></li>
-      <li ng-show="isLoggedIn()"><a href="/#/profile">My Polls</a></li>
-      <li><a href="/#/about">About</a></li>
-    </ul>
-<footer>
 
 </html>

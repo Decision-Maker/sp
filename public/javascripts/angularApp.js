@@ -107,13 +107,14 @@ app.factory('auth', ['$http', '$window', '$state', function($http,$window,$state
     auth.getUser = function(){
       if(auth.isLoggedIn()){
         var token = auth.getToken();
-        return $http.post('/users/profile', {}, {headers: {Authorization: 'Bearer '+auth.getToken()}}).success(function(data){
+        $http.post('/users/profile', {}, {headers: {Authorization: 'Bearer '+auth.getToken()}}).success(function(data){
+          console.log(data);
           profile.user = data.user;
           profile.created = data.created;
           profile.voted = data.voted;
           profile.observe = data.observe;
-          return profile;
         });
+        return profile;
       }
     };
 
@@ -241,25 +242,13 @@ function($scope, auth){
 
 app.controller('RoomsCtrl', [
 '$scope',
-'$stateParams',
-'$location',
 'rooms',
 'room',
-'auth',
-function($scope, $stateParams, $location, rooms, room, auth){
+function($scope, rooms, room){
 
 
   $scope.room = room;
   $scope.vote = angular.copy($scope.room.options);
-  $scope.message = "";
-  auth.getUser().then(function(response){
-    for(var i = 0; i < response.data.voted.length; i++){
-      if(response.data.voted[i]._id == $stateParams.id){
-        $scope.message = "You have already voted in this poll. Voting again will update your previous vote";
-      }
-    }
-  });
-
 
   //Used for drag and drop
   $scope.barConfig = {
@@ -282,7 +271,6 @@ function($scope, $stateParams, $location, rooms, room, auth){
       $scope.room.votes.push(vote);
     });
     //$scope.body = '';
-    $location.path('results/' + $stateParams.id);
   };
 
 }]);

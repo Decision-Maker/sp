@@ -168,6 +168,11 @@ function($stateProvider, $urlRouterProvider) {
       url: '/profile',
       templateUrl: '/profile.html',
       controller: 'ProfileCtrl',
+      resolve: {
+        user: ['$stateParams', 'auth', function($stateParams, auth) {
+          return auth.getUser();
+        }]
+      }
     });
 
     $stateProvider
@@ -223,10 +228,10 @@ function($scope, rooms, room, results){
 
 app.controller('ProfileCtrl', [
 '$scope',
-'auth',
-function($scope, auth){
+'user',
+function($scope, user){
 
-  $scope.profile = auth.getUser();
+  $scope.profile = user.data;
 
 
   console.log($scope.profile);

@@ -146,7 +146,7 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'AuthCtrl',
       onEnter: ['$state', 'auth', function($state, auth){
         if(auth.isLoggedIn()){
-          $state.go('home');
+          $state.go('create');
         }
       }]
     })
@@ -303,7 +303,7 @@ function($scope, $state, auth){
     auth.logIn($scope.user).error(function(error){
       $scope.error = error;
     }).then(function(){
-      $state.go('home');
+      $state.go('create');
     });
   };
 }]);

@@ -32,6 +32,15 @@
       <ui-view></ui-view>
     </div>
   </div>
+  <div style="background-color: rgba(255, 255, 255, 0.2);" class="col-md-12" ng-controller="NavCtrl">
+    This is the footer. it shares a controller with the header, so I didn't have to make a new one
+    <ul>
+      <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
+      <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
+      <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
+      <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+    </ul>
+  </div>
 </body>
 
 <script type="text/ng-template" id="/results.html">

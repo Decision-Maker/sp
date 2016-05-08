@@ -78,6 +78,18 @@ function linkedListVoteTraversal(head, votes){
 }
 
 
+function buildLinkedArray(elements){
+	var result = [];
+	var L = makeLinkedVoteList(elements);
+	var current = L[0];
+	result.push(current);
+	while(current.next != null){
+		current = current.next;
+		result.push(current);
+	}
+	return result;
+}
+
 //pass a user, room, and options preference list; callback if desired
 //weakness: does not check if options contains an option not present in room
 IRV.vote = function(user, room, options, callback){
@@ -85,7 +97,16 @@ IRV.vote = function(user, room, options, callback){
 		callback = function(err){};
 	}
 
-	db.
+	db.model.Vote.find({room: room._id, user: user._id}, function(err, votes){
+		if(err){handleError(err);}
+
+		if(votes.length > 0){
+			var prev = buildLinkedArray(votes);
+
+		}else{
+			newVote(user, room, options, callback);
+		}
+	});
 
 
 	});

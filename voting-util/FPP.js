@@ -53,7 +53,7 @@ FPP.vote = function(user, room, option, callback){
 		if(match.length > 0){
 			//console.log("user matched");
 			//console.log(match.option);
-			db.model.Vote.update({user: user._id}, {$set: {option: match[0].option._id}}, callback);
+			db.model.Vote.update({user: user._id, room: room._id}, {$set: {option: match[0].option._id}}, callback);
 		}else{
 			//console.log("user not found, making new vote");
 			//console.log(votes);

@@ -27,7 +27,13 @@ for(var i = 0; i < users.length; i++){
     var nu = new db.model.User();
     nu.name = users[i].name;
     nu.setPassword(users[i].password);
-    nu.save();
+    nu.save(function(err){
+        if(err){console.log("error on save");}
+        else{
+            
+console.log("saved " + nu.name);
+        }
+    });
     userObj.push(nu);
 }
 
@@ -38,7 +44,7 @@ function getIDfromList(name, list){
 
 db.model.User.findOne({name: "Barikhik"}, function(err, us){
     if(err){console.log("ERROR");}
-    console.log(us._id == getIDfromList("Barikhik", userObj));
+    console.log(us._id.equals(getIDfromList("Barikhik", userObj)));
 });
 
 
@@ -48,5 +54,11 @@ db.model.User.findOne({name: "Barikhik"}, function(err, us){
 // }
 
 for(var i = 0; i < users.length; i++){
-    db.model.User.remove({name: users[i].name}, function(err){});
+    db.model.User.remove({name: users[i].name}, function(err){
+        if(err){console.log("Error on delete");}
+        else{
+            console.log("removed " + users[i].name);
+        }
+    });
 }
+

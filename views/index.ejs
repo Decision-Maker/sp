@@ -27,6 +27,9 @@
       <li ng-hide="isLoggedIn()"><a href="/#/login"><button class="btn btn-primary"> Log In </button></a></li>
     </ul>
   </header>
+  <div class="doodle-section">
+    <div class="section-title"></div>
+  </div>
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <ui-view></ui-view>
@@ -93,20 +96,14 @@
       <div class="inputtitle">
             <input type="title"
               class="title-control"
-              placeholder="Decision title..."
+              placeholder="Poll Title"
               ng-model="title">
             </input>
       </div>
       <form ng-submit="addRoom()">
            <div ng-sortable="barConfig" class="optionblock">
                   <div ng-repeat="option in options track by $index">
-                      <span class="input input--isao">
-                      <input class="input__field input__field--isao input" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index]"></input>
-                      <label class="input__label input__label--isao" for="input-5">
-                          <span class="input__label-content2 input__label-content--isao" data-content="Option">Option</span>
-                      </label>
-                      </span>
-                      <span ng-click="remove(option)" ng-hover="toggleHandle(this)" class="formLabelHandle"><i class="fa fa-times"></i></span>
+                      <input type="text" class="option" placeholder="Option" ng-model="options[$index]"></input>
                   </div>
             </div>
             <div class="createoptionbutton">
@@ -182,9 +179,8 @@
 
 <script type="text/ng-template" id="/profile.html">
   <div class="page-header">
-    <h1>Myrge</h1>
+    <h1>My Polls</h1>
   </div>
-  <p>hello world! :)</p>
   <div ng-repeat="room in profile.voted track by $index">
       <p>{{room.title}}</p>
   </div>
@@ -192,11 +188,7 @@
 
 <script type="text/ng-template" id="/home.html">
   <div class="page-header">
-    <h1>Myrge</h1>
-  </div>
-  <p>Home</p>
-  <div ng-repeat="room in profile.voted track by $index">
-      <p>{{room.title}}</p>
+    <h1>Home</h1>
   </div>
 </script>
 

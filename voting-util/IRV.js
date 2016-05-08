@@ -77,19 +77,6 @@ function linkedListVoteTraversal(head, votes){
 	return head;
 }
 
-
-function buildLinkedArray(elements){
-	var result = [];
-	var L = makeLinkedVoteList(elements);
-	var current = L[0];
-	result.push(current);
-	while(current.next != null){
-		current = current.next;
-		result.push(current);
-	}
-	return result;
-}
-
 //pass a user, room, and options preference list; callback if desired
 //weakness: does not check if options contains an option not present in room
 IRV.vote = function(user, room, options, callback){
@@ -101,14 +88,12 @@ IRV.vote = function(user, room, options, callback){
 		if(err){handleError(err);}
 
 		if(votes.length > 0){
-			var prev = buildLinkedArray(votes);
-
+			db.moddel.Vote.remove({room: room._id, user: user._id}, function(err){
+				newVote(user, room, options, callback);
+			});
 		}else{
 			newVote(user, room, options, callback);
 		}
-	});
-
-
 	});
 }
 

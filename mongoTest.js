@@ -54,10 +54,11 @@ db.model.User.findOne({name: "Barikhik"}, function(err, us){
 // }
 
 for(var i = 0; i < users.length; i++){
+    console.log(users[i]);
     db.model.User.remove({name: users[i].name}, function(err){
         if(err){console.log("Error on delete");}
         else{
-            console.log("removed " + users[i].name);
+            console.log(users[i]);
         }
     });
 }

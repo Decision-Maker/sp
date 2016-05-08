@@ -85,6 +85,14 @@ IRV.vote = function(user, room, options, callback){
 		callback = function(err){};
 	}
 
+	db.
+
+
+	});
+}
+
+function newVote(user, room, options, callback){
+
 	//get all the option of the room
 	db.model.Option.find({room: room._id}, function(err, op){
 		var curOp;

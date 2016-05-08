@@ -62,6 +62,7 @@ router.post('/register', function(req, res, next){   //make sure '/register' is 
 			return res.status(400).json({message: 'Username is already taken'});
 		}
 	});
+	// this code is still run even if user already exists :(
   nu.name = req.body.username;
   nu.setPassword(req.body.password);
   nu.save(function(err, user){

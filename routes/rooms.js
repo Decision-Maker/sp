@@ -3,8 +3,9 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../models/models');
 var jwt = require('express-jwt');
-var auth = jwt({secret: 'SECRET'});
+var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 var FPP = require('../voting-util/FPP');
+var IRV = require('../voting-util/IRV');
 
 function handleError(err){
 	console.log("ERROR");
@@ -15,7 +16,7 @@ function handleError(err){
 // =============================================================================
 
 //Preload a specific room
-router.param('room', auth, function(req, res, next, id) {
+router.param('room',  function(req, res, next, id) {
   var query = db.model.Room.findById(id);
 
   query.exec(function (err, room){
@@ -27,23 +28,32 @@ router.param('room', auth, function(req, res, next, id) {
   });
 });
 
-
+//Observer
+router.post('/:room/observe', auth, function(req, res, next){
+	var obs = new db.model.Observer();
+	obs.user = req.payload._id;
+	obs.room = req.room._id;
+	obs.save(function(err){
+		if(err) {handleError(err)};
+	});
+});
 // Vote requests ===============================================================
 // =============================================================================
-var userCount = 0;
 
-//server is sent a list of votes in req.body
+//server is sent vote(s) in req.body
 router.post('/:room/votes', auth, function(req, res, next) {
 
-  userCount = userCount + 1;
-  //console.log('user: ' + userCount.toString());
-  var newUser = new db.model.User({name: userCount.toString()});
-  newUser.save(function(err, u){
-	  // console.log('user saved');
-		// console.log("body[0]: ", req.body[0]);
+	db.model.User.findOne({name: req.payload.username}, function(err, u){
+		if (err) {return handleError(err)};
 		switch(req.room.voteType){
 			case 'FPP':
-				FPP.vote(u, req.room, req.body[0], function(err){
+				FPP.vote(u, req.room, req.body.options[0], function(err){
+						if(err) {handleError(err);}
+						res.json({});
+					});
+				break;
+			case 'IRV':
+				IRV.vote(u, req.room, req.body.options, function(err){
 						if(err) {handleError(err);}
 						res.json({});
 					});
@@ -52,25 +62,15 @@ router.post('/:room/votes', auth, function(req, res, next) {
 				console.log('vote type not recognized');
 				break;
 		}
-		/*
-	    db.model.Option.findOne({title: req.body[0].title, room: req.room._id}, function(err, op){
-	    if (err) {return handleError(err);}
-			var vote;
-	    vote = new db.model.Vote({room: req.room._id, user: u._id, option: op._id});
-	    vote.save(function(err){
-	      if(err) {handleError(err);}
-		  //console.log('vote saved');
-		  res.json({});
-	    });
-      });*/
-  });
+	});
 });
+
 
 // Roomrequests ===============================================================
 // =============================================================================
 
 //Gets the correct room for given id
-router.get('/:room', auth, function(req, res) {
+router.get('/:room', function(req, res) {
   var o = {title: req.room.title, options: [], votes: [], _id: req.room._id};
 
   db.model.Option.find({room: req.room._id}, function(err, ops){
@@ -109,9 +109,9 @@ router.get('/', function(req, res, next) {
 //***** responces should be built from saved object returns, rather than req data fix in final version******
 router.post('/', auth, function(req, res, next) {
   //console.log(req.body.title);
-  var new_room = new db.model.Room({title: req.body.title, created: req.payload.username});
+  var new_room = new db.model.Room({title: req.body.title, created: req.payload._id, voteType: req.body.type});
     new_room.save(function(err, r){
-	  if(err) {handleError(err);}
+	  if(err) {handleError(err)};
     //console.log("room saved");
 	  var o = {votes: [], title: r.title, _id: r._id, options: []};
 	  var om;
@@ -119,7 +119,7 @@ router.post('/', auth, function(req, res, next) {
 	    om = new db.model.Option({title: req.body.options[i], room: r._id});
 	    om.save(function(err){if(err) {handleError(err);} /*console.log("option created")*/});
 	    o.options.push(req.body.options[i]);
-      }
+  	}
 	  res.json(o);
   });
 });
@@ -130,10 +130,23 @@ router.post('/', auth, function(req, res, next) {
 //get current results of the room
 //results is a list of objects with the fields: {title: String, _id: ObjectID, count: int, room: ObjectID}
 
-router.get('/:room/results', auth, function(req, res, next) {
-	FPP.getResult(req.room._id, function(err, results){
-		res.json(results);
-	});
+router.get('/:room/results', function(req, res, next) {
+	switch(req.room.voteType){
+		case 'FPP':
+			FPP.getResult(req.room._id, function(err, results){
+				res.json(results);
+			});
+			break;
+		case 'IRV':
+			IRV.getResult(req.room._id, function(err, results){
+				res.json(results);
+			});
+			break;
+		default:
+			console.log('vote type not recognized');
+			break;
+	}
+
 });
 
 

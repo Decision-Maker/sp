@@ -15,7 +15,7 @@ o.schema.user.methods.setPassword = function(password){
   this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
 };
 
-o.schema.user.methods.validPassword = function(passport){
+o.schema.user.methods.validPassword = function(password){
   var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
   return this.hash === hash;
 };
@@ -28,7 +28,7 @@ o.schema.user.methods.generateJWT = function() {
 
   return jwt.sign({
     _id: this._id,
-    username: this.username,
+    username: this.name,
     exp: parseInt(exp.getTime() / 1000),
   }, 'SECRET');
 

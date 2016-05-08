@@ -44,15 +44,30 @@ FPP.vote = function(user, room, option, callback){
 	if(!callback){
 		callback = function(err){};
 	}
-	db.model.Option.findOne({title: option.title, room: room._id}, function(err, op){
+	db.model.Vote.find({room: room._id}).populate('option user').exec(function(err, votes){
 	    if (err) {return handleError(err);}
-		var vote;
-	    vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});
-	    vote.save(function(err){
-	      //if(err) {handleError(err);}
-		  callback(err);
-	    });
-      });
+
+
+		//console.log(votes);
+		var match = votes.filter(function(e){return e.user === user._id;});
+		if(match.length > 0){
+			//console.log("user matched");
+			//console.log(match.option);
+			db.model.Vote.update({user: user._id}, {$set: {option: match[0].option._id}}, callback);
+		}else{
+			//console.log("user not found, making new vote");
+			//console.log(votes);
+			db.model.Option.findOne({room: room._id, title: option.title}, function(err, op){
+				//console.log(op.title);
+				var vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});
+				vote.save(function(err){
+					//if(err) {handleError(err);}
+					callback(err);
+					//console.log('save');
+				});
+			});
+		}
+	});
 }
 
 module.exports = FPP;

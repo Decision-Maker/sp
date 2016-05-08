@@ -22,10 +22,9 @@
   <header class="navbar navbar-default topbar" ng-controller="NavCtrl">
     <a href="#/home" class="pull-left logo"><img src="../images/logo.svg"></a>
     <ul class="nav navbar-nav pull-right">
-      <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
-      <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+      <li ng-show="isLoggedIn()"><a href="/#/profile"><img class="icon" src="../images/profile-icon.svg">   {{ currentUser() }}</a></li>
+      <li ng-show="isLoggedIn()"><a href="/#/create"><img class="icon" src="../images/add-icon.svg"> New Poll</a></li>
+      <li ng-hide="isLoggedIn()"><a href="/#/login"><button class="btn btn-primary"> Log In </button></a></li>
     </ul>
   </header>
   <div class="row">
@@ -132,7 +131,7 @@
 
 <script type="text/ng-template" id="/login.html">
   <div class="page-header">
-    <h1>Flapper News</h1>
+    <h1>Log In</h1>
   </div>
 
   <div ng-show="error" class="alert alert-danger row">
@@ -141,7 +140,6 @@
 
   <form ng-submit="logIn()"
     style="margin-top:30px;">
-    <h3>Log In</h3>
 
     <div class="form-group">
       <input type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
@@ -155,7 +153,7 @@
 
 <script type="text/ng-template" id="/register.html">
   <div class="page-header">
-    <h1>Flapper News</h1>
+    <h1>Register</h1>
   </div>
 
   <div ng-show="error" class="alert alert-danger row">

@@ -3,45 +3,67 @@
 }
 
 body {
-  padding: 50px;
-  font-family: 'Source Sans Pro', sans-serif;
-  background: #43cea2; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to bottom, #43cea2 , #185a9d); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to bottom, #43cea2 , #185a9d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  font-family: 'Montserrat', sans-serif;
+  background: #F7ECE3;
   border-width: .2em;
 }
 
 html{
   width: 100%;
-  min-height: 100%;
+  height: 100%;
 }
 
 a {
   color: white;
 }
 
+.footer {
+  height: 100px;
+  width: 100%;
+  margin-top: 3em;
+  background-color: #D55A4D;
+  bottom: 0;
+}
+
+.container {
+  min-height: 100%;
+}
+
+.topbar {
+  padding: 4em;
+  padding-bottom: 1em;
+}
+
+.navbar-default {
+  background-color: white !important;
+  border-color: white;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: #D55A4D;
+  text-transform: capitalize;
+}
+
 h1 {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
   font-size: 1.8em;
-  color: white;
-  letter-spacing: .1em;
-  text-transform: uppercase;
+  color: #5E5E5E;
+  letter-spacing: .05em;
 }
 
 h2 {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 1em;
   color: white;
-  letter-spacing: .1em;
   text-transform: uppercase;
 }
 
 h3 {
   font-size: 1.5em;
-  color: white;
-  letter-spacing: normal;
+  color: #5E5E5E;
+  letter-spacing: .05em;
 }
 
 h4 {
@@ -94,21 +116,30 @@ h4 {
 input:-moz-placeholder { olor:#f00; font-size: 2em; }
 
 .btn {
-  font-family: 'Source Sans Pro', sans-serif !important;
+  font-family: 'Montserrat', sans-serif !important;
   text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: .1em;
-  font-size: 1em;
-  background: none;
-  border-style: solid;
-  border-radius: 0;
-  border-color: white;
-  border-width: .2em;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-align: center !important;
+  font-size: .9em;
+  padding: .8em;
+  padding-left: 1em;
+  padding-right: .9em;
+  border-radius: 5px;
+  border-style: hidden;
+  background-color: #D55A4D;
+}
+
+.btn:hover {
+  background-color: #A3524F;
 }
 
 .votebtn {
-  border-color: #185a9d;
   position: inherit;
+}
+
+.votebutton:hover{
+   background-color: #A3524F;
 }
 
 .directions {
@@ -129,7 +160,6 @@ input:-moz-placeholder { olor:#f00; font-size: 2em; }
   padding: 2em;
   padding-top: .5em;
   padding-bottom: 1em;
-  background-color: rgba(255,255,255,.3);
 }
 
 .createroomblock {
@@ -175,17 +205,6 @@ li {
 .createoptionbutton {
   float: right;
   cursor: pointer;
-}
-
-.btn:hover{
-   background-color: rgba(255,255,255, .3);
-   border-color: white;
-}
-
-
-.btn-primary:active{
-  background-color: rgba(255,255,255, .3) !important;
-  border-color: white;
 }
 
 .fa {

@@ -1,5 +1,7 @@
 var app = angular.module('decisionMaker', ['ui.router', 'ng-sortable']);
 
+
+
 app.filter('reverse', function() {
   return function(items) {
     return items.slice().reverse();
@@ -126,22 +128,10 @@ app.config([
 function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
-  .state('home', {
-    url: '/home',
-    templateUrl: '/home.html',
-    controller: 'HomeCtrl',
-  });
-
-  $stateProvider
     .state('create', {
       url: '/create',
       templateUrl: '/create.html',
       controller: 'MainCtrl',
-      onEnter: ['$state', 'auth', function($state, auth){
-        if(!auth.isLoggedIn()){
-          $state.go('login');
-        }
-      }],
       resolve: {
         roomPromise: ['rooms', function(rooms){
           return rooms.getAll();
@@ -156,9 +146,16 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'AuthCtrl',
       onEnter: ['$state', 'auth', function($state, auth){
         if(auth.isLoggedIn()){
-          $state.go('profile');
+          $state.go('create');
         }
       }]
+    })
+
+    //will be a static page, no controller right now.
+    $stateProvider
+    .state('home', {
+      url: '/home',
+      templateUrl: '/home.html'
     })
 
     $stateProvider
@@ -168,7 +165,7 @@ function($stateProvider, $urlRouterProvider) {
       controller: 'AuthCtrl',
       onEnter: ['$state', 'auth', function($state, auth){
         if(auth.isLoggedIn()){
-          $state.go('profile');
+          $state.go('home');
         }
       }]
     });
@@ -178,6 +175,11 @@ function($stateProvider, $urlRouterProvider) {
       url: '/profile',
       templateUrl: '/profile.html',
       controller: 'ProfileCtrl',
+      resolve: {
+        user: ['$stateParams', 'auth', function($stateParams, auth) {
+          return auth.getUser();
+        }]
+      }
     });
 
     $stateProvider
@@ -188,7 +190,11 @@ function($stateProvider, $urlRouterProvider) {
       resolve: {
         room: ['$stateParams', 'rooms', function($stateParams, rooms) {
           return rooms.get($stateParams.id);
+        }],
+        user: ['$stateParams', 'auth', function($stateParams, auth) {
+          return auth.getUser();
         }]
+
       }
     });
 
@@ -229,10 +235,10 @@ function($scope, rooms, room, results){
 
 app.controller('ProfileCtrl', [
 '$scope',
-'auth',
-function($scope, auth){
+'user',
+function($scope, user){
 
-  $scope.profile = auth.getUser();
+  $scope.profile = user.data;
 
 
   console.log($scope.profile);
@@ -246,19 +252,20 @@ app.controller('RoomsCtrl', [
 'rooms',
 'room',
 'auth',
-function($scope, $stateParams, $location, rooms, room, auth){
+'user',
+function($scope, $stateParams, $location, rooms, room, auth, user){
 
 
   $scope.room = room;
   $scope.vote = angular.copy($scope.room.options);
+  $scope.user = user;
   $scope.message = "";
-  auth.getUser().then(function(response){
-    for(var i = 0; i < response.data.voted.length; i++){
-      if(response.data.voted[i]._id == $stateParams.id){
-        $scope.message = "You have already voted in this poll. Voting again will update your previous vote";
-      }
+  //alert(user);
+  for(var i = 0; i < user.data.voted.length; i++){
+    if(user.data.voted[i]._id == $stateParams.id){
+      $scope.message = "You have already voted in this poll. Voting again will update your previous vote";
     }
-  });
+  }
 
 
   //Used for drag and drop
@@ -280,9 +287,10 @@ function($scope, $stateParams, $location, rooms, room, auth){
     rooms.addVote(room._id, vote)
     .success(function(vote) {
       $scope.room.votes.push(vote);
+    }).then(function(responce){
+      $location.path('results/' + $stateParams.id);
     });
     //$scope.body = '';
-    $location.path('results/' + $stateParams.id);
   };
 
 }]);
@@ -307,7 +315,7 @@ function($scope, $state, auth){
     auth.logIn($scope.user).error(function(error){
       $scope.error = error;
     }).then(function(){
-      $state.go('home');
+      $state.go('create');
     });
   };
 }]);
@@ -321,24 +329,11 @@ function($scope, auth){
   $scope.logOut = auth.logOut;
 }]);
 
-app.controller('HomeCtrl');
-
-app.controller('FooterCtrl', [
-'$scope',
-'auth',
-function($scope, auth){
-  $scope.isLoggedIn = auth.isLoggedIn;
-  $scope.currentUser = auth.currentUser;
-  $scope.logOut = auth.logOut;
-}]);
-
 app.controller('MainCtrl', [
 '$scope',
-'$state',
 'rooms',
 'auth',
 function($scope, rooms, auth){
-
   $scope.rooms = rooms.rooms;
   $scope.options = ["",""];
 

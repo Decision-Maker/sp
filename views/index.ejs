@@ -19,21 +19,33 @@
   <style> .glyphicon-thumbs-up { cursor:pointer } </style>
 </head>
 <body ng-app="decisionMaker" ng-controller="MainCtrl">
-  <nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
-    <ul class="nav navbar-nav">
-      <li ng-show="isLoggedIn()"><a href="/#/profile">{{ currentUser() }}</a></li>
-      <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
-      <li ng-show="isLoggedIn()"><a href="/#/create">Create a Poll</a></li>
+  <header class="navbar navbar-default topbar" ng-controller="NavCtrl">
+    <a href="#/home" class="pull-left logo"><img src="../images/logo.svg"></a>
+    <ul class="nav navbar-nav pull-right">
+      <li ng-show="isLoggedIn()"><a href="/#/profile"><img class="icon" src="../images/profile-icon.svg">   {{ currentUser() }}</a></li>
+      <li ng-show="isLoggedIn()"><a href="/#/create"><img class="icon" src="../images/add-icon.svg"> New Poll</a></li>
+      <li ng-hide="isLoggedIn()"><a href="/#/login"><button class="btn btn-primary"> Log In </button></a></li>
     </ul>
-  </nav>
-
+  </header>
+  <div class="doodle-section">
+    <div class="section-title"></div>
+  </div>
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <ui-view></ui-view>
     </div>
   </div>
+
+  <footer class="footer" ng-controller="NavCtrl">
+      <ul>
+        <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
+        <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
+        <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+        <li ng-show="isLoggedIn()"><a href="/#/create">Create a Poll</a></li>
+        <li ng-show="isLoggedIn()"><a href="/#/profile">My Polls</a></li>
+        <li><a href="/#/about">About</a></li>
+      </ul>
+  <footer>
 </body>
 
 <script type="text/ng-template" id="/results.html">
@@ -76,7 +88,7 @@
 
 <script type="text/ng-template" id="/create.html">
   <div class="page-header">
-    <h1>DECISION MAKER</h1>
+    <h1>Create a Poll</h1>
   </div>
 
   <div class="createroomblock">
@@ -84,20 +96,14 @@
       <div class="inputtitle">
             <input type="title"
               class="title-control"
-              placeholder="Decision title..."
+              placeholder="Poll Title"
               ng-model="title">
             </input>
       </div>
       <form ng-submit="addRoom()">
            <div ng-sortable="barConfig" class="optionblock">
                   <div ng-repeat="option in options track by $index">
-                      <span class="input input--isao">
-                      <input class="input__field input__field--isao input" type="text" id="input-5" class="form-control option" placeholder="" ng-model="options[$index]"></input>
-                      <label class="input__label input__label--isao" for="input-5">
-                          <span class="input__label-content2 input__label-content--isao" data-content="Option">Option</span>
-                      </label>
-                      </span>
-                      <span ng-click="remove(option)" ng-hover="toggleHandle(this)" class="formLabelHandle"><i class="fa fa-times"></i></span>
+                      <input type="text" class="option" placeholder="Option" ng-model="options[$index]"></input>
                   </div>
             </div>
             <div class="createoptionbutton">
@@ -122,7 +128,7 @@
 
 <script type="text/ng-template" id="/login.html">
   <div class="page-header">
-    <h1>Flapper News</h1>
+    <h1>Log In</h1>
   </div>
 
   <div ng-show="error" class="alert alert-danger row">
@@ -131,7 +137,6 @@
 
   <form ng-submit="logIn()"
     style="margin-top:30px;">
-    <h3>Log In</h3>
 
     <div class="form-group">
       <input type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
@@ -145,7 +150,7 @@
 
 <script type="text/ng-template" id="/register.html">
   <div class="page-header">
-    <h1>Flapper News</h1>
+    <h1>Register</h1>
   </div>
 
   <div ng-show="error" class="alert alert-danger row">
@@ -174,9 +179,8 @@
 
 <script type="text/ng-template" id="/profile.html">
   <div class="page-header">
-    <h1>Myrge</h1>
+    <h1>My Polls</h1>
   </div>
-  <p>hello world! :)</p>
   <div ng-repeat="room in profile.voted track by $index">
       <p>{{room.title}}</p>
   </div>
@@ -185,20 +189,8 @@
 <script type="text/ng-template" id="/home.html">
   <div class="page-header">
     <h1>Home</h1>
-  <a href="#/create"><button class="btn btn-primary">Create a Poll</button></a>
-  <a href="#/register"><button class="btn btn-primary">Register</button></a>
   </div>
 </script>
 
-<footer class="footer navbar-fixed-bottom" ng-controller="NavCtrl">
-    <ul>
-      <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
-      <li ng-show="isLoggedIn()"><a href="/#/create">Create a Poll</a></li>
-      <li ng-show="isLoggedIn()"><a href="/#/profile">My Polls</a></li>
-      <li><a href="/#/about">About</a></li>
-    </ul>
-<footer>
 
 </html>

@@ -88,7 +88,7 @@ IRV.vote = function(user, room, options, callback){
 		if(err){handleError(err);}
 
 		if(votes.length > 0){
-			db.moddel.Vote.remove({room: room._id, user: user._id}, function(err){
+			db.model.Vote.remove({room: room._id, user: user._id}, function(err){
 				newVote(user, room, options, callback);
 			});
 		}else{

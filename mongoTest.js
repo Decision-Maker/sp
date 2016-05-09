@@ -59,7 +59,7 @@ saveUsers.then(function(res){
           db.model.User.remove({name: users[i].name}, function(err, u){
               if(err){console.log("Error on delete");}
               else{
-                  console.log(users[i]);
+                  console.log(u);
               }
           });
       }

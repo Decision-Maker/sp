@@ -55,7 +55,7 @@ saveUsers.then(function(res){
       if(err){console.log("ERROR");}
       console.log(us._id.equals(getIDfromList("Barikhik", userObj)));
       for(var i = 0; i < users.length; i++){
-          console.log()
+          console.log(users[i]);
           db.model.User.remove({name: users[i].name}, function(err, u){
               if(err){console.log("Error on delete");}
               else{
@@ -65,10 +65,6 @@ saveUsers.then(function(res){
       }
   });
 });
-
-
-
-
 
 // for(var i = 0; i < polls.length; i++){
 //     var nu = new db.model.Room();

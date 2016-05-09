@@ -31,17 +31,21 @@ var saveUsers = new Promise(function(resolve, reject){
   var error = false;
   for(var i = 0; i < users.length; i++){
       var nu = new db.model.User();
+      var savecount = 0;
       nu.name = users[i].name;
       nu.setPassword(users[i].password);
       nu.save(function(err){
           if(err){error == true}
+          savecount++;
+          if(savecount == users.length){
+            if(error){
+              reject(new Error("problem on save"));
+            }else{
+              resolve("");
+            }
+          }
       });
       userObj.push(nu);
-  }
-  if(error){
-    reject(new Error("problem on save"));
-  }else{
-    resolve("");
   }
 });
 
@@ -53,10 +57,10 @@ saveUsers.then(function(res){
   return res;
 }).then(function(res){
   for(var i = 0; i < users.length; i++){
-      db.model.User.remove({name: users[i].name}, function(err){
+      db.model.User.remove({name: users[i].name}, function(err, u){
           if(err){console.log("Error on delete");}
           else{
-              console.log("removed " + users[i].name);
+              console.log(users[i]);
           }
       });
   }

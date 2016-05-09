@@ -36,7 +36,7 @@ var saveUsers = new Promise(function(resolve, reject){
       nu.setPassword(users[i].password);
       nu.save(function(err){
           if(err){error == true}
-          console.log(users[savecount].name);
+          //console.log(users[savecount].name);
           savecount++;
           if(savecount == users.length){
             if(error){
@@ -56,11 +56,8 @@ saveUsers.then(function(res){
       console.log(us._id.equals(getIDfromList("Barikhik", userObj)));
       for(var i = 0; i < users.length; i++){
           console.log(users[i]);
-          db.model.User.remove({name: users[i].name}, function(err, u){
+          db.model.User.remove({name: users[i].name}, function(err){
               if(err){console.log("Error on delete");}
-              else{
-                  console.log(u);
-              }
           });
       }
   });

@@ -36,6 +36,7 @@ var saveUsers = new Promise(function(resolve, reject){
       nu.setPassword(users[i].password);
       nu.save(function(err){
           if(err){error == true}
+          console.log(users[savecount].name);
           savecount++;
           if(savecount == users.length){
             if(error){
@@ -53,8 +54,8 @@ saveUsers.then(function(res){
   db.model.User.findOne({name: "Barikhik"}, function(err, us){
       if(err){console.log("ERROR");}
       console.log(us._id.equals(getIDfromList("Barikhik", userObj)));
+        return res;
   });
-  return res;
 }).then(function(res){
   for(var i = 0; i < users.length; i++){
       db.model.User.remove({name: users[i].name}, function(err, u){

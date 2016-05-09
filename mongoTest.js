@@ -54,19 +54,19 @@ saveUsers.then(function(res){
   db.model.User.findOne({name: "Barikhik"}, function(err, us){
       if(err){console.log("ERROR");}
       console.log(us._id.equals(getIDfromList("Barikhik", userObj)));
-        return res;
+      for(var i = 0; i < users.length; i++){
+          console.log()
+          db.model.User.remove({name: users[i].name}, function(err, u){
+              if(err){console.log("Error on delete");}
+              else{
+                  console.log(users[i]);
+              }
+          });
+      }
   });
-}).then(function(res){
-  for(var i = 0; i < users.length; i++){
-      db.model.User.remove({name: users[i].name}, function(err, u){
-          if(err){console.log("Error on delete");}
-          else{
-              console.log(users[i]);
-          }
-      });
-  }
-  return res;
-}, function(err){console.error(err);});
+});
+
+
 
 
 

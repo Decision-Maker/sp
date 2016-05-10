@@ -49,7 +49,7 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
 		return res.data;
     });
   };
-  
+
   o.addOptions = function(id, options){
 	  return $http.post('/rooms/' + id + '/options').then(function(res){return res.data;});
   };
@@ -113,7 +113,7 @@ app.factory('auth', ['$http', '$window', '$state', function($http,$window,$state
     auth.getUser = function(){
       if(auth.isLoggedIn()){
         var token = auth.getToken();
-        return $http.post('/users/profile', {}, {headers: {Authorization: 'Bearer '+auth.getToken()}}).success(function(data){
+        return $http.get('/users/profile', {headers: {Authorization: 'Bearer '+auth.getToken()}}).success(function(data){
           profile.user = data.user;
           profile.created = data.created;
           profile.voted = data.voted;

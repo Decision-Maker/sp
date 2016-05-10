@@ -42,7 +42,7 @@ router.post('/:room/observe', auth, function(req, res, next){
 // =============================================================================
 
 //server is sent options in req.body
-router.post('/:room/votes', function(req, res, next) {
+router.post('/:room/options', function(req, res, next) {
 	var option;
 	for (i = 0; i < req.body.options.length; i++){
 	    option = new db.model.Option({room: req.room._id, title: req.body.options[i]});

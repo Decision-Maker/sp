@@ -49,10 +49,11 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
 		return res.data;
     });
   };
-  
+
   o.addOptions = function(id, options){
-	  return $http.post('/rooms/' + id + '/options').then(function(res){return res.data;});
+	  return $http.post('/rooms/' + id + '/options', options).then(function(res){return res.data;});
   };
+
 
   return o;
 }]);
@@ -264,6 +265,7 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
   $scope.vote = angular.copy($scope.room.options);
   $scope.user = user;
   $scope.message = "";
+  $scope.new = [""];
   //alert(user);
   for(var i = 0; i < user.data.voted.length; i++){
     if(user.data.voted[i]._id == $stateParams.id){
@@ -271,6 +273,15 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
     }
   }
 
+
+  $scope.addOption = function(event){
+    $scope.new.push("");
+  }
+
+  $scope.submitNewOptions = function(){
+    rooms.addOptions($stateParams.id, $scope.new);
+    $scope.new = [""];
+  }
 
   //Used for drag and drop
   $scope.barConfig = {

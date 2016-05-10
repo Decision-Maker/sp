@@ -84,6 +84,20 @@
       <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
       <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
   </div>
+
+  <form ng-submit="addRoom()">
+    <h1>Add a new option</h1>
+       <div ng-sortable="barConfig" class="optionblock">
+              <div ng-repeat="option in new track by $index">
+                  <input type="text" class="option" placeholder="Option" ng-model="new[$index]"></input>
+              </div>
+        </div>
+        <div class="createoptionbutton">
+        <i class="fa fa-plus" ng-click="addOption($event)"></i>
+        </div>
+  </form>
+  <button class="btn btn-primary" ng-click="submitNewOptions()">Add options(s)</button>
+
 </script>
 
 <script type="text/ng-template" id="/create.html">

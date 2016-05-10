@@ -17,6 +17,31 @@ a {
   color: white;
 }
 
+a:hover {
+  color: #AFAFAF;
+  text-decoration: none;
+}
+
+a:active {
+  color: black;
+}
+
+a.redlink {
+  color: #D55A4D;
+}
+
+.pagewrapper-1 {
+  margin: 25em;
+  margin-top: 2em;
+  margin-bottom: 8em;
+}
+
+.pagewrapper-2 {
+  margin: 25em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
 .footer {
   height: 100px;
   width: 100%;
@@ -44,6 +69,40 @@ a {
   text-transform: capitalize;
 }
 
+.doodle-section {
+  position: relative;
+}
+.section-text {
+  position: absolute;
+  margin-left: 10em;
+  margin-top: 100px;
+  float: left;
+  z-index: 4;
+}
+
+.section-img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 8em;
+  z-index: 3;
+}
+
+.section-description {
+  width: 55%;
+  margin-bottom: 1.5em;
+}
+
+.footernav {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.footernav>li {
+  display: inline;
+  margin-right: 1em;
+}
+
 h1 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
@@ -56,7 +115,8 @@ h2 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 1em;
-  color: white;
+  letter-spacing: .05em;
+  color: #7DB4BE;
   text-transform: uppercase;
 }
 
@@ -68,7 +128,7 @@ h3 {
 
 h4 {
   font-size: 1.8em;
-  color: white;
+  color: #5E5E5E;
   letter-spacing: normal;
 }
 
@@ -88,6 +148,11 @@ h4 {
 
 .icon {
   margin-right: .3em;
+}
+
+.spacer {
+  background-color: white;
+  height: 40px;
 }
 
 .svg:hover path{
@@ -110,22 +175,14 @@ h4 {
   float:left;
 }
 
-
 .roomlist {
   width: 100%;
   overflow: hidden;
 }
 
-.form-group {
-  margin-top: 2em;
-  padding: 2em;
-  background-color: rgba(255,255,255,.3);
-}
-
 .roomlist {
   margin-top: 2em;
   padding: 2em;
-  background-color: rgba(255,255,255,.3);
 }
 
 .btn {
@@ -182,10 +239,8 @@ h4 {
 .decisionresult {
   margin-top: 2em;
   padding: 2em;
-  background-color: rgba(255,255,255,.3);
-  font-family: 'Source Sans Pro', sans-serif !important;
   text-align: center;
-  color: white;
+  color: #5E5E5E;
   margin-top: 2em;
 
 }

@@ -44,11 +44,24 @@ router.post('/:room/observe', auth, function(req, res, next){
 //server is sent options in req.body
 router.post('/:room/options', function(req, res, next) {
 	var option;
-	for (i = 0; i < req.body.options.length; i++){
+	var savecount = 0;
+	var size = req.body.options.length;
+	var error = false;
+	for (i = 0; i < size; i++){
 	    option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
-	    option.save(function(err){if(err) {handleError(err);} /*console.log("option created")*/});
+	    option.save(function(err){
+			if(err) {
+			handleError(err);
+			res.json({message: "Error saving messages", error: true})
+			error = true;
+			}
+			/*console.log("option created")*/
+			savecount++;
+			if(savecount == size && !error){
+				res.json({message: "options saved", error: false});
+			}
+		});
   	}
-	res.json({});
 });
 // Vote requests ===============================================================
 // =============================================================================

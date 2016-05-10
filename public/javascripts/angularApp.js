@@ -47,7 +47,11 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
   o.getResults = function(id) {
 	return $http.get('/rooms/' + id + '/results').then(function(res){
 		return res.data;
-    })
+    });
+  };
+  
+  o.addOptions = function(id, options){
+	  return $http.post('/rooms/' + id + '/options').then(function(res){return res.data;});
   };
 
   return o;

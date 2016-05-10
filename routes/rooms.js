@@ -45,8 +45,8 @@ router.post('/:room/observe', auth, function(req, res, next){
 router.post('/:room/votes', function(req, res, next) {
 	var option;
 	for (i = 0; i < req.body.options.length; i++){
-	    om = new db.model.Option({room: req.room._id, title: req.body.options[i]});
-	    om.save(function(err){if(err) {handleError(err);} /*console.log("option created")*/});
+	    option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
+	    option.save(function(err){if(err) {handleError(err);} /*console.log("option created")*/});
   	}
 	res.json({});
 });

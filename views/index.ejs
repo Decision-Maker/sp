@@ -62,38 +62,52 @@
 </script>
 
 <script type="text/ng-template" id="/rooms.html">
+  <div class="doodle-section">
+    <div class="section-text">
+      <div class="section-title"><h1>Pick-One Poll<h1></div>
+      <div class="section-description"><nobr>Select the option that is your #1 choice.</nobr></div>
+    </div>
+    <div class="section-img">
+      <img class="doodle" src="../images/pick-one-doodle.png">
+    </div>
+  </div>
   <div class="pagewrapper-2">
-    <h1>{{room.title}}</h1>
+    <div class="vote-vote-block">
+      <div ng-show="message" class="alert alert-warning row">
+        <span>{{message}}</span>
+      </div>
 
-    <div ng-show="message" class="alert alert-warning row">
-      <span>{{message}}</span>
-    </div>
-
-    <div class="directions">
-      <h2>Drag and drop to vote on top option</h2>
-    </div>
-    <div ng-sortable="barConfig">
-      <div class="voteoption" ng-repeat="option in vote track by $index">
-         <h3>{{option.title}}</h3>
+      <div class="directions">
+        <h1>{{room.title}}</h1>
+        <h2>Drag and drop to vote on top option</h2>
+      </div>
+      <div ng-sortable="barConfig">
+        <div class="voteoption" ng-repeat="option in vote track by $index">
+           <h5>{{option.title}}</h5>
+        </div>
+      </div>
+      <div class="votebuttongroup">
+          <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
+          <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
       </div>
     </div>
-    <div class="votebuttongroup">
-        <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
-        <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
-    </div>
 
-    <form ng-submit="addRoom()">
-      <h1>Add a new option</h1>
-         <div ng-sortable="barConfig" class="optionblock">
-                <div ng-repeat="option in new track by $index">
-                    <input type="text" class="option" placeholder="Option" ng-model="new[$index]"></input>
-                </div>
-          </div>
-          <div class="createoptionbutton">
-          <i class="fa fa-plus" ng-click="addOption($event)"></i>
-          </div>
-    </form>
-    <button class="btn btn-primary" ng-click="submitNewOptions()">Add options(s)</button>
+    <div class="vote-addoption-block">
+      <form ng-submit="addRoom()">
+        <h3>Add an Option</h3>
+           <div ng-sortable="barConfig" class="optionblock">
+                  <div ng-repeat="option in new track by $index">
+                      <input type="text" class="form-control option" placeholder="Option" ng-model="new[$index]"></input>
+                  </div>
+            </div>
+            <div class="createoptionbutton">
+              <img src="../images/add-icon.svg" ng-click="addOption($event)"></i>
+            </div>
+      </form>
+      <div class="votebuttongroup">
+        <button class="btn btn-primary" ng-click="submitNewOptions()">Submit Options</button>
+      </div>
+    </div>
   </div>
 </script>
 
@@ -102,21 +116,17 @@
     <h1>Create a Poll</h1>
     <div class="createroomblock">
         <div class="form-group">
-        <div class="inputtitle">
-              <input type="title"
-                class="title-control"
-                placeholder="Poll Title"
-                ng-model="title">
-              </input>
-        </div>
+
+        <input type="title" class="form-control" placeholder="Poll Title" ng-model="title"></input>
+
         <form ng-submit="addRoom()">
              <div ng-sortable="barConfig" class="optionblock">
                     <div ng-repeat="option in options track by $index">
-                        <input type="text" class="option" placeholder="Option" ng-model="options[$index]"></input>
+                        <input type="text" class="form-control option" placeholder="Option" ng-model="options[$index]"></input>
                     </div>
               </div>
               <div class="createoptionbutton">
-              <i class="fa fa-plus" ng-click="addOption($event)"></i>
+                <img src="../images/add-icon.svg" ng-click="addOption($event)"></img>
               </div>
         </form>
         </div>
@@ -200,8 +210,16 @@
       <img class="doodle" src="../images/my-polls-doodle.png">
     </div>
   </div>
-  <div ng-repeat="room in profile.voted track by $index">
-      <p>{{room.title}}</p>
+  <div class="spacer"></div>
+  <div class="pagewrapper-2">
+    <h3>Active Polls</h3>
+    <div ng-repeat="room in profile.voted track by $index">
+        {{room.title}}
+    </div>
+    <h3>Created Polls</h3>
+    <div ng-repeat="room in profile.created track by $index">
+        {{room.title}}
+    </div>
   </div>
 </script>
 

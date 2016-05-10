@@ -43,6 +43,7 @@ a.redlink {
 }
 
 .footer {
+  clear: both;
   height: 100px;
   width: 100%;
   margin-top: 3em;
@@ -132,6 +133,11 @@ h4 {
   letter-spacing: normal;
 }
 
+h5 {
+  color: white;
+  letter-spacing: normal;
+}
+
 .doodle-section {
   height: 350px;
   width: 100%;
@@ -143,7 +149,8 @@ h4 {
 }
 
 .option{
-  width: 100%;
+  width: 93%;
+  float: left;
 }
 
 .icon {
@@ -159,16 +166,18 @@ h4 {
   fill:black;
 }
 
-.formLabelHandle{
-  width: 10%;
-  float: right;
-  position: relative;
-  cursor: pointer;
-}
-
 .govote {
   float:right;
   margin-top: 1em;
+}
+
+.vote-vote-block {
+  margin-bottom: 2em;
+}
+
+.vote-addoption-block {
+  clear: both;
+  margin-top: 4em;
 }
 
 .roomtitle {
@@ -181,7 +190,6 @@ h4 {
 }
 
 .roomlist {
-  margin-top: 2em;
   padding: 2em;
 }
 
@@ -223,6 +231,8 @@ h4 {
 .votebuttongroup {
   float:right;
   margin-top:2em;
+  margin-bottom: 3em;
+  clear: both;
 }
 
 .voteoption {
@@ -230,6 +240,7 @@ h4 {
   padding: 2em;
   padding-top: .5em;
   padding-bottom: 1em;
+  background-color: #AFAFAF;
 }
 
 .createroomblock {
@@ -272,5 +283,6 @@ li {
 
 .createoptionbutton {
   float: right;
+  margin-top: .6em;
   cursor: pointer;
 }

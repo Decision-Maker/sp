@@ -114,7 +114,7 @@ app.factory('auth', ['$http', '$window', '$state', function($http,$window,$state
     auth.getUser = function(){
       if(auth.isLoggedIn()){
         var token = auth.getToken();
-        return $http.post('/users/profile', {}, {headers: {Authorization: 'Bearer '+auth.getToken()}}).success(function(data){
+        return $http.get('/users/profile', {headers: {Authorization: 'Bearer '+auth.getToken()}}).success(function(data){
           profile.user = data.user;
           profile.created = data.created;
           profile.voted = data.voted;

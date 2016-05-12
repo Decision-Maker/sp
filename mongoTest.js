@@ -35,7 +35,7 @@ var saveUsers = new Promise(function(resolve, reject){
       nu.name = users[i].name;
       nu.setPassword(users[i].password);
       nu.save(function(err){
-          if(err){error == true}
+          if(err){error = true;}
           //console.log(users[savecount].name);
           savecount++;
           if(savecount == users.length){
@@ -60,8 +60,12 @@ saveUsers.then(function(res){
               if(err){console.log("Error on delete");}
           });
       }
+	  process.exit();
+	  console.log("error");
   });
 });
+
+
 
 // for(var i = 0; i < polls.length; i++){
 //     var nu = new db.model.Room();

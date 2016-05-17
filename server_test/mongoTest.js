@@ -3,6 +3,7 @@ var db = require('../models/models');
 var IRV = require('../voting-util/IRV');
 var clean = require('./clearData');
 
+
 mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 
 var users = [{name: "Barikhik", password: "Magmafury"},
@@ -29,6 +30,7 @@ function getIDfromList(name, list){
 }
 
 function createUser(user){
+  //console.log('makeing user, ' + user);
   return new Promise(function(resolve, reject){
     var nu = new db.model.User({name: user.name});
     nu.setPassword(user.password);
@@ -51,6 +53,7 @@ function createAllUsers(users){
 }
 
 function createOption(title, roomid){
+  //console.log('creating option, ' + title);
   return new Promise(function(resolve, reject){
     var nu = new db.model.Option({title: title, room: roomid});
     nu.save(function(err){
@@ -61,6 +64,7 @@ function createOption(title, roomid){
 }
 
 function createPoll(poll){
+  //console.log('creating poll, ' + poll);
   return new Promise(function(resolve, reject){
     var nu = new db.model.Room({title: poll.title, voteType: poll.voteType});
     db.model.User.findOne({name: poll.created}, function(err, user){
@@ -81,6 +85,27 @@ function createPoll(poll){
     });
   });
 }
+
+function createAllPolls(polls){
+  var p = [];
+  for (var i = 0; i < polls.length; i++){
+    p.push(createPoll(polls[i]));
+  }
+  return Promise.all(p);
+}
+
+var uP = createAllUsers(users);
+var pP = createAllPolls(polls);
+
+Promise.all([uP, pP]).then(function(val){
+  //console.log('everything finished');
+  for(var i = 0; i < val.length; i++){
+    for(var j = 0; j < val[i].length; j++){
+      console.log(val[i][j]);
+    }
+  }
+  clean.go();
+}, function(reason){console.err(reason); clean.go();});
 
 /*var saveUsers = new Promise(function(resolve, reject){
   var error = false;

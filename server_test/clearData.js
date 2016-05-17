@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
 var db = require('../models/models');
 
-mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
-
 var o = {};
 
 o.go = function(){

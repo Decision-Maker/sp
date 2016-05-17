@@ -1,3 +1,7 @@
+#mainContent{
+  min-height: calc(100% - 190px);
+}
+
 *:focus{
   outline: none
 }
@@ -46,7 +50,7 @@ a.redlink {
   clear: both;
   height: 100px;
   width: 100%;
-  margin-top: 3em;
+  /*margin-top: 3em;*/
   background-color: #D55A4D;
   bottom: 0;
 }
@@ -55,14 +59,13 @@ a.redlink {
   min-height: 100%;
 }
 
-.topbar {
-  padding: 4em;
-  padding-bottom: 1em;
-}
-
 .navbar-default {
   background-color: white !important;
   border-color: white;
+  height: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
 }
 
 .navbar-default .navbar-nav>li>a {
@@ -142,10 +145,6 @@ h5 {
   height: 350px;
   width: 100%;
   background-color: #F7ECE3;
-}
-
-.navbar {
-  margin-bottom: 0;
 }
 
 .option{

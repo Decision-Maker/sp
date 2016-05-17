@@ -19,15 +19,17 @@
   <style> .glyphicon-thumbs-up { cursor:pointer } </style>
 </head>
 <body ng-app="decisionMaker" ng-controller="MainCtrl">
-  <header class="navbar navbar-default topbar" ng-controller="NavCtrl">
-    <a href="#/home" class="pull-left logo"><img src="../images/logo.svg"></a>
-    <ul class="nav navbar-nav pull-right">
-      <li ng-show="isLoggedIn()"><a href="/#/profile"><img class="icon" src="../images/profile-icon.svg">   {{ currentUser() }}</a></li>
-      <li ng-show="isLoggedIn()"><a href="/#/create"><img class="icon" src="../images/add-icon.svg"> New Poll</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/login"><button class="btn btn-primary"> Log In </button></a></li>
-    </ul>
+  <header class="navbar navbar-default" ng-controller="NavCtrl">
+    <div class="col-md-10 col-md-offset-1">
+      <a href="#/home" class="pull-left logo"><img src="../images/logo.svg"></a>
+      <ul class="nav navbar-nav pull-right">
+        <li ng-show="isLoggedIn()"><a href="/#/profile"><img class="icon" src="../images/profile-icon.svg">   {{ currentUser() }}</a></li>
+        <li ng-show="isLoggedIn()"><a href="/#/create"><img class="icon" src="../images/add-icon.svg"> New Poll</a></li>
+        <li ng-hide="isLoggedIn()"><a href="/#/login"><button class="btn btn-primary"> Log In </button></a></li>
+      </ul>
+    </div>
   </header>
-  <div>
+  <div id="mainContent">
     <ui-view></ui-view>
   </div>
 

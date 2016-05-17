@@ -98,6 +98,7 @@
            <div ng-sortable="barConfig" class="optionblock">
                   <div ng-repeat="option in new track by $index">
                       <input type="text" class="form-control option" placeholder="Option" ng-model="new[$index]"></input>
+                      <span style="cursor: pointer;" ng-click="delete($index)">X</span>
                   </div>
             </div>
             <div class="createoptionbutton">
@@ -123,6 +124,7 @@
              <div ng-sortable="barConfig" class="optionblock">
                     <div ng-repeat="option in options track by $index">
                         <input type="text" class="form-control option" placeholder="Option" ng-model="options[$index]"></input>
+                        <span style="cursor: pointer;" ng-click="delete($index)">X</span>
                     </div>
               </div>
               <div class="createoptionbutton">

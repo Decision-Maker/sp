@@ -278,6 +278,13 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
     $scope.new.push("");
   }
 
+  $scope.delete = function(i){
+    if($scope.new.length < 2){
+      return;
+    }
+    $scope.new.splice(i, 1);
+  }
+
   $scope.submitNewOptions = function(){
     rooms.addOptions($stateParams.id, $scope.new);
     $scope.new = [""];
@@ -360,6 +367,13 @@ function($scope, rooms, auth){
           // @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
       }
   };
+
+  $scope.delete = function(i){
+    if($scope.options.length < 3){
+      return;
+    }
+    $scope.options.splice(i, 1);
+  }
 
   $scope.addRoom = function(){
     if(!$scope.title){

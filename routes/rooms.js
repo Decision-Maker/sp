@@ -48,7 +48,7 @@ router.post('/:room/options', function(req, res, next) {
 	var size = req.body.options.length;
 	var error = false;
 	for (i = 0; i < size; i++){
-		  console.log("loop started");
+		  //console.log("loop started");
 	    option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
 	    option.save(function(err){
 					if(err) {

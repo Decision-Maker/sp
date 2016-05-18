@@ -9,7 +9,7 @@ var IRV = {};
 IRV.getResult = function(room_id, callback){
 	db.model.Option.find({room: room_id}, function(err, ops){ // get options list for the given room
 		db.model.Vote.find({room: room_id}, function(err, votes){ // get votes for this room
-			var linkedLists = makedLinkedVoteList(votes); // turn votes into array of linked lists
+			var linkedLists = maked LinkedVoteList(votes); // turn votes into array of linked lists
 			var winner = false;
 			while(!winner){
 				fillCounts(room_id, ops, linkedLists, function(err, results){ // count up first preference votes like in FPP system

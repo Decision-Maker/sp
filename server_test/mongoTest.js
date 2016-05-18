@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var db = require('../models/models');
-var IRV = require('../voting-util/IRV');
+//var IRV = require('../voting-util/IRV');
 var clean = require('./clearData');
 
 
@@ -95,16 +95,30 @@ function createAllPolls(polls){
 }
 
 var uP = createAllUsers(users);
-var pP = createAllPolls(polls);
 
-Promise.all([uP, pP]).then(function(val){
-  //console.log('everything finished');
-  for(var i = 0; i < val.length; i++){
-    for(var j = 0; j < val[i].length; j++){
-      console.log(val[i][j]);
+uP.then(function(usrs){
+  var pP = createAllPolls(polls);
+  pP
+  .then(function(pls){
+    return [usrs, pls];
+  }, function(reason){
+    console.err(reason); clean.go();
+  })
+  .then(function(val){
+    //make votes
+    return val; //[uP, pP, vP]
+  }, function(reason){
+    console.err(reason); clean.go();
+  })
+  .then(function(val){
+    //display everything
+    for(var i = 0; i < val.length; i++){
+      for(var j = 0; j < val[i].length; j++){
+        console.log(val[i][j]);
+      }
     }
-  }
-  clean.go();
+    clean.go();
+  }, function(reason){console.err(reason); clean.go();});;
 }, function(reason){console.err(reason); clean.go();});
 
 /*var saveUsers = new Promise(function(resolve, reject){

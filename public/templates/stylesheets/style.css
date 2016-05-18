@@ -8,6 +8,7 @@
 
 body {
   font-family: 'Montserrat', sans-serif;
+  color: #5E5E5E;
   background: white;
   border-width: .2em;
 }
@@ -75,7 +76,11 @@ a.redlink {
 
 .doodle-section {
   position: relative;
+  width: 100%;
+  background-color: #F7ECE3;
 }
+
+
 .section-text {
   position: absolute;
   margin-left: 10em;
@@ -93,8 +98,7 @@ a.redlink {
 }
 
 .section-description {
-  width: 55%;
-  margin-bottom: 1.5em;
+  width: 80%;
 }
 
 .footernav {
@@ -139,12 +143,6 @@ h4 {
 h5 {
   color: white;
   letter-spacing: normal;
-}
-
-.doodle-section {
-  height: 350px;
-  width: 100%;
-  background-color: #F7ECE3;
 }
 
 .option{
@@ -284,4 +282,65 @@ li {
   float: right;
   margin-top: .6em;
   cursor: pointer;
+}
+
+.centerblock {
+  display: table;
+  margin: 0 auto;
+}
+
+.homesection {
+  text-align: center;
+  padding: 2em;
+}
+
+.wrapper {
+  margin: 0 auto;
+}
+
+.homewrapper-1 {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.homewrapper-2 {
+  width: 80%;
+  margin: 0 auto;
+  padding: 2em;
+  padding-bottom: 3em;
+}
+
+img.homeicon {
+  height: 100px;
+  margin-bottom: 1em;
+}
+
+img.doodle {
+  display: table-cell;
+  bottom: 0;
+}
+
+.doodle-padding {
+  margin-bottom: 0 !important;
+  padding-top: 2em !important;
+}
+
+.doodle-text {
+  margin-bottom: 1.5em;
+}
+
+.doodle-description {
+  margin-top: 7em;
+}
+
+.tweakleft {
+  margin-left: 2.5em;
+}
+
+.tweakright {
+  margin-right: 1em;
+}
+
+.center-description {
+  margin-top: 10em;
 }

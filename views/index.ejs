@@ -65,12 +65,22 @@
 
 <script type="text/ng-template" id="/rooms.html">
   <div class="doodle-section">
-    <div class="section-text">
-      <div class="section-title"><h1>Pick-One Poll<h1></div>
-      <div class="section-description"><nobr>Select the option that is your #1 choice.</nobr></div>
-    </div>
-    <div class="section-img">
-      <img class="doodle" src="../images/pick-one-doodle.png">
+    <div class="homewrapper-1">
+      <div class="row">
+        <div class="col-md-6">
+            <div id="centerblock">
+              <div class="center-description">
+                <div><h1>Pick-One Poll<h1></div>
+                <div>Select the option that is your #1 choice.</div>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-6 doodle-padding">
+          <div id="centerblock">
+            <img class="doodle" src="../images/pick-one-doodle.png">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="pagewrapper-2">
@@ -206,15 +216,24 @@
 
 <script type="text/ng-template" id="/profile.html">
   <div class="doodle-section">
-    <div class="section-text">
-      <div class="section-title"><h1>My Polls<h1></div>
-      <div class="section-description">Here are some polls you've created, voted on, or interacted with in the past.</div>
-    </div>
-    <div class="section-img">
-      <img class="doodle" src="../images/my-polls-doodle.png">
+      <div class="homewrapper-1">
+        <div class="row">
+          <div class="col-md-6 doodle-padding">
+            <div id="centerblock">
+              <div class="doodle-description">
+                <div><h1>My Polls<h1></div>
+                <div class="doodle-text">Here are some polls you've created, voted on, or interacted with in the past.</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 doodle-padding">
+            <div id="centerblock">
+              <img class="doodle" src="../images/my-polls-doodle.png">
+            </div>
+          </div>
+      </div>
     </div>
   </div>
-  <div class="spacer"></div>
   <div class="pagewrapper-2">
     <h3>Active Polls</h3>
     <div ng-repeat="room in profile.voted track by $index">
@@ -229,16 +248,59 @@
 
 <script type="text/ng-template" id="/home.html">
   <div class="doodle-section">
-    <div class="section-text">
-      <div class="section-title"><h1>Make decisions together.<h1></div>
-      <div class="section-description">We’ll help you and your friends come to a group consensus. Vote on what you want and let us do the rest.</div>
-      <a href="/#/create"><button type="submit" class="btn btn-primary">Create A Poll</button></a>
+    <div class="homewrapper-1">
+      <div class="row">
+          <div class="col-md-6">
+            <div class="centerblock">
+              <div class="doodle-description">
+                <div><h1>Make decisions together.<h1></div>
+                  <div class="doodle-text">We’ll help you and your friends come to a group consensus. Vote on what you want and let us do the rest.</div>
+                  <a href="/#/create"><button type="submit" class="btn btn-primary">Create A Poll</button></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 doodle-padding">
+            <div class="centerblock">
+              <img class="doodle" src="../images/home-page-doodle.png">
+            </div>
+          </div>
+      </div>
     </div>
-    <div class="section-img">
-      <img class="doodle" src="../images/home-page-doodle.png">
+  </div>
+  <div class="homewrapper-2">
+    <div class="row">
+      <div class="col-md-4 homesection">
+        <div class="centerblock">
+          <h1>Collaborate</h1>
+          <img class="homeicon tweakright" src="../images/home-icon-1.svg">
+        </div>
+        <div>
+          Create a poll where you and others can submit options on where to eat,
+          what to read, or any topic of your choice.
+        </div>
+      </div>
+      <div class="col-md-4 homesection">
+        <h1>Vote</h1>
+        <div class="centerblock">
+          <img class="homeicon tweakleft" src="../images/home-icon-2.svg">
+        </div>
+        <div>
+          Share your poll and get others involved! Anyone with the shared link
+          can vote on options by rank or top choice.
+        </div>
+      </div>
+      <div class="col-md-4 homesection">
+        <h1>Decide</h1>
+        <div class="centerblock">
+          <img class="homeicon" src="../images/home-icon-3.svg">
+        </div>
+        <div>
+          Once the poll is closed, votes are tallied and everyone involved can view
+          the final decision. No more hassle!
+        </div>
+      </div>
     </div>
   </div>
 </script>
-
 
 </html>

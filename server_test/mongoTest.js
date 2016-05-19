@@ -23,7 +23,7 @@ var polls = [{title: "best ale", options: ["brown","red","blonde","dark","light"
                 {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "FPP"},
                 {title: "best pet", options: ["rabbit","dog","cat","mouse","serpent"], created: "Lorgunli", voteType: "FPP"}];
 
-var votes = [{user: "Barikhik", poll: "best ale", options: ["brown","red","blonde","dark","light"]}];
+var votes = [{user: "Barikhik", poll: "best ale", options: ["brown","red","blonde","light","dark"]}];
 
 var userObj = [];
 
@@ -53,9 +53,10 @@ function createVote(vote, users, polls){
     var userObject = getUser(vote.user, users);
     var pollObject = getPoll(vote.poll, polls);
     var optionsList = getOptionList(vote.options, pollObject.options);
-    console.log(userObject)
-    console.log()
-    switch(pollObject.voteType){
+    console.log(userObject);
+    console.log(pollObject);
+    console.log(optionsList);
+    switch(pollObject.poll.voteType){
       case 'FPP':
         FPP.vote(userObject, pollObject, optionsList[0], function(err){
           if(err) return reject(new Error("voting error"));
@@ -160,7 +161,7 @@ function createAllPolls(polls){
 }
 
 createAllUsers(users).then(function(usrs){
-  return Promise.all([users, createAllPolls(polls)]);
+  return Promise.all([usrs, createAllPolls(polls)]);
 }, function(reason){
   console.log(reason); clean.go();
 }).then(function(val){

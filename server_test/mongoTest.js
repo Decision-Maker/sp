@@ -87,12 +87,6 @@ function createPoll(poll){
   });
 }
 
-/*function createPoll(poll, users, callback){
-  var nu = new db.model.Room({title: poll.title, voteType: poll.voteType});
-  var u = users.filter(function(e){return e.name === poll.created;})[0];
-  nu.created = u._id;
-  nu.save
-}*/
 
 function createAllPolls(polls){
   var p = [];

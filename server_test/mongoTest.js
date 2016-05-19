@@ -58,20 +58,21 @@ function createVote(vote, users, polls){
     console.log(optionsList);
     switch(pollObject.poll.voteType){
       case 'FPP':
-        FPP.vote(userObject, pollObject, optionsList[0], function(err){
+        console.log('FPP');
+        FPP.vote(userObject, pollObject.poll, optionsList[0], function(err){
           if(err) return reject(new Error("voting error"));
           console.log('voted');
           resolve(vote);
         });
         break;
-
       case 'IRV':
-        IRV.vote(userObject, pollObject, optionsList, function(err){
+        IRV.vote(userObject, pollObject.poll, optionsList, function(err){
           if(err) return reject(new Error("voting error"));
           resolve(vote);
         });
         break;
       default:
+        console.log('bad votetype');
         reject(new Error("unknown voteType"));
         break;
     }
@@ -151,7 +152,6 @@ function createPoll(poll){
   });
 }
 
-
 function createAllPolls(polls){
   var p = [];
   for (var i = 0; i < polls.length; i++){
@@ -160,22 +160,27 @@ function createAllPolls(polls){
   return Promise.all(p);
 }
 
+
+//main
 createAllUsers(users).then(function(usrs){
   return Promise.all([usrs, createAllPolls(polls)]);
 }, function(reason){
+  console.log('error in making users');
   console.log(reason); clean.go();
 }).then(function(val){
-  //make votes
-  return Promise.all(val[0], val[1], createAllVotes(votes, val[0], val[1])); //[uP, pP, vP]
+  return Promise.all([val[0], val[1], createAllVotes(votes, val[0], val[1])]); //[uP, pP, vP]
 }, function(reason){
-  console.log("error in voting");
+  console.log("error in making polls");
   console.log(reason); clean.go();
 }).then(function(val){
   //display everything
+  //console.log(val);
   for(var i = 0; i < val.length; i++){
     for(var j = 0; j < val[i].length; j++){
       console.log(val[i][j]);
     }
   }
     clean.go();
-}, function(reason){console.err(reason); clean.go();});
+}, function(reason){
+  console.log("error in voting");
+  console.log(reason); clean.go();});

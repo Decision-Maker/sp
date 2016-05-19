@@ -130,7 +130,7 @@ function createAllPolls(polls){
 }
 
 createAllUsers(users).then(function(usrs){
-  return Promise.all([users, createAllPolls(polls)]);
+  return Promise.all([usrs, createAllPolls(polls)]);
 }, function(reason){
   console.log(reason); clean.go();
 }).then(function(val){

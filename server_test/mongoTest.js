@@ -36,7 +36,7 @@ function getPoll(title, pollsList){
   return poll;
 }
 
-// 
+//
 function getOptionList(userOrder, optionTitles){
   var optionList = []
   for(var i = 0; i < userOrder.length; i++){
@@ -129,7 +129,6 @@ function createAllPolls(polls){
   return Promise.all(p);
 }
 
-<<<<<<< HEAD
 var uP = createAllUsers(users);
 
 uP.then(function(usrs){
@@ -156,49 +155,3 @@ uP.then(function(usrs){
     clean.go();
   }, function(reason){console.err(reason); clean.go();});;
 }, function(reason){console.err(reason); clean.go();});
-
-
-
-
-
-
-/*var saveUsers = new Promise(function(resolve, reject){
-  var error = false;
-  for(var i = 0; i < users.length; i++){
-      var nu = new db.model.User();
-      var savecount = 0;
-      nu.name = users[i].name;
-      nu.setPassword(users[i].password);
-      nu.save(function(err){
-          if(err){error = true;}
-          //console.log(users[savecount].name);
-          savecount++;
-          if(savecount == users.length){
-            if(error){
-              reject(new Error("problem on save"));
-            }else{
-              resolve("");
-            }
-          }
-      });
-      userObj.push(nu);
-=======
-createAllUsers(users).then(function(usrs){
-  return Promise.all([usrs, createAllPolls(polls)]);
-}, function(reason){
-  console.log(reason); clean.go();
-}).then(function(val){
-  //make votes
-  return val; //[uP, pP, vP]
-}, function(reason){
-  console.log(reason); clean.go();
-}).then(function(val){
-  //display everything
-  for(var i = 0; i < val.length; i++){
-    for(var j = 0; j < val[i].length; j++){
-      console.log(val[i][j]);
-    }
->>>>>>> 8e74462c7dfa2dce543ce88be51f865ed8163fc7
-  }
-  clean.go();
-}, function(reason){console.log(reason); clean.go();});

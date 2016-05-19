@@ -102,6 +102,7 @@ function createPoll(poll){
     var nu = new db.model.Room({title: poll.title, voteType: poll.voteType});
     db.model.User.findOne({name: poll.created}, function(err, user){
       if(err) return reject(new Error(poll.title + ', on finding user, ' + err));
+      if(!user) return reject(new Error(poll.title + ', on finding user(user null), ' + err));
       nu.created = user._id;
       nu.save(function(err){
         if(err) return reject(new Error(poll.title + ', on creating room, ' + err));
@@ -119,6 +120,13 @@ function createPoll(poll){
   });
 }
 
+/*function createPoll(poll, users, callback){
+  var nu = new db.model.Room({title: poll.title, voteType: poll.voteType});
+  var u = users.filter(function(e){return e.name === poll.created;})[0];
+  nu.created = u._id;
+  nu.save
+}*/
+
 function createAllPolls(polls){
   var p = [];
   for (var i = 0; i < polls.length; i++){
@@ -127,6 +135,7 @@ function createAllPolls(polls){
   return Promise.all(p);
 }
 
+<<<<<<< HEAD
 var uP = createAllUsers(users);
 
 uP.then(function(usrs){
@@ -179,27 +188,23 @@ uP.then(function(usrs){
           }
       });
       userObj.push(nu);
+=======
+createAllUsers(users).then(function(usrs){
+  return Promise.all([usrs, createAllPolls(polls)]);
+}, function(reason){
+  console.log(reason); clean.go();
+}).then(function(val){
+  //make votes
+  return val; //[uP, pP, vP]
+}, function(reason){
+  console.log(reason); clean.go();
+}).then(function(val){
+  //display everything
+  for(var i = 0; i < val.length; i++){
+    for(var j = 0; j < val[i].length; j++){
+      console.log(val[i][j]);
+    }
+>>>>>>> 8e74462c7dfa2dce543ce88be51f865ed8163fc7
   }
-});*/
-
-/*saveUsers.then(function(res){
-  db.model.User.findOne({name: "Barikhik"}, function(err, us){
-      if(err){console.log("ERROR");}
-      console.log(us._id.equals(getIDfromList("Barikhik", userObj)));
-      for(var i = 0; i < users.length; i++){
-          console.log(users[i]);
-          db.model.User.remove({name: users[i].name}, function(err){
-              if(err){console.log("Error on delete");}
-          });
-      }
-	    clean.go();
-	    console.log("error");
-  });
-});*/
-
-
-
-// for(var i = 0; i < polls.length; i++){
-//     var nu = new db.model.Room();
-//     // nu.title
-// }
+  clean.go();
+}, function(reason){console.log(reason); clean.go();});

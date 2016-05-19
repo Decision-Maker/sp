@@ -129,6 +129,7 @@ function createAllPolls(polls){
   return Promise.all(p);
 }
 
+<<<<<<< HEAD
 var uP = createAllUsers(users);
 
 uP.then(function(usrs){
@@ -151,6 +152,22 @@ uP.then(function(usrs){
       for(var j = 0; j < val[i].length; j++){
         // console.log(val[i][j]);
       }
+=======
+createAllUsers(users).then(function(usrs){
+  return Promise.all(users, createAllPolls(polls));
+}, function(reason){
+  console.log(reason); clean.go();
+}).then(function(val){
+  //make votes
+  return val; //[uP, pP, vP]
+}, function(reason){
+  console.log(reason); clean.go();
+}).then(function(val){
+  //display everything
+  for(var i = 0; i < val.length; i++){
+    for(var j = 0; j < val[i].length; j++){
+      console.log(val[i][j]);
+>>>>>>> parent of 8e74462... then statements now on single tier chain
     }
     clean.go();
   }, function(reason){console.err(reason); clean.go();});;

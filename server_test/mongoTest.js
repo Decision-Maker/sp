@@ -24,6 +24,39 @@ var polls = [{title: "best ale", options: ["brown","red","blonde","dark","light"
 
 var userObj = [];
 
+// takes user name string, list of user objects, returns one user object with matching name
+function getUser(name, userList){
+  var user = userList.filter(function(x){return x.name === name})[0];
+  return user;
+}
+
+// takes list of poll objects, poll title as string, returns poll object with that title
+function getPoll(title, pollsList){
+  var poll = pollsList.filter(function(x){return x.title === title})[0];
+  return poll;
+}
+
+// 
+function getOptionList(userOrder, optionTitles){
+  var optionList = []
+  for(var i = 0; i < userOrder.length; i++){
+    optionList.push(optionTitles.filter(function(x){return x.title === userOrder[i]})[0]);
+  }
+  return optionList;
+}
+
+// var user = getUser("Barikhik", users);
+// console.log(user);
+// var poll = getPoll("best ale", polls)
+// console.log(poll)
+// var optionList = getOptionList(["red","dark","brown","light","blonde"], [{title: 'dark'}, {title: 'light'},{title: 'blonde'},{title: 'brown'},{title: 'red'}])
+// console.log(optionList)
+
+function vote(user, poll, options){
+
+}
+
+
 function getIDfromList(name, list){
     var user = list.filter(function(x){return x.name === name})[0];
     return user._id;
@@ -114,12 +147,17 @@ uP.then(function(usrs){
     //display everything
     for(var i = 0; i < val.length; i++){
       for(var j = 0; j < val[i].length; j++){
-        console.log(val[i][j]);
+        // console.log(val[i][j]);
       }
     }
     clean.go();
   }, function(reason){console.err(reason); clean.go();});;
 }, function(reason){console.err(reason); clean.go();});
+
+
+
+
+
 
 /*var saveUsers = new Promise(function(resolve, reject){
   var error = false;

@@ -69,6 +69,7 @@ function createPoll(poll){
     var nu = new db.model.Room({title: poll.title, voteType: poll.voteType});
     db.model.User.findOne({name: poll.created}, function(err, user){
       if(err) return reject(new Error(poll.title + ', on finding user, ' + err));
+      if(!user) return reject(new Error(poll.title + ', on finding user(user null), ' + err));
       nu.created = user._id;
       nu.save(function(err){
         if(err) return reject(new Error(poll.title + ', on creating room, ' + err));
@@ -86,6 +87,13 @@ function createPoll(poll){
   });
 }
 
+/*function createPoll(poll, users, callback){
+  var nu = new db.model.Room({title: poll.title, voteType: poll.voteType});
+  var u = users.filter(function(e){return e.name === poll.created;})[0];
+  nu.created = u._id;
+  nu.save
+}*/
+
 function createAllPolls(polls){
   var p = [];
   for (var i = 0; i < polls.length; i++){
@@ -94,74 +102,21 @@ function createAllPolls(polls){
   return Promise.all(p);
 }
 
-var uP = createAllUsers(users);
-
-uP.then(function(usrs){
-  var pP = createAllPolls(polls);
-  pP
-  .then(function(pls){
-    return [usrs, pls];
-  }, function(reason){
-    console.err(reason); clean.go();
-  })
-  .then(function(val){
-    //make votes
-    return val; //[uP, pP, vP]
-  }, function(reason){
-    console.err(reason); clean.go();
-  })
-  .then(function(val){
-    //display everything
-    for(var i = 0; i < val.length; i++){
-      for(var j = 0; j < val[i].length; j++){
-        console.log(val[i][j]);
-      }
+createAllUsers(users).then(function(usrs){
+  return Promise.all(users, createAllPolls(polls));
+}, function(reason){
+  console.log(reason); clean.go();
+}).then(function(val){
+  //make votes
+  return val; //[uP, pP, vP]
+}, function(reason){
+  console.log(reason); clean.go();
+}).then(function(val){
+  //display everything
+  for(var i = 0; i < val.length; i++){
+    for(var j = 0; j < val[i].length; j++){
+      console.log(val[i][j]);
     }
-    clean.go();
-  }, function(reason){console.err(reason); clean.go();});;
-}, function(reason){console.err(reason); clean.go();});
-
-/*var saveUsers = new Promise(function(resolve, reject){
-  var error = false;
-  for(var i = 0; i < users.length; i++){
-      var nu = new db.model.User();
-      var savecount = 0;
-      nu.name = users[i].name;
-      nu.setPassword(users[i].password);
-      nu.save(function(err){
-          if(err){error = true;}
-          //console.log(users[savecount].name);
-          savecount++;
-          if(savecount == users.length){
-            if(error){
-              reject(new Error("problem on save"));
-            }else{
-              resolve("");
-            }
-          }
-      });
-      userObj.push(nu);
   }
-});*/
-
-/*saveUsers.then(function(res){
-  db.model.User.findOne({name: "Barikhik"}, function(err, us){
-      if(err){console.log("ERROR");}
-      console.log(us._id.equals(getIDfromList("Barikhik", userObj)));
-      for(var i = 0; i < users.length; i++){
-          console.log(users[i]);
-          db.model.User.remove({name: users[i].name}, function(err){
-              if(err){console.log("Error on delete");}
-          });
-      }
-	    clean.go();
-	    console.log("error");
-  });
-});*/
-
-
-
-// for(var i = 0; i < polls.length; i++){
-//     var nu = new db.model.Room();
-//     // nu.title
-// }
+  clean.go();
+}, function(reason){console.log(reason); clean.go();});

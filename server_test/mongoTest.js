@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var db = require('../models/models');
 //var IRV = require('../voting-util/IRV');
+var FPP = require('../voting-util/FPP');
 var clean = require('./clearData');
 
 
@@ -15,12 +16,14 @@ var users = [{name: "Barikhik", password: "Magmafury"},
                 {name: "Noggouk", password: "Steelbreaker"},
                 {name: "Befrot", password: "Bristletoe"},
                 {name: "Bungrom", password: "Hornhead"},
-                {name: "Arazzoli", password: "Cavebraid"}]
+                {name: "Arazzoli", password: "Cavebraid"}];
 
-var polls = [{title: "best ale", options: ["brown","red","blonde","dark","light"], created: "Doungrak", voteType: "IRV"},
-                {title: "best beard", options: ["bushy","big","short","fake","long"], created: "Kulaeck", voteType: "IRV"},
-                {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "IRV"},
-                {title: "best pet", options: ["rabbit","dog","cat","mouse","serpent"], created: "Lorgunli", voteType: "IRV"}]
+var polls = [{title: "best ale", options: ["brown","red","blonde","dark","light"], created: "Doungrak", voteType: "FPP"},
+                {title: "best beard", options: ["bushy","big","short","fake","long"], created: "Kulaeck", voteType: "FPP"},
+                {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "FPP"},
+                {title: "best pet", options: ["rabbit","dog","cat","mouse","serpent"], created: "Lorgunli", voteType: "FPP"}];
+
+var votes = [{user: "Barikhik", poll: "best ale", options: ["brown","red","blonde","dark","light"]}];
 
 var userObj = [];
 
@@ -32,28 +35,55 @@ function getUser(name, userList){
 
 // takes list of poll objects, poll title as string, returns poll object with that title
 function getPoll(title, pollsList){
-  var poll = pollsList.filter(function(x){return x.title === title})[0];
+  var poll = pollsList.filter(function(x){return x.poll.title === title})[0];
   return poll;
 }
 
 //
-function getOptionList(userOrder, optionTitles){
-  var optionList = []
+function getOptionList(userOrder, options){
+  var optionList = [];
   for(var i = 0; i < userOrder.length; i++){
-    optionList.push(optionTitles.filter(function(x){return x.title === userOrder[i]})[0]);
+    optionList.push(options.filter(function(x){return x.title === userOrder[i]})[0]);
   }
   return optionList;
 }
 
-// var user = getUser("Barikhik", users);
-// console.log(user);
-// var poll = getPoll("best ale", polls)
-// console.log(poll)
-// var optionList = getOptionList(["red","dark","brown","light","blonde"], [{title: 'dark'}, {title: 'light'},{title: 'blonde'},{title: 'brown'},{title: 'red'}])
-// console.log(optionList)
+function createVote(vote, users, polls){
+  return new Promise(function(resolve, reject){
+    var userObject = getUser(vote.user, users);
+    var pollObject = getPoll(vote.poll, polls);
+    var optionsList = getOptionList(vote.options, pollObject.options);
+    console.log(userObject)
+    console.log()
+    switch(pollObject.voteType){
+      case 'FPP':
+        FPP.vote(userObject, pollObject, optionsList[0], function(err){
+          if(err) return reject(new Error("voting error"));
+          console.log('voted');
+          resolve(vote);
+        });
+        break;
 
-function vote(user, poll, options){
+      case 'IRV':
+        IRV.vote(userObject, pollObject, optionsList, function(err){
+          if(err) return reject(new Error("voting error"));
+          resolve(vote);
+        });
+        break;
+      default:
+        reject(new Error("unknown voteType"));
+        break;
+    }
+  });
+}
 
+function createAllVotes(votes, users, polls){
+  console.log("voting started");
+  var v = [];
+  for (var i = 0; i < votes.length; i++){
+    v.push(createVote(votes[i], users, polls));
+  }
+  return Promise.all(v);
 }
 
 
@@ -135,8 +165,9 @@ createAllUsers(users).then(function(usrs){
   console.log(reason); clean.go();
 }).then(function(val){
   //make votes
-  return val; //[uP, pP, vP]
+  return Promise.all(val[0], val[1], createAllVotes(votes, val[0], val[1])); //[uP, pP, vP]
 }, function(reason){
+  console.log("error in voting");
   console.log(reason); clean.go();
 }).then(function(val){
   //display everything

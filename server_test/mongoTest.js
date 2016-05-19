@@ -129,32 +129,8 @@ function createAllPolls(polls){
   return Promise.all(p);
 }
 
-<<<<<<< HEAD
-var uP = createAllUsers(users);
-
-uP.then(function(usrs){
-  var pP = createAllPolls(polls);
-  pP
-  .then(function(pls){
-    return [usrs, pls];
-  }, function(reason){
-    console.err(reason); clean.go();
-  })
-  .then(function(val){
-    //make votes
-    return val; //[uP, pP, vP]
-  }, function(reason){
-    console.err(reason); clean.go();
-  })
-  .then(function(val){
-    //display everything
-    for(var i = 0; i < val.length; i++){
-      for(var j = 0; j < val[i].length; j++){
-        // console.log(val[i][j]);
-      }
-=======
 createAllUsers(users).then(function(usrs){
-  return Promise.all(users, createAllPolls(polls));
+  return Promise.all([users, createAllPolls(polls)]);
 }, function(reason){
   console.log(reason); clean.go();
 }).then(function(val){
@@ -167,8 +143,7 @@ createAllUsers(users).then(function(usrs){
   for(var i = 0; i < val.length; i++){
     for(var j = 0; j < val[i].length; j++){
       console.log(val[i][j]);
->>>>>>> parent of 8e74462... then statements now on single tier chain
     }
+  }
     clean.go();
-  }, function(reason){console.err(reason); clean.go();});;
 }, function(reason){console.err(reason); clean.go();});

@@ -173,6 +173,10 @@ createAllUsers(users).then(function(usrs){
   console.log("error in making polls");
   console.log(reason); clean.go();
 }).then(function(val){
+  //get results
+}, function(reason){
+  console.log(reason); clean.go();
+}).then(function(val){
   //display everything
   //console.log(val);
   for(var i = 0; i < val.length; i++){

@@ -8,41 +8,49 @@ var IRV = {};
 // does this work for ties?
 IRV.getResult = function(room_id, callback){
 	db.model.Option.find({room: room_id}, function(err, ops){ // get options list for the given room
-		db.model.Vote.find({room: room_id}, function(err, votes){ // get votes for this room
+		db.model.Vote.find({room: room_id}, function(err, votes){ // get all votes for this room
 			var linkedLists = makeLinkedVoteList(votes); // turn votes into array of linked lists
 			var winner = false;
 			while(!winner){
-				fillCounts(room_id, ops, linkedLists, function(err, results){ // count up first preference votes like in FPP system
-					results.sort(function(a, b){
-						return b.count - a.count;
-					});
-					if(results[0] > (linkedLists.length/2)){ // If one option has the majority
-						winner = true;
-						callback(null, results);
-					} else { // Need to remove the option in last place
-						var loser = results[ops.length - 1] // least number of first place votes
-						ops = ops.filter(function(o){return !o_id.equals(loser._id);});
-						// REMOVE LOSER
-						for(i = 0; i < linkedLists.length; i++){
-							var current = linkedLists[i];
-							if(current._id.equals(loser._id)){ // the head is the loser
-								if(current.next != null){ // should always be the case?
-									linkedLists[i] = current.next;
-								}
-							} else { 									// an option other than the head is the loser
-								var previous = current;
-								current = current.next;
-								while(current != null){
-									if(current._id.equals(loser._id)){ //?
-										previous.next = current.next;
-									}
+				var counts = fillCounts(room_id, ops, linkedLists); // count up first preference votes like in FPP system
+				counts = counts.sort(function(a, b){return b.count - a.count;});
+				console.log("counts ", counts);
+				console.log("needed to win ", linkedLists.length/2);
+				if(counts[0].count >= (linkedLists.length/2)){ // If one option has the majority BREAKS TIES ARBITRARILY
+					console.log("WINNER");
+					winner = true;
+					callback(null, counts); 																									// CHANGE TO LIST OF WINNERS
+				} else { // Need to remove the option in last place
+					var loser = counts[ops.length - 1] // least number of first place votes, BREAKS TIES ARBITRARILY
+					console.log("loser", loser.title);
+					ops = ops.filter(function(o){return !(o.title == loser.title);});
+					console.log("options", ops);
+					// REMOVE LOSER
+					for(i = 0; i < linkedLists.length; i++){
+						var current = linkedLists[i];
+						// console.log("head", current);
+						if(current.title == loser.title){ // the head is the loser
+							console.log("found loser at head")
+							if(current.next != null){ // should always be the case?
+								linkedLists[i] = current.next;
+								current.next.head = true;
+								// console.log("current.next ", current.next);
+							}
+						} else { 									// an option other than the head is the loser
+							var previous = current;
+							current = current.next;
+							while(current){
+								if(current.title == loser.title){
+									previous.next = current.next;
+								} else {
 									previous = current;
-									current = current.next;
 								}
+								console.log(current);
+								current = current.next;
 							}
 						}
 					}
-				});
+				}
 			}
 		});
 	});
@@ -55,17 +63,17 @@ function fillCounts(room_id, ops, votes, callback){
 		other.count = votes.filter(function(v){return v.option.equals(ops[i]._id);}).length;
 		newList.push(other);
 	}
-	callback(null, newList);
+	return newList;
 }
 
 function makeLinkedVoteList(votes){
-	var result = [];
+	var list = []; // list of heads
 	for(i = 0; i < votes.length; i++){
 		if(votes[i].head){
-			result.push(linkedListVoteTracersal(votes[i], votes));
+			list.push(linkedListVoteTraversal(votes[i], votes));
 		}
 	}
-	return results;
+	return list;
 }
 
 function linkedListVoteTraversal(head, votes){

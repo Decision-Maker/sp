@@ -245,11 +245,11 @@
   <div class="pagewrapper-2">
     <h3>Active Polls</h3>
     <div ng-repeat="room in profile.voted track by $index">
-        {{room.title}}
+        <a href="#/rooms/{{room._id}}">{{room.title}}</a>
     </div>
     <h3>Created Polls</h3>
     <div ng-repeat="room in profile.created track by $index">
-        {{room.title}}
+        <a href="#/results/{{room._id}}">{{room.title}}</a>
     </div>
   </div>
 </script>

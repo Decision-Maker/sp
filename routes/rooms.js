@@ -95,7 +95,22 @@ router.post('/:room/votes', auth, function(req, res, next) {
 	});
 });
 
-
+// Change Room State===========================================================
+// ============================================================================
+router.post('/:room/statechange', auth, function(req, res, next) {
+	db.model.User.findOne({name: req.payload.username}, function(err, u){
+		if (err) {
+			return handleError(err)
+		}
+		db.model.Room.find({_id: req.room._id}, function(err, room){
+  			if (err) handleError(err);
+  			if (room.created === u._id){
+  				db.model.Room.update({_id: room._id}, {state: 'voting'});
+  			}
+		 }
+	}
+}
+	
 // Roomrequests ===============================================================
 // =============================================================================
 

@@ -95,8 +95,8 @@ IRV.vote = function(user, room, options, callback){
 
 	db.model.Vote.find({room: room._id, user: user._id}, function(err, votes){
 		if(err){handleError(err);}
-
-		if(votes){
+		console.log(votes);
+		if(votes.length > 0){
 			console.log("user has already voted on this poll, replacing vote");
 			db.model.Vote.remove({room: room._id, user: user._id}, function(err){
 				newVote(user, room, options, callback);

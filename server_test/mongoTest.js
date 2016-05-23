@@ -35,7 +35,8 @@ var votes = [
             // {user: "Kulaeck", poll: "best ale", options: ["brown"]}, // same user can vote twice on same poll?
 
             // TEST IRV
-            {user: "Throfrig",   poll: "best beard", options: ["bushy","big","braided"]}, // eliminate bushy, big wins
+            {user: "Throfrig",   poll: "best beard", options: ["big","bushy","braided"]}, // eliminate bushy, big wins
+            {user: "Throfrig",   poll: "best beard", options: ["bushy","big","braided"]},
             {user: "Lorgunli",   poll: "best beard", options: ["big","braided","bushy"]},
             {user: "Groondon",   poll: "best beard", options: ["big","bushy","braided"]},
             {user: "Noggouk",    poll: "best beard", options: ["braided","bushy","big"]},
@@ -233,11 +234,11 @@ createAllUsers(users).then(function(usrs){
      console.log(reason); clean.go();
 }).then(function(val){
    //display everything
-   for(var i = 0; i < val.length; i++){
-      for(var j = 0; j < val[i].length; j++){
-         console.log(val[i][j]);
-      }
-   }
+   // for(var i = 0; i < val.length; i++){
+   //    for(var j = 0; j < val[i].length; j++){
+   //       console.log(val[i][j]);
+   //    }
+   // }
    clean.go();
 }, function(reason){
    console.log("error in voting");

@@ -101,8 +101,12 @@ router.post('/:room/votes', auth, function(req, res, next) {
 
 //Gets the correct room for given id
 router.get('/:room', function(req, res) {
-  var o = {title: req.room.title, options: [], votes: [], _id: req.room._id};
-
+  var o = {title: req.room.title, options: [], votes: [], _id: req.room._id, state: ''};
+  
+  db.model.Room.find({_id: req.room._id}, function(err, room){
+  	if (err) handleError(err);
+  	o.state = room.state;
+  });
   db.model.Option.find({room: req.room._id}, function(err, ops){
 	  if (err) handleError(err);
 	  for (i = 0; i < ops.length; i++){

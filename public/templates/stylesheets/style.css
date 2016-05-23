@@ -344,3 +344,14 @@ img.doodle {
 .center-description {
   margin-top: 10em;
 }
+
+.typeButton{
+  width: 46%;
+  margin: 2%;
+  margin-bottom: 0px;
+  float: left;
+}
+
+.grey{
+  background: #e8e8e8;
+}

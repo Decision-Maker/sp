@@ -18,7 +18,7 @@
   <script src="/javascripts/angularApp.js"></script>
   <style> .glyphicon-thumbs-up { cursor:pointer } </style>
 </head>
-<body ng-app="decisionMaker" ng-controller="MainCtrl">
+<body ng-app="decisionMaker">
   <header class="navbar navbar-default" ng-controller="NavCtrl">
     <div class="col-md-10 col-md-offset-1">
       <a href="#/home" class="pull-left logo"><img src="../images/logo.svg"></a>
@@ -127,6 +127,14 @@
 <script type="text/ng-template" id="/create.html">
   <div class="pagewrapper-2">
     <h1>Create a Poll</h1>
+
+    <div class="row">
+      <button ng-click="changeType('FPP')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'FPP'}">First Pass</button>
+      <button ng-click="changeType('IRV')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'IRV'}">Priority</button>
+    </div>
+
+    <hr>
+
     <div class="createroomblock">
         <div class="form-group">
 
@@ -237,11 +245,11 @@
   <div class="pagewrapper-2">
     <h3>Active Polls</h3>
     <div ng-repeat="room in profile.voted track by $index">
-        {{room.title}}
+        <a href="#/rooms/{{room._id}}">{{room.title}}</a>
     </div>
     <h3>Created Polls</h3>
     <div ng-repeat="room in profile.created track by $index">
-        {{room.title}}
+        <a href="#/results/{{room._id}}">{{room.title}}</a>
     </div>
   </div>
 </script>

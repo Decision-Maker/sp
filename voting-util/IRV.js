@@ -56,7 +56,7 @@ IRV.getResult = function(room_id, callback){
 	});
 }
 
-function fillCounts(room_id, ops, votes, callback){
+function fillCounts(room_id, ops, votes){
 	var newList = []
 	for(i = 0; i < ops.length; i++){
 		var other = {title: ops[i].title};

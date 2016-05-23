@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
 var db = require('../models/models');
 var IRV = require('../voting-util/IRV');
-// var FPP = require('../voting-util/FPP');
+var FPP = require('../voting-util/FPP');
 var clean = require('./clearData');
 
 
 mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 
-var users = [{name: "Barikhik", password: "Magmafury"},
+var users = [
+            {name: "Barikhik", password: "Magmafury"},
             {name: "Doungrak", password: "Copperheart"},
             {name: "Kulaeck", password: "Oakjaw"},
             {name: "Throfrig", password: "Barrelbrow"},
@@ -16,14 +17,16 @@ var users = [{name: "Barikhik", password: "Magmafury"},
             {name: "Noggouk", password: "Steelbreaker"},
             {name: "Befrot", password: "Bristletoe"},
             {name: "Bungrom", password: "Hornhead"},
-            {name: "Arazzoli", password: "Cavebraid"}];
+            {name: "Arazzoli", password: "Cavebraid"}
+
+            ];
 
 var polls = [
-            {title: "best beard", options: ["bushy","big","braided"], created: "Kulaeck", voteType: "IRV"} /*,
-
-            {title: "best ale", options: ["brown","red","blonde","dark","light"], created: "Doungrak", voteType: "FPP"},
-            {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "FPP"},
-            {title: "best pet", options: ["rabbit","dog","cat","mouse","serpent"], created: "Lorgunli", voteType: "FPP"}*/];
+            {title: "best beard", options: ["bushy","big","braided"], created: "Kulaeck", voteType: "IRV"},
+            // {title: "best ale", options: ["brown","red","blonde","dark","light"], created: "Doungrak", voteType: "FPP"},
+            // {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "FPP"},
+            // {title: "best pet", options: ["rabbit","dog","cat","mouse","serpent"], created: "Lorgunli", voteType: "FPP"}*/
+         ];
 
 var votes = [
             // TEST FPP
@@ -35,9 +38,9 @@ var votes = [
             // TEST IRV
             {user: "Throfrig",   poll: "best beard", options: ["bushy","big","braided"]}, // eliminate bushy, big wins
             {user: "Lorgunli",   poll: "best beard", options: ["big","braided","bushy"]},
-            {user: "Groondon",   poll: "best beard", options: ["big","bushy","braided"]},
-            {user: "Noggouk",    poll: "best beard", options: ["braided","bushy","big"]},
-            {user: "Befrot",     poll: "best beard", options: ["braided","big","bushy"]}
+            // {user: "Groondon",   poll: "best beard", options: ["big","bushy","braided"]},
+            // {user: "Noggouk",    poll: "best beard", options: ["braided","bushy","big"]},
+            // {user: "Befrot",     poll: "best beard", options: ["braided","big","bushy"]}
 
             ];
 
@@ -71,6 +74,7 @@ function createVote(vote, users, polls){
       var optionsList = getOptionList(vote.options, pollObject.options);
       switch(pollObject.poll.voteType){
          case 'FPP':
+         console.log("creating FPP vote");
          FPP.vote(userObject, pollObject.poll, optionsList[0], function(err){
             if(err) return reject(new Error("voting error"));
             // console.log("created fpp");
@@ -78,9 +82,9 @@ function createVote(vote, users, polls){
          });
          break;
          case 'IRV':
+         console.log("creating IRV vote");
          IRV.vote(userObject, pollObject.poll, optionsList, function(err){
             if(err) return reject(new Error("voting error"));
-            console.log("created irv");
             resolve(vote);
          });
          break;
@@ -208,21 +212,21 @@ function getAllResults(polls){
 }
 
 // MAIN
-// console.log("creating users...");
+console.log("creating users...");
 createAllUsers(users).then(function(usrs){
-   // console.log("creating polls...");
+   console.log("creating polls...");
    return Promise.all([usrs, createAllPolls(polls)]);
 }, function(reason){
-   // console.log('error in making users');
+   console.log('error in making users');
    console.log(reason); clean.go();
 }).then(function(val){
-   // console.log("voting started...");
+   console.log("voting started...");
    return Promise.all([val[0], val[1], createAllVotes(votes, val[0], val[1])]);
 }, function(reason){
    console.log("error in making polls");
    console.log(reason); clean.go();
 }).then(function(val){
-   // console.log("getting results...");
+   console.log("getting results...");
    return Promise.all([val[0], val[1], val[2], getAllResults(val[1])]);
 }, function(reason){
      console.log(reason); clean.go();

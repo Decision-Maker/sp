@@ -359,6 +359,8 @@ function($scope, rooms, auth){
   $scope.rooms = rooms.rooms;
   $scope.options = ["",""];
 
+  $scope.type = "FPP";
+
   //Used for drag and drop
   $scope.barConfig = {
       animation: 150,
@@ -367,6 +369,10 @@ function($scope, rooms, auth){
           // @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
       }
   };
+
+  $scope.changeType = function(type){
+    $scope.type = type;
+  }
 
   $scope.delete = function(i){
     if($scope.options.length < 3){
@@ -396,7 +402,7 @@ function($scope, rooms, auth){
       title: $scope.title,
       options: uniqueOptions,
       votes: [],
-      type: "FPP"
+      type: $scope.type
     });
     $scope.options = ["",""];
     $scope.title = "";

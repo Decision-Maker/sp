@@ -107,17 +107,17 @@ router.post('/:room/statechange', auth, function(req, res, next) {
   			if (room.created === u._id){
   				db.model.Room.update({_id: room._id}, {state: 'voting'});
   			}
-		 }
-	}
-}
-	
+		 })
+	})
+});
+
 // Roomrequests ===============================================================
 // =============================================================================
 
 //Gets the correct room for given id
 router.get('/:room', function(req, res) {
   var o = {title: req.room.title, options: [], votes: [], _id: req.room._id, state: ''};
-  
+
   db.model.Room.find({_id: req.room._id}, function(err, room){
   	if (err) handleError(err);
   	o.state = room.state;

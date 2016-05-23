@@ -23,7 +23,9 @@ var polls = [{title: "best ale", options: ["brown","red","blonde","dark","light"
                 {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "FPP"},
                 {title: "best pet", options: ["rabbit","dog","cat","mouse","serpent"], created: "Lorgunli", voteType: "FPP"}];
 
-var votes = [{user: "Barikhik", poll: "best ale", options: ["brown","red","blonde","light","dark"]}];
+var votes = [{user: "Barikhik", poll: "best ale", options: ["brown","red","blonde","light","dark"]},
+              {user: "Barikhik", poll: "best ale", options: ["red", "brown","blonde","light","dark"]},
+            {user: "Groondon", poll: "best ale", options: ["blonde", "red", "light", "dark", "brown"]}];
 
 var userObj = [];
 
@@ -53,15 +55,15 @@ function createVote(vote, users, polls){
     var userObject = getUser(vote.user, users);
     var pollObject = getPoll(vote.poll, polls);
     var optionsList = getOptionList(vote.options, pollObject.options);
-    console.log(userObject);
-    console.log(pollObject);
-    console.log(optionsList);
+    //console.log(userObject);
+    //console.log(pollObject);
+    //console.log(optionsList);
     switch(pollObject.poll.voteType){
       case 'FPP':
-        console.log('FPP');
+        //console.log('FPP');
         FPP.vote(userObject, pollObject.poll, optionsList[0], function(err){
           if(err) return reject(new Error("voting error"));
-          console.log('voted');
+          //console.log('voted');
           resolve(vote);
         });
         break;
@@ -84,6 +86,7 @@ function createAllVotes(votes, users, polls){
   var v = [];
   for (var i = 0; i < votes.length; i++){
     v.push(createVote(votes[i], users, polls));
+    console.log("vote added");
   }
   return Promise.all(v);
 }
@@ -160,22 +163,26 @@ function createAllPolls(polls){
   return Promise.all(p);
 }
 
-
 //main
 createAllUsers(users).then(function(usrs){
   return Promise.all([usrs, createAllPolls(polls)]);
 }, function(reason){
   console.log('error in making users');
   console.log(reason); clean.go();
+
 }).then(function(val){
   return Promise.all([val[0], val[1], createAllVotes(votes, val[0], val[1])]); //[uP, pP, vP]
+  //return val;
 }, function(reason){
   console.log("error in making polls");
   console.log(reason); clean.go();
+
 }).then(function(val){
   //get results
+  return val;
 }, function(reason){
   console.log(reason); clean.go();
+
 }).then(function(val){
   //display everything
   //console.log(val);

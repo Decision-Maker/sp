@@ -42,6 +42,7 @@ FPP.getResult = function(room_id, callback){
 //casts a vote for the user in room for option then runs the callback
 FPP.vote = function(user, room, option, callback){
 	if(!callback){
+		//console.log("default callback");
 		callback = function(err){};
 	}
 	db.model.Vote.find({room: room._id}).populate('option user').exec(function(err, votes){

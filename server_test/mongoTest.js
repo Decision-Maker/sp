@@ -37,9 +37,9 @@ var votes = [
             // TEST IRV
             {user: "Throfrig",   poll: "best beard", options: ["bushy","big","braided"]}, // eliminate bushy, big wins
             {user: "Lorgunli",   poll: "best beard", options: ["big","braided","bushy"]},
-            // {user: "Groondon",   poll: "best beard", options: ["big","bushy","braided"]},
-            // {user: "Noggouk",    poll: "best beard", options: ["braided","bushy","big"]},
-            // {user: "Befrot",     poll: "best beard", options: ["braided","big","bushy"]}
+            {user: "Groondon",   poll: "best beard", options: ["big","bushy","braided"]},
+            {user: "Noggouk",    poll: "best beard", options: ["braided","bushy","big"]},
+            {user: "Befrot",     poll: "best beard", options: ["braided","big","bushy"]}
 
             ];
 

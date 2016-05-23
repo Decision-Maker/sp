@@ -88,6 +88,7 @@ function linkedListVoteTraversal(head, votes){
 //pass a user, room, and options preference list; callback if desired
 //weakness: does not check if options contains an option not present in room
 IRV.vote = function(user, room, options, callback){
+	console.log("got here1");
 	if(!callback){
 		callback = function(err){};
 	}
@@ -95,18 +96,20 @@ IRV.vote = function(user, room, options, callback){
 	db.model.Vote.find({room: room._id, user: user._id}, function(err, votes){
 		if(err){handleError(err);}
 
-		if(votes.length > 0){
+		if(votes){
+			console.log("user has already voted on this poll, replacing vote");
 			db.model.Vote.remove({room: room._id, user: user._id}, function(err){
 				newVote(user, room, options, callback);
 			});
 		}else{
+			console.log("creating new vote");
 			newVote(user, room, options, callback);
 		}
 	});
 }
 
 function newVote(user, room, options, callback){
-
+	console.log("got here2");
 	//get all the option of the room
 	db.model.Option.find({room: room._id}, function(err, op){
 		var curOp;

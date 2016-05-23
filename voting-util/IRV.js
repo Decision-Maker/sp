@@ -112,6 +112,7 @@ function newVote(user, room, options, callback){
 	console.log("got here2");
 	//get all the option of the room
 	db.model.Option.find({room: room._id}, function(err, op){
+		console.log(op);
 		var curOp;
 		var vote;
 		var previousVote;

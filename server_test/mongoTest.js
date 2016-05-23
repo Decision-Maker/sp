@@ -44,8 +44,6 @@ var votes = [
 
             ];
 
-var userObj = [];
-
 // createVote helper: takes user name string, list of user objects, returns one user object with matching name
 function getUser(name, userList){
    var user = userList.filter(function(x){return x.name === name})[0];
@@ -101,6 +99,7 @@ function createAllVotes(votes, users, polls){
    for (var i = 0; i < votes.length; i++){
       v.push(createVote(votes[i], users, polls));
    }
+   console.log("returning votes promise");
    return Promise.all(v);
 }
 
@@ -111,7 +110,7 @@ function getIDfromList(name, list){
 }
 
 function createUser(user){
-   //console.log('makeing user, ' + user);
+   //console.log('making user, ' + user);
    return new Promise(function(resolve, reject){
       var nu = new db.model.User({name: user.name});
       nu.setPassword(user.password);
@@ -209,6 +208,7 @@ function getAllResults(polls){
    for (var i = 0; i < polls.length; i++){
       r.push(getResult(polls[i]));
    }
+   console.log("returning results promise");
    return Promise.all(r);
 }
 

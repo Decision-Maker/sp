@@ -35,15 +35,14 @@ var votes = [
             // {user: "Kulaeck", poll: "best ale", options: ["brown"]}, // same user can vote twice on same poll?
 
             // TEST IRV
-            {user: "Throfrig",   poll: "best beard", options: ["bushy","big","braided"]}, // eliminate bushy, big wins
+            {user: "Throfrig",   poll: "best beard", options: ["big","bushy","braided"]}, // eliminate bushy, big wins
+            {user: "Throfrig",   poll: "best beard", options: ["bushy","big","braided"]},
             {user: "Lorgunli",   poll: "best beard", options: ["big","braided","bushy"]},
-            // {user: "Groondon",   poll: "best beard", options: ["big","bushy","braided"]},
-            // {user: "Noggouk",    poll: "best beard", options: ["braided","bushy","big"]},
-            // {user: "Befrot",     poll: "best beard", options: ["braided","big","bushy"]}
+            {user: "Groondon",   poll: "best beard", options: ["big","bushy","braided"]},
+            {user: "Noggouk",    poll: "best beard", options: ["braided","bushy","big"]},
+            {user: "Befrot",     poll: "best beard", options: ["braided","big","bushy"]}
 
             ];
-
-var userObj = [];
 
 // createVote helper: takes user name string, list of user objects, returns one user object with matching name
 function getUser(name, userList){
@@ -100,6 +99,7 @@ function createAllVotes(votes, users, polls){
    for (var i = 0; i < votes.length; i++){
       v.push(createVote(votes[i], users, polls));
    }
+   console.log("returning votes promise");
    return Promise.all(v);
 }
 
@@ -110,7 +110,7 @@ function getIDfromList(name, list){
 }
 
 function createUser(user){
-   //console.log('makeing user, ' + user);
+   //console.log('making user, ' + user);
    return new Promise(function(resolve, reject){
       var nu = new db.model.User({name: user.name});
       nu.setPassword(user.password);
@@ -208,6 +208,7 @@ function getAllResults(polls){
    for (var i = 0; i < polls.length; i++){
       r.push(getResult(polls[i]));
    }
+   console.log("returning results promise");
    return Promise.all(r);
 }
 
@@ -233,11 +234,11 @@ createAllUsers(users).then(function(usrs){
      console.log(reason); clean.go();
 }).then(function(val){
    //display everything
-   for(var i = 0; i < val.length; i++){
-      for(var j = 0; j < val[i].length; j++){
-         console.log(val[i][j]);
-      }
-   }
+   // for(var i = 0; i < val.length; i++){
+   //    for(var j = 0; j < val[i].length; j++){
+   //       console.log(val[i][j]);
+   //    }
+   // }
    clean.go();
 }, function(reason){
    console.log("error in voting");

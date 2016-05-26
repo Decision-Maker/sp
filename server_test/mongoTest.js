@@ -180,23 +180,23 @@ function getResult(pollObject){
    return new Promise(function(resolve, reject){
       switch(pollObject.poll.voteType){
          case 'FPP':
-         FPP.getResult(pollObject.poll._id, function(err, result){
-            if(err) return reject(new Error("voting error"));
-            else {resolve(result);}
-         });
-         break;
+           FPP.getResult(pollObject.poll._id, function(err, result){
+              if(err) return reject(new Error("voting error"));
+              else {resolve(result);}
+           });
+           break;
 
          case 'IRV':
-         IRV.getResult(pollObject.poll._id, function(err, result){
-            if(err) return reject(new Error("voting error"));
-            else {resolve(result);}
-         });
-         break;
+           IRV.getResult(pollObject.poll._id, function(err, result){
+              if(err) return reject(new Error("voting error"));
+              else {resolve(result);}
+           });
+           break;
 
          default:
-         console.log('bad poll');
-         reject(new Error("unknown poll"));
-         break;
+           console.log('bad poll');
+           reject(new Error("unknown poll"));
+           break;
       }
    });
 }

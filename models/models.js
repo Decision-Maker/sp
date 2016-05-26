@@ -39,7 +39,8 @@ o.schema.vote = new Schema({
   room: {type: Schema.Types.ObjectId, ref: 'Room'},
   option: {type: Schema.Types.ObjectId, ref: 'Option'},
   next: {type: Schema.Types.ObjectId, ref: 'Vote', default: null},
-  head: {type: Boolean, default: false}
+  head: {type: Boolean, default: false},
+  value: {type: Number, default: 0}
 });
 
 o.schema.room = new Schema({

@@ -268,6 +268,8 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
   $scope.new = [""];
   $scope.currentVote = null;
   $scope.error = "";
+
+  console.log($scope.room);
   //alert(user);
   for(var i = 0; i < user.data.voted.length; i++){
     if(user.data.voted[i]._id == $stateParams.id){
@@ -419,6 +421,8 @@ function($scope, rooms, auth){
       $scope.error = "Please Provide Atleast 2 Unique Options"
       return;
     }
+
+
 
     rooms.create({
       title: $scope.title,

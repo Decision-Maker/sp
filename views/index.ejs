@@ -134,6 +134,10 @@
   <div class="pagewrapper-2">
     <h1>Create a Poll</h1>
 
+    <div ng-show="error" class="alert alert-danger row">
+      <span>{{error}}</span>
+    </div>
+
     <div class="row">
       <button ng-click="changeType('FPP')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'FPP'}">First Pass</button>
       <button ng-click="changeType('IRV')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'IRV'}">Priority</button>

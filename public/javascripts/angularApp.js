@@ -375,6 +375,7 @@ function($scope, rooms, auth){
   $scope.options = ["",""];
 
   $scope.type = "FPP";
+  $scope.error = "";
 
   //Used for drag and drop
   $scope.barConfig = {
@@ -398,6 +399,7 @@ function($scope, rooms, auth){
 
   $scope.addRoom = function(){
     if(!$scope.title){
+      $scope.error = "Please Enter a Title";
       return;
     }
 
@@ -412,6 +414,11 @@ function($scope, rooms, auth){
       }
       return true;
     });
+
+    if(uniqueOptions.length <= 1){
+      $scope.error = "Please Provide Atleast 2 Unique Options"
+      return;
+    }
 
     rooms.create({
       title: $scope.title,

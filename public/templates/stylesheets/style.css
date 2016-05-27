@@ -2,7 +2,7 @@
   min-height: calc(100% - 190px);
 }
 
-input:focus, textarea:focus, button:focus {
+button:focus {
     outline: none !important;
     background-color: #D55A4D !important;
 }

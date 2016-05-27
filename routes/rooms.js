@@ -116,17 +116,11 @@ router.post('/:room/statechange', auth, function(req, res, next) {
 
 //Gets the correct room for given id
 router.get('/:room', function(req, res) {
-  var o = {title: req.room.title, options: [], votes: [], _id: req.room._id, state: ''};
-
-  db.model.Room.find({_id: req.room._id}, function(err, room){
-  	if (err) handleError(err);
-  	o.state = room.state;
-  });
+  var o = {title: req.room.title, voteType: req.room.voteType, created: req.room.created, state: req.room.state, options: []};
+ 0// var o = {title: req.room.title, options: [], votes: [], _id: req.room._id, state: ''};
   db.model.Option.find({room: req.room._id}, function(err, ops){
 	  if (err) handleError(err);
-	  for (i = 0; i < ops.length; i++){
-		  o.options.push(ops[i]);
-	  }
+	  o.options = ops;
 	  res.json(o);
   });
 

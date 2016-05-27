@@ -36,7 +36,8 @@ IRV.getResult = function(room_id, callback){
 								current.next.head = true;
 								// console.log("current.next ", current.next);
 							}
-						} else { 									// an option other than the head is the loser
+						} else {
+							console.log("found loser in list"); 									// an option other than the head is the loser
 							var previous = current;
 							current = current.next;
 							while(current){
@@ -45,7 +46,6 @@ IRV.getResult = function(room_id, callback){
 								} else {
 									previous = current;
 								}
-								console.log(current);
 								current = current.next;
 							}
 						}
@@ -58,6 +58,7 @@ IRV.getResult = function(room_id, callback){
 
 function fillCounts(room_id, ops, votes){
 	var newList = []
+
 	for(i = 0; i < ops.length; i++){
 		var other = {title: ops[i].title};
 		other.count = votes.filter(function(v){return v.option.equals(ops[i]._id);}).length;
@@ -88,7 +89,6 @@ function linkedListVoteTraversal(head, votes){
 //pass a user, room, and options preference list; callback if desired
 //weakness: does not check if options contains an option not present in room
 IRV.vote = function(user, room, options, callback){
-	console.log("got here1");
 	if(!callback){
 		callback = function(err){};
 	}
@@ -109,7 +109,6 @@ IRV.vote = function(user, room, options, callback){
 }
 
 function newVote(user, room, options, callback){
-	console.log("got here2");
 	//get all the option of the room
 	db.model.Option.find({room: room._id}, function(err, op){
 		console.log(op);

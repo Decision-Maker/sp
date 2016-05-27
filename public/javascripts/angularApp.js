@@ -266,6 +266,8 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
   $scope.user = user;
   $scope.message = "";
   $scope.new = [""];
+  $scope.currentVote = null;
+  $scope.error = "";
   //alert(user);
   for(var i = 0; i < user.data.voted.length; i++){
     if(user.data.voted[i]._id == $stateParams.id){
@@ -273,6 +275,10 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
     }
   }
 
+  $scope.selectVote = function(option){
+    $scope.currentVote = option;
+    $scope.error = "";
+  }
 
   $scope.addOption = function(event){
     $scope.new.push("");
@@ -300,11 +306,20 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
   };
 
   $scope.addVote = function(){
-    console.log("original order")
-    for (i = 0; i < room.options.length; i++){
-      console.log(room.options[i].title);
+    // console.log("original order")
+    // for (i = 0; i < room.options.length; i++){
+    //   console.log(room.options[i].title);
+    // }
+    //var vote = angular.copy($scope.vote);
+
+    if($scope.currentVote == null){
+      $scope.error = "Please select an option before voting ¯\\\_(ツ)_/¯"
+      return;
     }
-    var vote = angular.copy($scope.vote);
+
+    var vote = [];
+    vote.push($scope.currentVote);
+    console.log("VVVVV");
     console.log(vote);
     rooms.addVote(room._id, vote)
     .success(function(vote) {

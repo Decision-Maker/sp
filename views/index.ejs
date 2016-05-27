@@ -89,15 +89,21 @@
         <span>{{message}}</span>
       </div>
 
+      <div ng-show="error" class="alert alert-danger row">
+        <span>{{error}}</span>
+      </div>
+
+
       <div class="directions">
         <h1>{{room.title}}</h1>
-        <h2>Drag and drop to vote on top option</h2>
+        <h2>Select your prefered choice</h2>
       </div>
-      <div ng-sortable="barConfig">
-        <div class="voteoption" ng-repeat="option in vote track by $index">
-           <h5>{{option.title}}</h5>
-        </div>
+      <div ng-repeat="option in vote track by $index">
+        <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-class="{'grey': currentVote != option}" ng-click="selectVote(option)">
+          <h5>{{option.title}}</h5>
+        </button>
       </div>
+      stuff here
       <div class="votebuttongroup">
           <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
           <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>

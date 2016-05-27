@@ -62,10 +62,10 @@ FPP.vote = function(user, room, option, callback){
 		}else{
 			//console.log("user not found, making new vote");
 			//console.log(votes);
-			//console.log(option);
+			console.log(option);
 			//console.log(room);
 			db.model.Option.findOne({room: room._id, title: option.title}, function(err, op){
-				//console.log(op.title);
+				console.log(op);
 				if(err) return handleError(err);
 				if(!op) return handleError("null option");
 				var vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});

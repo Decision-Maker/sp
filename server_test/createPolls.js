@@ -4,8 +4,8 @@ mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 
 var polls = [
             {title: "best beard", options: ["bushy","big","braided"], created: "Kulaeck", voteType: "Borda"} ,
-            {title: "best ale", options: ["brown","red","blonde","dark","light"], created: "Doungrak", voteType: "FPP"},
-            // {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "Borda"},
+            // {title: "best ale", options: ["brown","red","blonde","dark","light"], created: "Doungrak", voteType: "FPP"},
+            // {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "IRV"},
             // {title: "best pet", options: ["rabbit","dog","cat","mouse","goat"], created: "Lorgunli", voteType: "FPP"}
             ];
 

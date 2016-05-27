@@ -10,22 +10,24 @@ Borda.getResult = function(room_id, callback){
 		db.model.Vote.find({room: room_id}, function(err, votes){ // get votes for this room
 			var results = []
 			console.log("VOTES", votes);
-			console.log("OPS", ops);
+			// console.log("OPS", ops);
 			for(i = 0; i < ops.length; i++){
 				var other = {title: ops[i].title};
 				var currentCount = 0;
-				console.log("this op id", ops[i]._id)
+				// console.log("option id", ops[i]._id)
 				for(j = 0; j < votes.length; j++){
-					console.log("this Vote", votes[j].option);
-					if(ops[i]._id == votes[j].option){
-						console.log("HERE");
+					// console.log("vote   id", votes[j].option);
+					if(ops[i]._id.equals(votes[j].option)){
+						// console.log("HERE");
 						currentCount = currentCount + votes[j].value;
 					}
 				}
-				console.log(currentCount);
+				// console.log("");
+				// console.log(currentCount);
 				other.count = currentCount;
 				results.push(other);
 			}
+			console.log(results);
 			callback(null, results);
 		});
 	});
@@ -33,37 +35,41 @@ Borda.getResult = function(room_id, callback){
 
 
 Borda.vote = function(user, room, options, callback){
-	if(!callback){
-		callback = function(err){};
-	}
+	// console.log("USER", user);
+	// console.log("ROOM", room);
+	// console.log("OPTIONS", options);
+	saveAllVotes(user, room, options).then(function(votes){
+		// console.log("in borda then");
+		callback(null, votes);
+	}, function(reason){
+		console.log('error in making users');
+   	console.log(reason);
+	});
+}
 
-	db.model.Vote.find({room: room._id, user: user._id}, function(err, votes){
-		if(err){handleError(err);}
-		if(votes.length > 0){
-			console.log("user has already voted on this poll, replacing vote");
-			db.model.Vote.remove({room: room._id, user: user._id}, function(err){
-				newVote(user, room, options, callback);
+function saveAllVotes(user, room, options){
+	var v = [];
+   for (var i = 0; i < options.length; i++){
+      v.push(saveVote(user, room, options[i], i));
+   }
+   return Promise.all(v);
+}
+
+function saveVote(user, room, option, i){
+	return new Promise(function(resolve, reject){
+		db.model.Option.find({room: room._id}, function(err, op){
+			var vote = new db.model.Vote({room: room._id, user: user._id, option: find(option.title, op)._id, value: op.length - i});
+			vote.save(function (err, vote) {
+  				if (err) { console.error(err); reject(); };
+  				resolve(vote);
 			});
-		}else{
-			newVote(user, room, options, callback);
-		}
+		});
 	});
+
+
 }
 
-function newVote(user, room, options, callback){
-	//get all the option of the room
-	db.model.Option.find({room: room._id}, function(err, op){
-		console.log("OPTIONS", options);
-		for(i = 0; i < options.length; i++){
-			var vote = new db.model.Vote({room: room._id, user: user._id, option: find(options[i].title, op)._id, value: options.length - i});
-			// console.log("VOTE", vote);
-			vote.save();
-		}
-		callback();
-	});
-}
-
-// helper for IRV.vote: go through the list of options, find the one with a given title
+// helper for saveVote go through the list of options, find the one with a given title
 function find(title, list){
 	for(i = 0; i < list.length; i++){
 		if(title === list[i].title){

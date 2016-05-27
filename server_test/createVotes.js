@@ -18,8 +18,9 @@ var votes = [
             // {user: "Lorgunli",   poll: "best beard", options: ["big","braided","bushy"]},
             // {user: "Groondon",   poll: "best beard", options: ["big","bushy","braided"]},
             // {user: "Noggouk",    poll: "best beard", options: ["braided","bushy","big"]},
-            // {user: "Befrot",     poll: "best beard", options: ["braided","big","bushy"]}
+            {user: "Befrot",     poll: "best beard", options: ["braided","big","bushy"]}
 
+            // {user: "Throfrig", options: ["emerald","diamond","amethyst","turquoise", "ruby"], created: "Throfrig", poll: "favorite gem"},
             ];
 
 
@@ -55,9 +56,9 @@ function createVote(userName, pollName, userOrder){
                      });
                      break;
                   case 'Borda':
-                     Borda.vote(user, poll, optionsList, function(err){
+                     Borda.vote(user, poll, optionsList, function(err, savedVotes){
                         if(err){ console.log("err"); }
-                        resolve("Borda vote created");
+                        resolve(savedVotes);
                      });
                      break;
                   default:
@@ -81,6 +82,7 @@ function createAllVotes(votes){
 
 console.log("creating votes...");
 createAllVotes(votes).then(function(val){
+   // console.log("createVotes val", val)
    console.log("votes created");
    process.exit(0);
 }, function(reason){

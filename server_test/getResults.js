@@ -8,7 +8,7 @@ mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 var polls = [
    {title: "best beard", voteType: "Borda"},
    // {title: "best ale", voteType: "FPP"},
-   // {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "FPP"},
+   // {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "IRV"},
    // {title: "best pet", options: ["rabbit","dog","cat","mouse","serpent"], created: "Lorgunli", voteType: "FPP"}*/
 ];
 
@@ -36,7 +36,7 @@ function getResult(pollName){
                break;
 
             default:
-            console.log('bad poll');
+            console.log('unnown poll');
             reject(new Error("unknown poll"));
             break;
          }
@@ -57,7 +57,6 @@ function getAllResults(polls){
 
 console.log("getting results...");
 getAllResults(polls).then(function(val){
-   console.log("val", val);
    console.log("exiting");
    process.exit(0);
 }, function(reason){

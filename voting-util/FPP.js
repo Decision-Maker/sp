@@ -1,9 +1,5 @@
 // First Past the Post Voting Functions
-
-
 var db = require('../models/models');
-
-
 var FPP = {};
 
 //adds a count field to each element in olist that is the total votes for those options

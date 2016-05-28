@@ -6,9 +6,7 @@ var Borda = require('../voting-util/Borda');
 mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 
 var polls = [
-   {title: "best beard", voteType: "Borda"},
-   // {title: "best ale", voteType: "FPP"},
-   // {title: "favorite gem", options: ["ruby","emerald","diamond","amethyst","turquoise"], created: "Throfrig", voteType: "IRV"},
+   {title: "letters", voteType: "Borda"},
    // {title: "best pet", options: ["rabbit","dog","cat","mouse","serpent"], created: "Lorgunli", voteType: "FPP"}*/
 ];
 
@@ -36,7 +34,7 @@ function getResult(pollName){
                break;
 
             default:
-            console.log('unnown poll');
+            console.log('unknown poll');
             reject(new Error("unknown poll"));
             break;
          }

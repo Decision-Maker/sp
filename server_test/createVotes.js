@@ -6,23 +6,39 @@ var Borda = require('../voting-util/Borda');
 mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 
 var votes = [
-            // TEST FPP
-            // {user: "Barikhik", poll: "best ale", options: ["light","brown","red","dark","blonde"]},
-            // {user: "Doungrak", poll: "best ale", options: ["red"]},
-            // {user: "Kulaeck", poll: "best ale", options: ["brown"]},
-            // {user: "Kulaeck", poll: "best ale", options: ["brown"]}, // same user can vote twice on same poll?
-
-            // TEST Borda
-            {user: "Throfrig",   poll: "best beard", options: ["big","bushy","braided"]}, //
-            // {user: "Throfrig",   poll: "best beard", options: ["bushy","big","braided"]},
-            // {user: "Lorgunli",   poll: "best beard", options: ["big","braided","bushy"]},
-            // {user: "Groondon",   poll: "best beard", options: ["big","bushy","braided"]},
-            // {user: "Noggouk",    poll: "best beard", options: ["braided","bushy","big"]},
-            {user: "Befrot",     poll: "best beard", options: ["braided","big","bushy"]}
-
-            // {user: "Throfrig", options: ["emerald","diamond","amethyst","turquoise", "ruby"], created: "Throfrig", poll: "favorite gem"},
+            {user: "Barikhik", poll: "letters"},
+            {user: "Doungrak", poll: "letters"},
+            {user: "Kulaeck",  poll: "letters"},
+            {user: "Throfrig", poll: "letters"},
+            {user: "Lorgunli", poll: "letters"},
+            {user: "Groondon", poll: "letters"},
+            {user: "Noggouk",  poll: "letters"},
+            {user: "Befrot",   poll: "letters"},
+            {user: "Bungrom",  poll: "letters"},
+            {user: "Arazzoli", poll: "letters"}
             ];
 
+var opList = ["A","B","C", "D", "E", "F", "G"];
+
+for(var i = 0; i < votes.length; i++){
+   var holder = opList.slice();
+   shuffle(holder);
+   votes[i].options = holder;
+}
+
+function shuffle(array) {
+    var tmp, current, top = array.length;
+
+    if(top) while(--top) {
+        current = Math.floor(Math.random() * (top + 1));
+        tmp = array[current];
+        array[current] = array[top];
+        array[top] = tmp;
+    }
+    return array;
+}
+
+console.log(votes);
 
 // createVote helper
 function getOptionList(userOrder, options){

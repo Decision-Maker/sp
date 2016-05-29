@@ -29,15 +29,20 @@ Borda.getResult = function(room_id, callback){
 
 
 Borda.vote = function(user, room, options, callback){
-	// console.log("USER", user);
-	// console.log("ROOM", room);
-	// console.log("OPTIONS", options);
-	saveAllVotes(user, room, options).then(function(votes){
-		// console.log("in borda then");
-		callback(null, votes);
-	}, function(reason){
-		console.log('error in creating votes, Borda');
-   	console.log(reason);
+	db.model.Vote.find({room: room._id}).populate('option user').exec(function(err, votes){
+		if (err) {return handleError(err);}
+ 		var match = votes.filter(function(e){return e.user._id.equals(user._id);});
+ 		if(match.length > 0){	// user has already voted on this poll
+			console.log("user has already voted on this poll");
+		} else {
+			saveAllVotes(user, room, options).then(function(votes){
+				// console.log("in borda then");
+				callback(null, votes);
+			}, function(reason){
+				console.log('error in creating votes, Borda');
+				console.log(reason);
+			});
+		}
 	});
 }
 

@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var db = require('../models/models');
+var db = require('../models/testModels');
 mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 var users = [
             {name: "Barikhik", password: "Magmafury"},
@@ -43,5 +43,5 @@ createAllUsers(users).then(function(usrs){
    process.exit(0);
 }, function(reason){
    console.log('error in making users');
-   console.log(reason); 
+   console.log(reason);
 })

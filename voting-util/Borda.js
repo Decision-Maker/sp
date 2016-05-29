@@ -1,11 +1,13 @@
 // Borda Count Voting system: for each vote, give each option a # of points equal to the # of candidates ranked lower
-var db = require('../models/models'); 
+var db = require('../models/models');
 var Borda = {};
 
 // take room id, return winner of Borda algorithm
 Borda.getResult = function(room_id, callback){
+	
 	db.model.Option.find({room: room_id}, function(err, ops){ // get options list for the given room
 		db.model.Vote.find({room: room_id}, function(err, votes){ // get votes for this room
+			console.log('algorithm start');
 			var results = []
 			for(i = 0; i < ops.length; i++){
 				var other = {title: ops[i].title};
@@ -18,6 +20,7 @@ Borda.getResult = function(room_id, callback){
 				other.count = currentCount;
 				results.push(other);
 			}
+			console.log('sorting start');
 			results.sort(function(a, b){
 				return b.count - a.count;
 			});

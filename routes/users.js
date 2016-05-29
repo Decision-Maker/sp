@@ -50,6 +50,16 @@ router.get('/profile', auth, function(req, res, next){
 	});
 });
 
+//validates token
+router.get('/validateToken', auth, function(req, res, next){
+  db.model.User.findOne({_id: req.payload._id}, function(err, user){
+		if (user){
+			return res.json({valid: true});
+		}else{
+			return res.json({valid: false});
+		}
+	});
+});
 
 //make new user
 router.post('/register', function(req, res, next){   //make sure '/register' is the same as in auth factory

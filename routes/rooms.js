@@ -50,17 +50,17 @@ router.post('/:room/options', function(req, res, next) {
 	for (i = 0; i < size; i++){
 	    option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
 	    option.save(function(err){
-			if(err) {
-			handleError(err);
-			res.json({message: "Error saving messages", error: true})
-			error = true;
-			}
+				if(err) {
+					handleError(err);
+					res.json({message: "Error saving messages", error: true})
+					error = true;
+				}
 			/*console.log("option created")*/
-			savecount++;
-			if(savecount == size && !error){
-				res.json({message: "options saved", error: false});
-			}
-		});
+				savecount++;
+				if(savecount == size && !error){
+					res.json({message: "options saved", error: false});
+				}
+			});
   	}
 });
 // Vote requests ===============================================================

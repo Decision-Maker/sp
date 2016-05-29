@@ -13,15 +13,19 @@ function handleError(err){
 	console.log(err.toString());
 }
 
-/*function loadUser(req, res, next){
+function loadUser(req, res, next){
+	console.log('checking/getting user');
 	req.payload.username;
 	db.model.User.findOne({name: req.payload.username}, function(err, u){
 		if(err) handleError(err);
 		if(!u) {
-			res.status
+			res.status(550).json({error: true, message: 'user not found'});
+		}else{
+			req.user = u;
+			return next();
 		}
-	})
-}*/
+	});
+}
 
 // Param Functions==============================================================
 // =============================================================================
@@ -40,7 +44,7 @@ router.param('room',  function(req, res, next, id) {
 });
 
 //Observer
-router.post('/:room/observe', auth, function(req, res, next){
+router.post('/:room/observe', auth, loadUser,  function(req, res, next){
 	var obs = new db.model.Observer();
 	obs.user = req.payload._id;
 	obs.room = req.room._id;
@@ -82,7 +86,7 @@ router.post('/:room/options', function(req, res, next) {
 // =============================================================================
 
 //server is sent vote(s) in req.body
-router.post('/:room/votes', auth, function(req, res, next) {
+router.post('/:room/votes', auth, loadUser,  function(req, res, next) {
 
 	db.model.User.findOne({name: req.payload.username}, function(err, u){
 		if (err) {return handleError(err)};
@@ -115,7 +119,7 @@ router.post('/:room/votes', auth, function(req, res, next) {
 
 // Change Room State===========================================================
 // ============================================================================
-router.post('/:room/statechange', auth, function(req, res, next) {
+router.post('/:room/statechange', auth, loadUser,  function(req, res, next) {
 	db.model.User.findOne({name: req.payload.username}, function(err, u){
 		if (err) {
 			return handleError(err)
@@ -168,7 +172,7 @@ router.get('/', function(req, res, next) {
 
 //Save a room to the database
 //***** responces should be built from saved object returns, rather than req data fix in final version******
-router.post('/', auth, function(req, res, next) {
+router.post('/', auth, loadUser,  function(req, res, next) {
   //console.log(req.body.title);
   var new_room = new db.model.Room({title: req.body.title, created: req.payload._id, voteType: req.body.type});
     new_room.save(function(err, r){

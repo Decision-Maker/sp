@@ -20,7 +20,12 @@ function($stateProvider, $urlRouterProvider) {
         roomPromise: ['rooms', function(rooms){
           return rooms.getAll();
         }]
-      }
+      },
+      onEnter: ['$state', 'auth', function($state, auth){
+        if(!auth.isLoggedIn()){
+          $state.go('home');
+        }
+      }]
     });
 
     $stateProvider
@@ -63,7 +68,12 @@ function($stateProvider, $urlRouterProvider) {
         user: ['$stateParams', 'auth', function($stateParams, auth) {
           return auth.getUser();
         }]
-      }
+      },
+      onEnter: ['$state', 'auth', function($state, auth){
+        if(!auth.isLoggedIn()){
+          $state.go('home');
+        }
+      }]
     });
 
     $stateProvider
@@ -78,8 +88,12 @@ function($stateProvider, $urlRouterProvider) {
         user: ['$stateParams', 'auth', function($stateParams, auth) {
           return auth.getUser();
         }]
-
-      }
+      },
+      onEnter: ['$state', 'auth', function($state, auth){
+        if(!auth.isLoggedIn()){
+          $state.go('home');
+        }
+      }]
     });
 
     $stateProvider
@@ -91,10 +105,15 @@ function($stateProvider, $urlRouterProvider) {
         room: ['$stateParams', 'rooms', function($stateParams, rooms) {
           return rooms.get($stateParams.id);
         }],
-		results: ['$stateParams', 'rooms', function($stateParams, rooms) {
-		  return rooms.getResults($stateParams.id);
-		}]
-      }
+    		results: ['$stateParams', 'rooms', function($stateParams, rooms) {
+    		  return rooms.getResults($stateParams.id);
+    		}]
+      },
+      onEnter: ['$state', 'auth', function($state, auth){
+        if(!auth.isLoggedIn()){
+          $state.go('home');
+        }
+      }]
     });
 
   $urlRouterProvider.otherwise('home');

@@ -13,6 +13,16 @@ function handleError(err){
 	console.log(err.toString());
 }
 
+/*function loadUser(req, res, next){
+	req.payload.username;
+	db.model.User.findOne({name: req.payload.username}, function(err, u){
+		if(err) handleError(err);
+		if(!u) {
+			res.status
+		}
+	})
+}*/
+
 // Param Functions==============================================================
 // =============================================================================
 
@@ -194,7 +204,7 @@ router.get('/:room/results', function(req, res, next) {
 			});
 			break;
 		case 'Borda':
-			Borda.get(req.room._id, function(err, results){
+			Borda.getResult(req.room._id, function(err, results){
 				res.json(results);
 			})
 			break;

@@ -4,8 +4,10 @@ var Borda = {};
 
 // take room id, return a sorted list of objects reflecting result of Borda algorithm [{optionTitle: x, count: y},...]
 Borda.getResult = function(room_id, callback){
+	
 	db.model.Option.find({room: room_id}, function(err, ops){ // get options list for the given room
 		db.model.Vote.find({room: room_id}, function(err, votes){ // get votes for this room
+			console.log('algorithm start');
 			var results = []
 			for(i = 0; i < ops.length; i++){
 				var other = {title: ops[i].title};
@@ -18,6 +20,7 @@ Borda.getResult = function(room_id, callback){
 				other.count = currentCount;
 				results.push(other);
 			}
+			console.log('sorting start');
 			results.sort(function(a, b){
 				return b.count - a.count;
 			});

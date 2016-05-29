@@ -133,7 +133,7 @@ function($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('create', {
       url: '/create',
-      templateUrl: '/create.html',
+      templateUrl: 'templates/create.html',
       controller: 'MainCtrl',
       resolve: {
         roomPromise: ['rooms', function(rooms){
@@ -145,7 +145,7 @@ function($stateProvider, $urlRouterProvider) {
     $stateProvider
     .state('login', {
       url: '/login',
-      templateUrl: '/login.html',
+      templateUrl: 'templates/login.html',
       controller: 'AuthCtrl',
       onEnter: ['$state', 'auth', function($state, auth){
         if(auth.isLoggedIn()){
@@ -158,13 +158,13 @@ function($stateProvider, $urlRouterProvider) {
     $stateProvider
     .state('home', {
       url: '/home',
-      templateUrl: '/home.html'
+      templateUrl: 'templates/home.html'
     })
 
     $stateProvider
     .state('register', {
       url: '/register',
-      templateUrl: '/register.html',
+      templateUrl: 'templates/register.html',
       controller: 'AuthCtrl',
       onEnter: ['$state', 'auth', function($state, auth){
         if(auth.isLoggedIn()){
@@ -176,7 +176,7 @@ function($stateProvider, $urlRouterProvider) {
     $stateProvider
     .state('profile', {
       url: '/profile',
-      templateUrl: '/profile.html',
+      templateUrl: 'templates/profile.html',
       controller: 'ProfileCtrl',
       resolve: {
         user: ['$stateParams', 'auth', function($stateParams, auth) {
@@ -188,7 +188,7 @@ function($stateProvider, $urlRouterProvider) {
     $stateProvider
     .state('rooms', {
       url: '/rooms/{id}',
-      templateUrl: '/rooms.html',
+      templateUrl: 'templates/rooms.html',
       controller: 'RoomsCtrl',
       resolve: {
         room: ['$stateParams', 'rooms', function($stateParams, rooms) {
@@ -204,7 +204,7 @@ function($stateProvider, $urlRouterProvider) {
     $stateProvider
     .state('results', {
       url: '/results/{id}',
-      templateUrl: '/results.html',
+      templateUrl: 'templates/results.html',
       controller: 'ResultsCtrl',
       resolve: {
         room: ['$stateParams', 'rooms', function($stateParams, rooms) {

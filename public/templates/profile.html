@@ -1,0 +1,29 @@
+<div class="doodle-section">
+    <div class="homewrapper-1">
+      <div class="row">
+        <div class="col-md-6 doodle-padding">
+          <div id="centerblock">
+            <div class="doodle-description">
+              <div><h1>My Polls<h1></div>
+              <div class="doodle-text">Here are some polls you've created, voted on, or interacted with in the past.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 doodle-padding">
+          <div id="centerblock">
+            <img class="doodle" src="../images/my-polls-doodle.png">
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<div class="pagewrapper-2">
+  <h3>Active Polls</h3>
+  <div ng-repeat="room in profile.voted track by $index">
+      <a href="#/rooms/{{room._id}}">{{room.title}}</a>
+  </div>
+  <h3>Created Polls</h3>
+  <div ng-repeat="room in profile.created track by $index">
+      <a href="#/results/{{room._id}}">{{room.title}}</a>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="doodle-section">
+  <div class="homewrapper-1">
+    <div class="row">
+      <div class="col-md-6">
+          <div id="centerblock">
+            <div class="center-description">
+              <div><h1>Pick-One Poll<h1></div>
+              <div>Select the option that is your #1 choice.</div>
+            </div>
+          </div>
+      </div>
+      <div class="col-md-6 doodle-padding">
+        <div id="centerblock">
+          <img class="doodle" src="../images/pick-one-doodle.png">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="pagewrapper-2">
+  <div class="vote-vote-block">
+    <div ng-show="message" class="alert alert-warning row">
+      <span>{{message}}</span>
+    </div>
+
+    <div ng-show="error" class="alert alert-danger row">
+      <span>{{error}}</span>
+    </div>
+
+
+    <div class="directions">
+      <h1>{{room.title}}</h1>
+      <h2>Select your prefered choice</h2>
+    </div>
+
+    <div ng-repeat="option in vote track by $index" ng-show="room.voteType == 'FPP'">
+      <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-class="{'grey': currentVote != option}" ng-click="selectVote(option)">
+        <h5>{{option.title}}</h5>
+      </button>
+    </div>
+
+    <div ng-sortable="barConfig" class="optionblock" ng-show="room.voteType == 'Borda'">
+      <div ng-repeat="option in vote track by $index">
+        <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-click="selectVote(option)">
+          <h5>{{option.title}}</h5>
+        </button>
+      </div>
+    </div>
+
+    stuff here
+    <div class="votebuttongroup">
+        <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
+        <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
+    </div>
+  </div>
+
+  <div class="vote-addoption-block">
+    <form ng-submit="addRoom()">
+      <h3>Add an Option</h3>
+         <div ng-sortable="barConfig" class="optionblock">
+                <div ng-repeat="option in new track by $index">
+                    <input type="text" class="form-control option" placeholder="Option" ng-model="new[$index]"></input>
+                    <span style="cursor: pointer;" ng-click="delete($index)">X</span>
+                </div>
+          </div>
+          <div class="createoptionbutton">
+            <img src="../images/add-icon.svg" ng-click="addOption($event)"></i>
+          </div>
+    </form>
+    <div class="votebuttongroup">
+      <button class="btn btn-primary" ng-click="submitNewOptions()">Submit Options</button>
+    </div>
+  </div>
+</div>

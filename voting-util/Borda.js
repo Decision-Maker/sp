@@ -36,7 +36,7 @@ Borda.vote = function(user, room, options, callback){
 		// console.log("in borda then");
 		callback(null, votes);
 	}, function(reason){
-		console.log('error in making users');
+		console.log('error in creating votes, Borda');
    	console.log(reason);
 	});
 }
@@ -60,6 +60,7 @@ function saveVote(user, room, option, i){
 		});
 	});
 }
+//stages to voting, no new options once voting has begun
 
 // helper for saveVote go through the list of options, find the one with a given title
 function find(title, list){

@@ -6,6 +6,7 @@ var jwt = require('express-jwt');
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 var FPP = require('../voting-util/FPP');
 var IRV = require('../voting-util/IRV');
+var Borda = require('../voting-util/Borda');
 
 function handleError(err){
 	console.log("ERROR");
@@ -83,11 +84,18 @@ router.post('/:room/votes', auth, function(req, res, next) {
 					});
 				break;
 			case 'IRV':
+				console.log('use of IRV, IRV deprecated');
 				IRV.vote(u, req.room, req.body.options, function(err){
 						if(err) {handleError(err);}
 						res.json({});
 					});
 				break;
+			case 'Borda':
+				Borda.vote(u, req.room, req.body.options, function(err){
+					if(err) {handleError(err);}
+					res.json({});
+				});
+				break
 			default:
 				console.log('vote type not recognized');
 				break;
@@ -184,6 +192,11 @@ router.get('/:room/results', function(req, res, next) {
 			IRV.getResult(req.room._id, function(err, results){
 				res.json(results);
 			});
+			break;
+		case 'Borda':
+			Borda.get(req.room._id, function(err, results){
+				res.json(results);
+			})
 			break;
 		default:
 			console.log('vote type not recognized');

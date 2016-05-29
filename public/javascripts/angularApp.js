@@ -34,12 +34,10 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
   };
 
   o.addVote = function(id, vote) {
-    //console.log("id: " + id);
-    //console.log("vote: " + vote);
     for(var i = 0; i < vote.length; i++){
       console.log(vote[i]);
     }
-    return $http.post('/rooms/' + id + '/votes', {options: vote}, {
+    return $http.post('/rooms/' + id + '/votes', vote, {
       headers: {Authorization: 'Bearer '+auth.getToken()}
     });
   };
@@ -314,19 +312,25 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
     // }
     //var vote = angular.copy($scope.vote);
 
-    if($scope.currentVote == null){
-      $scope.error = "Please select an option before voting ¯\\\_(ツ)_/¯"
-      return;
+    var vote = {
+      options: [],
+    };
+
+    if($scope.room.voteType == "FPP"){
+      if($scope.currentVote == null){
+        $scope.error = "Please select an option before voting ¯\\\_(ツ)_/¯"
+        return;
+      }
+      vote.options = [$scope.currentVote];
+    }
+    else if($scope.room.voteType == "Borda"){
+      vote.options = angular.copy($scope.vote);
     }
 
-    var vote = [];
-    vote.push($scope.currentVote);
-    console.log("VVVVV");
+
     console.log(vote);
     rooms.addVote(room._id, vote)
-    .success(function(vote) {
-      $scope.room.votes.push(vote);
-    }).then(function(responce){
+    .then(function(responce){
       $location.path('results/' + $stateParams.id);
     });
     //$scope.body = '';

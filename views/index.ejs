@@ -98,11 +98,21 @@
         <h1>{{room.title}}</h1>
         <h2>Select your prefered choice</h2>
       </div>
-      <div ng-repeat="option in vote track by $index">
+
+      <div ng-repeat="option in vote track by $index" ng-show="room.voteType == 'FPP'">
         <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-class="{'grey': currentVote != option}" ng-click="selectVote(option)">
           <h5>{{option.title}}</h5>
         </button>
       </div>
+
+      <div ng-sortable="barConfig" class="optionblock" ng-show="room.voteType == 'Borda'">
+        <div ng-repeat="option in vote track by $index">
+          <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-click="selectVote(option)">
+            <h5>{{option.title}}</h5>
+          </button>
+        </div>
+      </div>
+
       stuff here
       <div class="votebuttongroup">
           <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
@@ -140,7 +150,7 @@
 
     <div class="row">
       <button ng-click="changeType('FPP')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'FPP'}">First Pass</button>
-      <button ng-click="changeType('BORDA')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'BORDA'}">Borda</button>
+      <button ng-click="changeType('Borda')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'Borda'}">Borda</button>
     </div>
 
     <hr>

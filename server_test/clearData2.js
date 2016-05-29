@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var db = require('../models/models');
+var db = require('../models/testModels');
 mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 
 function clean(){

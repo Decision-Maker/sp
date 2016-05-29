@@ -1,5 +1,5 @@
 // Borda Count Voting system: for each vote, give each option a # of points equal to the # of candidates ranked lower
-var db = require('../models/models');
+var db = require('../models/models'); 
 var Borda = {};
 
 // take room id, return winner of Borda algorithm
@@ -31,9 +31,12 @@ Borda.getResult = function(room_id, callback){
 Borda.vote = function(user, room, options, callback){
 	db.model.Vote.find({room: room._id}).populate('option user').exec(function(err, votes){
 		if (err) {return handleError(err);}
+		console.log("VOTES", votes);
+		console.log("USER ID", user._id);
  		var match = votes.filter(function(e){return e.user._id.equals(user._id);});
  		if(match.length > 0){	// user has already voted on this poll
 			console.log("user has already voted on this poll");
+			updateAllVotes(user, room, options)
 		} else {
 			saveAllVotes(user, room, options).then(function(votes){
 				// console.log("in borda then");
@@ -65,7 +68,6 @@ function saveVote(user, room, option, i){
 		});
 	});
 }
-//stages to voting, no new options once voting has begun
 
 // helper for saveVote go through the list of options, find the one with a given title
 function find(title, list){

@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var db = require('../models/models');
+var db = require('../models/testModels');
 var IRV = require('../voting-util/IRV');
 var FPP = require('../voting-util/FPP');
 var Borda = require('../voting-util/Borda');

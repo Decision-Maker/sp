@@ -39,13 +39,15 @@ o.schema.vote = new Schema({
   room: {type: Schema.Types.ObjectId, ref: 'Room'},
   option: {type: Schema.Types.ObjectId, ref: 'Option'},
   next: {type: Schema.Types.ObjectId, ref: 'Vote', default: null},
-  head: {type: Boolean, default: false}
+  head: {type: Boolean, default: false},
+  value: {type: Number, default: 0}
 });
 
 o.schema.room = new Schema({
   title: String,
   voteType: {type: String, default: 'FPP'},
-  created: {type: Schema.Types.ObjectId, ref: 'User', default: null}
+  created: {type: Schema.Types.ObjectId, ref: 'User', default: null},
+  state: {type: String, default: 'options'}
 });
 
 //voting systems: perferential, point based
@@ -62,10 +64,10 @@ o.schema.observe = new Schema({
 });
 
 //change names of collections for final production model
-o.model.Option = mongoose.model('Option', o.schema.option, 'test_options');
-o.model.Room = mongoose.model('Room', o.schema.room, 'test_rooms');
-o.model.Vote = mongoose.model('Vote', o.schema.vote, 'test_votes');
-o.model.User = mongoose.model('User', o.schema.user, 'test_users');
-o.model.Observe = mongoose.model('Observe', o.schema.observe, 'test_observe');
+o.model.Option = mongoose.model('Option', o.schema.option, 'options');
+o.model.Room = mongoose.model('Room', o.schema.room, 'rooms');
+o.model.Vote = mongoose.model('Vote', o.schema.vote, 'votes');
+o.model.User = mongoose.model('User', o.schema.user, 'users');
+o.model.Observe = mongoose.model('Observe', o.schema.observe, 'observe');
 
 module.exports = o;

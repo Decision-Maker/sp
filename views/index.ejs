@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Decision Maker!</title>
+  <title>Myrge</title>
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -18,179 +18,307 @@
   <script src="/javascripts/angularApp.js"></script>
   <style> .glyphicon-thumbs-up { cursor:pointer } </style>
 </head>
-<body ng-app="decisionMaker" ng-controller="MainCtrl">
-  <header class="navbar navbar-default topbar" ng-controller="NavCtrl">
-    <a href="#/home" class="pull-left logo"><img src="../images/logo.svg"></a>
-    <ul class="nav navbar-nav pull-right">
-      <li ng-show="isLoggedIn()"><a href="/#/profile"><img class="icon" src="../images/profile-icon.svg">   {{ currentUser() }}</a></li>
-      <li ng-show="isLoggedIn()"><a href="/#/create"><img class="icon" src="../images/add-icon.svg"> New Poll</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/login"><button class="btn btn-primary"> Log In </button></a></li>
-    </ul>
-  </header>
-  <div class="doodle-section">
-    <div class="section-title"></div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <ui-view></ui-view>
+<body ng-app="decisionMaker">
+  <header class="navbar navbar-default" ng-controller="NavCtrl">
+    <div class="col-md-10 col-md-offset-1">
+      <a href="#/home" class="pull-left logo"><img src="../images/logo.svg"></a>
+      <ul class="nav navbar-nav pull-right">
+        <li ng-show="isLoggedIn()"><a href="/#/profile"><img class="icon" src="../images/profile-icon.svg">   {{ currentUser() }}</a></li>
+        <li ng-show="isLoggedIn()"><a href="/#/create"><img class="icon" src="../images/add-icon.svg"> New Poll</a></li>
+        <li ng-hide="isLoggedIn()"><a href="/#/login"><button class="btn btn-primary"> Log In </button></a></li>
+      </ul>
     </div>
+  </header>
+  <div id="mainContent">
+    <ui-view></ui-view>
   </div>
 
   <footer class="footer" ng-controller="NavCtrl">
-      <ul>
-        <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
-        <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
-        <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
-        <li ng-show="isLoggedIn()"><a href="/#/create">Create a Poll</a></li>
-        <li ng-show="isLoggedIn()"><a href="/#/profile">My Polls</a></li>
-        <li><a href="/#/about">About</a></li>
-      </ul>
+      <div class="container">
+        <div id="footerwrap">
+          <ul class="footernav">
+            <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
+            <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
+            <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+            <li ng-show="isLoggedIn()"><a href="/#/create">Create a Poll</a></li>
+            <li ng-show="isLoggedIn()"><a href="/#/profile">My Polls</a></li>
+            <li><a href="/#/about">About</a></li>
+          </ul>
+        </div>
+      </div>
   <footer>
 </body>
 
 <script type="text/ng-template" id="/results.html">
-  <div class="page-header">
-    <h1>
-      {{room.title}}
-    </h1>
+  <div class="pagewrapper-2">
+    <div class="page-header">
+      <h1>
+        {{room.title}}
+      </h1>
+    </div>
+    <div class="decisionresult">
+      <div><h2>Final Decision &middot; {{results[0].count}} Votes </h2></div>
+      <div><h4>{{results[0].title}}</h4></div>
+    </div>
   </div>
-   <div class="decisionresult">
-    <div><h2>Final Decision &middot; {{results[0].count}} Votes </h2></div>
-    <div><h4>{{results[0].title}}</h4></div>
-   </div>
-
 </script>
 
 <script type="text/ng-template" id="/rooms.html">
-  <div class="page-header">
-    <h1>
-      {{room.title}}
-    </h1>
-  </div>
-
-  <div ng-show="message" class="alert alert-warning row">
-    <span>{{message}}</span>
-  </div>
-
-  <div class="directions">
-    <h2>Drag and drop to vote on top option</h2>
-  </div>
-  <div ng-sortable="barConfig">
-    <div class="voteoption" ng-repeat="option in vote track by $index">
-       <h3>{{option.title}}</h3>
+  <div class="doodle-section">
+    <div class="homewrapper-1">
+      <div class="row">
+        <div class="col-md-6">
+            <div id="centerblock">
+              <div class="center-description">
+                <div><h1>Pick-One Poll<h1></div>
+                <div>Select the option that is your #1 choice.</div>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-6 doodle-padding">
+          <div id="centerblock">
+            <img class="doodle" src="../images/pick-one-doodle.png">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="votebuttongroup">
-      <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
-      <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
+  <div class="pagewrapper-2">
+    <div class="vote-vote-block">
+      <div ng-show="message" class="alert alert-warning row">
+        <span>{{message}}</span>
+      </div>
+
+      <div ng-show="error" class="alert alert-danger row">
+        <span>{{error}}</span>
+      </div>
+
+
+      <div class="directions">
+        <h1>{{room.title}}</h1>
+        <h2>Select your prefered choice</h2>
+      </div>
+      <div ng-repeat="option in vote track by $index">
+        <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-class="{'grey': currentVote != option}" ng-click="selectVote(option)">
+          <h5>{{option.title}}</h5>
+        </button>
+      </div>
+      stuff here
+      <div class="votebuttongroup">
+          <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
+          <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
+      </div>
+    </div>
+
+    <div class="vote-addoption-block">
+      <form ng-submit="addRoom()">
+        <h3>Add an Option</h3>
+           <div ng-sortable="barConfig" class="optionblock">
+                  <div ng-repeat="option in new track by $index">
+                      <input type="text" class="form-control option" placeholder="Option" ng-model="new[$index]"></input>
+                      <span style="cursor: pointer;" ng-click="delete($index)">X</span>
+                  </div>
+            </div>
+            <div class="createoptionbutton">
+              <img src="../images/add-icon.svg" ng-click="addOption($event)"></i>
+            </div>
+      </form>
+      <div class="votebuttongroup">
+        <button class="btn btn-primary" ng-click="submitNewOptions()">Submit Options</button>
+      </div>
+    </div>
   </div>
 </script>
 
 <script type="text/ng-template" id="/create.html">
-  <div class="page-header">
+  <div class="pagewrapper-2">
     <h1>Create a Poll</h1>
-  </div>
 
-  <div class="createroomblock">
-      <div class="form-group">
-      <div class="inputtitle">
-            <input type="title"
-              class="title-control"
-              placeholder="Poll Title"
-              ng-model="title">
-            </input>
-      </div>
-      <form ng-submit="addRoom()">
-           <div ng-sortable="barConfig" class="optionblock">
-                  <div ng-repeat="option in options track by $index">
-                      <input type="text" class="option" placeholder="Option" ng-model="options[$index]"></input>
-                  </div>
-            </div>
-            <div class="createoptionbutton">
-            <i class="fa fa-plus" ng-click="addOption($event)"></i>
-            </div>
-      </form>
-      </div>
-      <div class="createroombutton">
-      <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
-      </div>
-  </div>
+    <div ng-show="error" class="alert alert-danger row">
+      <span>{{error}}</span>
+    </div>
 
-  <div class="roomlist" ng-repeat="room in rooms | reverse">
-        <div class="roomtitle">
-            <h3>{{room.title}}</h3>
+    <div class="row">
+      <button ng-click="changeType('FPP')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'FPP'}">First Pass</button>
+      <button ng-click="changeType('BORDA')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'BORDA'}">Borda</button>
+    </div>
+
+    <hr>
+
+    <div class="createroomblock">
+        <div class="form-group">
+
+        <input type="title" class="form-control" placeholder="Poll Title" ng-model="title"></input>
+
+        <form ng-submit="addRoom()">
+             <div ng-sortable="barConfig" class="optionblock">
+                    <div ng-repeat="option in options track by $index">
+                        <input type="text" class="form-control option" placeholder="Option" ng-model="options[$index]"></input>
+                        <span style="cursor: pointer;" ng-click="delete($index)">X</span>
+                    </div>
+              </div>
+              <div class="createoptionbutton">
+                <img src="../images/add-icon.svg" ng-click="addOption($event)"></img>
+              </div>
+        </form>
         </div>
-        <div class="govote">
-            <a href="#/rooms/{{room._id}}"><button class="btn btn-primary">Vote</button></a>
+        <div class="createroombutton">
+        <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
         </div>
+    </div>
+
+    <div class="roomlist" ng-repeat="room in rooms | reverse">
+          <div class="roomtitle">
+              <h3>{{room.title}}</h3>
+          </div>
+          <div class="govote">
+              <a href="#/rooms/{{room._id}}"><button class="btn btn-primary">Vote</button></a>
+          </div>
+    </div>
   </div>
 </script>
 
 <script type="text/ng-template" id="/login.html">
-  <div class="page-header">
+  <div class="spacer"></div>
+  <div class="pagewrapper-1">
     <h1>Log In</h1>
-  </div>
-
-  <div ng-show="error" class="alert alert-danger row">
-    <span>{{ error.message }}</span>
-  </div>
-
-  <form ng-submit="logIn()"
-    style="margin-top:30px;">
-
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
+    <div>New to Myrge? <a class="redlink" href="/#/register">Create an Account</a></div>
+    <div ng-show="error" class="alert alert-danger row">
+      <span>{{ error.message }}</span>
     </div>
-    <div class="form-group">
-      <input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
-    </div>
-    <button type="submit" class="btn btn-primary">Log In</button>
-  </form>
-  </script>
+
+    <form ng-submit="logIn()"
+      style="margin-top:30px;">
+
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
+      </div>
+      <button type="submit" class="btn btn-primary">Log In</button>
+    </form>
+  </div>
+</script>
 
 <script type="text/ng-template" id="/register.html">
-  <div class="page-header">
+  <div class="spacer"></div>
+  <div class="pagewrapper-1">
     <h1>Register</h1>
-  </div>
+    <div>Already have an account? <a class="redlink" href="/#/login">Log In</a></div>
 
-  <div ng-show="error" class="alert alert-danger row">
-    <span>{{ error.message }}</span>
-  </div>
-
-  <form ng-submit="register()"
-    style="margin-top:30px;">
-    <h3>Register</h3>
-
-    <div class="form-group">
-      <input type="text"
-      class="form-control"
-      placeholder="Username"
-      ng-model="user.username"></input>
+    <div ng-show="error" class="alert alert-danger row">
+      <span>{{ error.message }}</span>
     </div>
-    <div class="form-group">
-      <input type="password"
-      class="form-control"
-      placeholder="Password"
-      ng-model="user.password"></input>
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-  </form>
+
+    <form ng-submit="register()"
+      style="margin-top:30px;">
+      <h3>Register</h3>
+
+      <div class="form-group">
+        <input type="text"
+        class="form-control"
+        placeholder="Username"
+        ng-model="user.username"></input>
+      </div>
+      <div class="form-group">
+        <input type="password"
+        class="form-control"
+        placeholder="Password"
+        ng-model="user.password"></input>
+      </div>
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+  </div>
 </script>
 
 <script type="text/ng-template" id="/profile.html">
-  <div class="page-header">
-    <h1>My Polls</h1>
+  <div class="doodle-section">
+      <div class="homewrapper-1">
+        <div class="row">
+          <div class="col-md-6 doodle-padding">
+            <div id="centerblock">
+              <div class="doodle-description">
+                <div><h1>My Polls<h1></div>
+                <div class="doodle-text">Here are some polls you've created, voted on, or interacted with in the past.</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 doodle-padding">
+            <div id="centerblock">
+              <img class="doodle" src="../images/my-polls-doodle.png">
+            </div>
+          </div>
+      </div>
+    </div>
   </div>
-  <div ng-repeat="room in profile.voted track by $index">
-      <p>{{room.title}}</p>
+  <div class="pagewrapper-2">
+    <h3>Active Polls</h3>
+    <div ng-repeat="room in profile.voted track by $index">
+        <a href="#/rooms/{{room._id}}">{{room.title}}</a>
+    </div>
+    <h3>Created Polls</h3>
+    <div ng-repeat="room in profile.created track by $index">
+        <a href="#/results/{{room._id}}">{{room.title}}</a>
+    </div>
   </div>
 </script>
 
 <script type="text/ng-template" id="/home.html">
-  <div class="page-header">
-    <h1>Home</h1>
+  <div class="doodle-section">
+    <div class="homewrapper-1">
+      <div class="row">
+          <div class="col-md-6">
+            <div class="centerblock">
+              <div class="doodle-description">
+                <div><h1>Make decisions together.<h1></div>
+                  <div class="doodle-text">We’ll help you and your friends come to a group consensus. Vote on what you want and let us do the rest.</div>
+                  <a href="/#/create"><button type="submit" class="btn btn-primary">Create A Poll</button></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 doodle-padding">
+            <div class="centerblock">
+              <img class="doodle" src="../images/home-page-doodle.png">
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="homewrapper-2">
+    <div class="row">
+      <div class="col-md-4 homesection">
+        <div class="centerblock">
+          <h1>Collaborate</h1>
+          <img class="homeicon tweakright" src="../images/home-icon-1.svg">
+        </div>
+        <div>
+          Create a poll where you and others can submit options on where to eat,
+          what to read, or any topic of your choice.
+        </div>
+      </div>
+      <div class="col-md-4 homesection">
+        <h1>Vote</h1>
+        <div class="centerblock">
+          <img class="homeicon tweakleft" src="../images/home-icon-2.svg">
+        </div>
+        <div>
+          Share your poll and get others involved! Anyone with the shared link
+          can vote on options by rank or top choice.
+        </div>
+      </div>
+      <div class="col-md-4 homesection">
+        <h1>Decide</h1>
+        <div class="centerblock">
+          <img class="homeicon" src="../images/home-icon-3.svg">
+        </div>
+        <div>
+          Once the poll is closed, votes are tallied and everyone involved can view
+          the final decision. No more hassle!
+        </div>
+      </div>
+    </div>
   </div>
 </script>
-
 
 </html>

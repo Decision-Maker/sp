@@ -51,8 +51,9 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
   };
 
   o.addOptions = function(id, options){
-	  return $http.post('/rooms/' + id + '/options').then(function(res){return res.data;});
+	  return $http.post('/rooms/' + id + '/options', {options: options}).then(function(res){return res.data;});
   };
+
 
   return o;
 }]);
@@ -275,6 +276,11 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
   $scope.vote = angular.copy($scope.room.options);
   $scope.user = user;
   $scope.message = "";
+  $scope.new = [""];
+  $scope.currentVote = null;
+  $scope.error = "";
+
+  console.log($scope.room);
   //alert(user);
   for(var i = 0; i < user.data.voted.length; i++){
     if(user.data.voted[i]._id == $stateParams.id){
@@ -282,6 +288,26 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
     }
   }
 
+  $scope.selectVote = function(option){
+    $scope.currentVote = option;
+    $scope.error = "";
+  }
+
+  $scope.addOption = function(event){
+    $scope.new.push("");
+  }
+
+  $scope.delete = function(i){
+    if($scope.new.length < 2){
+      return;
+    }
+    $scope.new.splice(i, 1);
+  }
+
+  $scope.submitNewOptions = function(){
+    rooms.addOptions($stateParams.id, $scope.new);
+    $scope.new = [""];
+  }
 
   //Used for drag and drop
   $scope.barConfig = {
@@ -293,11 +319,20 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
   };
 
   $scope.addVote = function(){
-    console.log("original order")
-    for (i = 0; i < room.options.length; i++){
-      console.log(room.options[i].title);
+    // console.log("original order")
+    // for (i = 0; i < room.options.length; i++){
+    //   console.log(room.options[i].title);
+    // }
+    //var vote = angular.copy($scope.vote);
+
+    if($scope.currentVote == null){
+      $scope.error = "Please select an option before voting ¯\\\_(ツ)_/¯"
+      return;
     }
-    var vote = angular.copy($scope.vote);
+
+    var vote = [];
+    vote.push($scope.currentVote);
+    console.log("VVVVV");
     console.log(vote);
     rooms.addVote(room._id, vote)
     .success(function(vote) {
@@ -352,6 +387,9 @@ function($scope, rooms, auth){
   $scope.rooms = rooms.rooms;
   $scope.options = ["",""];
 
+  $scope.type = "FPP";
+  $scope.error = "";
+
   //Used for drag and drop
   $scope.barConfig = {
       animation: 150,
@@ -361,8 +399,20 @@ function($scope, rooms, auth){
       }
   };
 
+  $scope.changeType = function(type){
+    $scope.type = type;
+  }
+
+  $scope.delete = function(i){
+    if($scope.options.length < 3){
+      return;
+    }
+    $scope.options.splice(i, 1);
+  }
+
   $scope.addRoom = function(){
     if(!$scope.title){
+      $scope.error = "Please Enter a Title";
       return;
     }
 
@@ -378,11 +428,18 @@ function($scope, rooms, auth){
       return true;
     });
 
+    if(uniqueOptions.length <= 1){
+      $scope.error = "Please Provide Atleast 2 Unique Options"
+      return;
+    }
+
+
+
     rooms.create({
       title: $scope.title,
       options: uniqueOptions,
       votes: [],
-      type: "FPP"
+      type: $scope.type
     });
     $scope.options = ["",""];
     $scope.title = "";

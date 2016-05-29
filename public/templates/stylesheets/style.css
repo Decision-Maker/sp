@@ -1,9 +1,19 @@
+#mainContent{
+  min-height: calc(100% - 190px);
+}
+
+button:focus {
+    outline: none !important;
+    background-color: #D55A4D !important;
+}
+
 *:focus{
   outline: none
 }
 
 body {
   font-family: 'Montserrat', sans-serif;
+  color: #5E5E5E;
   background: white;
   border-width: .2em;
 }
@@ -17,10 +27,36 @@ a {
   color: white;
 }
 
+a:hover {
+  color: #AFAFAF;
+  text-decoration: none;
+}
+
+a:active {
+  color: black;
+}
+
+a.redlink {
+  color: #D55A4D;
+}
+
+.pagewrapper-1 {
+  margin: 25em;
+  margin-top: 2em;
+  margin-bottom: 8em;
+}
+
+.pagewrapper-2 {
+  margin: 25em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
 .footer {
+  clear: both;
   height: 100px;
   width: 100%;
-  margin-top: 3em;
+  /*margin-top: 3em;*/
   background-color: #D55A4D;
   bottom: 0;
 }
@@ -29,19 +65,55 @@ a {
   min-height: 100%;
 }
 
-.topbar {
-  padding: 4em;
-  padding-bottom: 1em;
-}
-
 .navbar-default {
   background-color: white !important;
   border-color: white;
+  height: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
 }
 
 .navbar-default .navbar-nav>li>a {
   color: #D55A4D;
   text-transform: capitalize;
+}
+
+.doodle-section {
+  position: relative;
+  width: 100%;
+  background-color: #F7ECE3;
+}
+
+
+.section-text {
+  position: absolute;
+  margin-left: 10em;
+  margin-top: 100px;
+  float: left;
+  z-index: 4;
+}
+
+.section-img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 8em;
+  z-index: 3;
+}
+
+.section-description {
+  width: 80%;
+}
+
+.footernav {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.footernav>li {
+  display: inline;
+  margin-right: 1em;
 }
 
 h1 {
@@ -56,7 +128,8 @@ h2 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 1em;
-  color: white;
+  letter-spacing: .05em;
+  color: #7DB4BE;
   text-transform: uppercase;
 }
 
@@ -68,37 +141,31 @@ h3 {
 
 h4 {
   font-size: 1.8em;
+  color: #5E5E5E;
+  letter-spacing: normal;
+}
+
+h5 {
   color: white;
   letter-spacing: normal;
 }
 
-.doodle-section {
-  height: 350px;
-  width: 100%;
-  background-color: #F7ECE3;
-}
-
-.navbar {
-  margin-bottom: 0;
-}
-
 .option{
-  width: 100%;
+  width: 93%;
+  float: left;
 }
 
 .icon {
   margin-right: .3em;
 }
 
-.svg:hover path{
-  fill:black;
+.spacer {
+  background-color: white;
+  height: 40px;
 }
 
-.formLabelHandle{
-  width: 10%;
-  float: right;
-  position: relative;
-  cursor: pointer;
+.svg:hover path{
+  fill:black;
 }
 
 .govote {
@@ -106,26 +173,26 @@ h4 {
   margin-top: 1em;
 }
 
+.vote-vote-block {
+  margin-bottom: 2em;
+}
+
+.vote-addoption-block {
+  clear: both;
+  margin-top: 4em;
+}
+
 .roomtitle {
   float:left;
 }
-
 
 .roomlist {
   width: 100%;
   overflow: hidden;
 }
 
-.form-group {
-  margin-top: 2em;
-  padding: 2em;
-  background-color: rgba(255,255,255,.3);
-}
-
 .roomlist {
-  margin-top: 2em;
   padding: 2em;
-  background-color: rgba(255,255,255,.3);
 }
 
 .btn {
@@ -166,6 +233,8 @@ h4 {
 .votebuttongroup {
   float:right;
   margin-top:2em;
+  margin-bottom: 3em;
+  clear: both;
 }
 
 .voteoption {
@@ -173,6 +242,7 @@ h4 {
   padding: 2em;
   padding-top: .5em;
   padding-bottom: 1em;
+  background-color: #AFAFAF;
 }
 
 .createroomblock {
@@ -182,10 +252,8 @@ h4 {
 .decisionresult {
   margin-top: 2em;
   padding: 2em;
-  background-color: rgba(255,255,255,.3);
-  font-family: 'Source Sans Pro', sans-serif !important;
   text-align: center;
-  color: white;
+  color: #5E5E5E;
   margin-top: 2em;
 
 }
@@ -217,5 +285,78 @@ li {
 
 .createoptionbutton {
   float: right;
+  margin-top: .6em;
   cursor: pointer;
+}
+
+.centerblock {
+  display: table;
+  margin: 0 auto;
+}
+
+.homesection {
+  text-align: center;
+  padding: 2em;
+}
+
+.wrapper {
+  margin: 0 auto;
+}
+
+.homewrapper-1 {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.homewrapper-2 {
+  width: 80%;
+  margin: 0 auto;
+  padding: 2em;
+  padding-bottom: 3em;
+}
+
+img.homeicon {
+  height: 100px;
+  margin-bottom: 1em;
+}
+
+img.doodle {
+  display: table-cell;
+  bottom: 0;
+}
+
+.doodle-padding {
+  margin-bottom: 0 !important;
+  padding-top: 2em !important;
+}
+
+.doodle-text {
+  margin-bottom: 1.5em;
+}
+
+.doodle-description {
+  margin-top: 7em;
+}
+
+.tweakleft {
+  margin-left: 2.5em;
+}
+
+.tweakright {
+  margin-right: 1em;
+}
+
+.center-description {
+  margin-top: 10em;
+}
+
+.typeButton{
+  width: 46%;
+  margin: 2%;
+  margin-bottom: 0px;
+  float: left;
+}
+
+.grey{
+  background: #e8e8e8;
 }

@@ -1,9 +1,5 @@
 // First Past the Post Voting Functions
-
-
 var db = require('../models/models');
-
-
 var FPP = {};
 
 //adds a count field to each element in olist that is the total votes for those options
@@ -33,7 +29,7 @@ FPP.getResult = function(room_id, callback){
 			results.sort(function(a, b){
 				return b.count - a.count;
 			});
-			console.log(results[0].count);
+			//console.log(results[0].count);
 			callback(null, results);
 		});
 	});
@@ -42,23 +38,32 @@ FPP.getResult = function(room_id, callback){
 //casts a vote for the user in room for option then runs the callback
 FPP.vote = function(user, room, option, callback){
 	if(!callback){
+		//console.log("default callback");
 		callback = function(err){};
 	}
 	db.model.Vote.find({room: room._id}).populate('option user').exec(function(err, votes){
-	    if (err) {return handleError(err);}
-
-
+	  if (err) {return handleError(err);}
 		//console.log(votes);
-		var match = votes.filter(function(e){return e.user === user._id;});
+		//console.log(votes);
+		//console.log(user);
+		var match = votes.filter(function(e){return e.user._id.equals(user._id);});
 		if(match.length > 0){
 			//console.log("user matched");
-			//console.log(match.option);
-			db.model.Vote.update({user: user._id, room: room._id}, {$set: {option: match[0].option._id}}, callback);
+			//console.log(match[0].option);
+			db.model.Option.findOne({room: room._id, title: option.title}, function(err, op){
+				if(err) return handleError(err);
+				db.model.Vote.update({user: user._id, room: room._id}, {option: op._id}, callback);
+			});
+
 		}else{
 			//console.log("user not found, making new vote");
 			//console.log(votes);
+			console.log(option);
+			//console.log(room);
 			db.model.Option.findOne({room: room._id, title: option.title}, function(err, op){
-				//console.log(op.title);
+				console.log(op);
+				if(err) return handleError(err);
+				if(!op) return handleError("null option");
 				var vote = new db.model.Vote({room: room._id, user: user._id, option: op._id});
 				vote.save(function(err){
 					//if(err) {handleError(err);}

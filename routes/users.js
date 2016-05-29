@@ -29,10 +29,10 @@ router.get('/profile', auth, function(req, res, next){
     db.model.Room.find({created: user},function(err, rooms){
   		if(err){console.log('error in room.find');
 				new Error('error in finding user created rooms');}
-			console.log('room.find.success');
+			//console.log('room.find.success');
   		data.created = rooms;
       db.model.Vote.find({user: user}).populate('room').exec(function(err, votes){
-				console.log('vote.find.success');
+				//console.log('vote.find.success');
 				for (i = 0; i < votes.length; i++){
           data.voted.push(votes[i].room);
         }
@@ -40,9 +40,9 @@ router.get('/profile', auth, function(req, res, next){
           for(i = 0; i < obs.length; i++){
             data.observe.push(obs[i].room);
           }
-					console.log(data.created);
-					console.log(data.voted);
-					console.log(data.observe);
+					//console.log(data.created);
+					//console.log(data.voted);
+					//console.log(data.observe);
           res.json(data);
         });
 	    });

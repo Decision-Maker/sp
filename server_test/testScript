@@ -1,0 +1,6 @@
+node clearData2.js
+node createUsers.js
+node createPolls.js
+node createVotes.js
+node getResults.js
+node clearData2.js

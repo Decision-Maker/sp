@@ -6,6 +6,7 @@ var jwt = require('express-jwt');
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 var FPP = require('../voting-util/FPP');
 var IRV = require('../voting-util/IRV');
+var Borda = require('../voting-util/Borda');
 
 function handleError(err){
 	console.log("ERROR");
@@ -48,8 +49,10 @@ router.post('/:room/options', function(req, res, next) {
 	var size = req.body.options.length;
 	var error = false;
 	for (i = 0; i < size; i++){
+		  //console.log("loop started");
 	    option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
 	    option.save(function(err){
+<<<<<<< HEAD
 				if(err) {
 					handleError(err);
 					res.json({message: "Error saving messages", error: true})
@@ -62,6 +65,23 @@ router.post('/:room/options', function(req, res, next) {
 				}
 			});
   	}
+=======
+					if(err) {
+						handleError(err);
+						res.json({message: "Error saving messages", error: true, options: []})
+						console.error("save error");
+						error = true;
+					}
+					//console.log("saved option");
+					/*console.log("option created")*/
+					savecount++;
+					if(savecount == size && !error){
+						db.model.Option.find({room: req.room._id}, function(err, options){
+							res.json({message: "options saved", error: false, options: options});
+						});					}
+			});
+  }
+>>>>>>> 178f917b6d2563dd9e01cb9da666e29090a13b00
 });
 // Vote requests ===============================================================
 // =============================================================================
@@ -79,11 +99,18 @@ router.post('/:room/votes', auth, function(req, res, next) {
 					});
 				break;
 			case 'IRV':
+				console.log('use of IRV, IRV deprecated');
 				IRV.vote(u, req.room, req.body.options, function(err){
 						if(err) {handleError(err);}
 						res.json({});
 					});
 				break;
+			case 'Borda':
+				Borda.vote(u, req.room, req.body.options, function(err){
+					if(err) {handleError(err);}
+					res.json({});
+				});
+				break
 			default:
 				console.log('vote type not recognized');
 				break;
@@ -91,19 +118,32 @@ router.post('/:room/votes', auth, function(req, res, next) {
 	});
 });
 
+// Change Room State===========================================================
+// ============================================================================
+router.post('/:room/statechange', auth, function(req, res, next) {
+	db.model.User.findOne({name: req.payload.username}, function(err, u){
+		if (err) {
+			return handleError(err)
+		}
+		db.model.Room.find({_id: req.room._id}, function(err, room){
+  			if (err) handleError(err);
+  			if (room.created === u._id){
+  				db.model.Room.update({_id: room._id}, {state: 'voting'});
+  			}
+		 })
+	})
+});
 
 // Roomrequests ===============================================================
 // =============================================================================
 
 //Gets the correct room for given id
 router.get('/:room', function(req, res) {
-  var o = {title: req.room.title, options: [], votes: [], _id: req.room._id};
-
+  var o = {_id: req.room._id, title: req.room.title, voteType: req.room.voteType, created: req.room.created, state: req.room.state, options: []};
+ 0// var o = {title: req.room.title, options: [], votes: [], _id: req.room._id, state: ''};
   db.model.Option.find({room: req.room._id}, function(err, ops){
 	  if (err) handleError(err);
-	  for (i = 0; i < ops.length; i++){
-		  o.options.push(ops[i]);
-	  }
+	  o.options = ops;
 	  res.json(o);
   });
 
@@ -112,7 +152,7 @@ router.get('/:room', function(req, res) {
 //Gets all rooms,
 router.get('/', function(req, res, next) {
 	//console.log("hello");
-    db.model.Room.find(function(err, rooms){
+    db.model.Room.find({}, function(err, rooms){
       if(err){ return handleError(err); }
 	  var posts = [];
 	  for (i = 0; i < rooms.length; i++){
@@ -167,6 +207,11 @@ router.get('/:room/results', function(req, res, next) {
 			IRV.getResult(req.room._id, function(err, results){
 				res.json(results);
 			});
+			break;
+		case 'Borda':
+			Borda.get(req.room._id, function(err, results){
+				res.json(results);
+			})
 			break;
 		default:
 			console.log('vote type not recognized');

@@ -1,0 +1,15 @@
+var votes = [
+            // TEST FPP
+            {user: "Barikhik", poll: "best ale", options: ["brown"]},
+            // {user: "Doungrak", poll: "best ale", options: ["red"]},
+            // {user: "Kulaeck", poll: "best ale", options: ["brown"]},
+            // {user: "Kulaeck", poll: "best ale", options: ["brown"]}, // same user can vote twice on same poll?
+
+            // TEST IRV
+            // {user: "Throfrig",   poll: "best beard", options: ["bushy","big","braided"]}, // eliminate bushy, big wins
+            // {user: "Lorgunli",   poll: "best beard", options: ["big","braided","bushy"]},
+            // {user: "Groondon",   poll: "best beard", options: ["big","bushy","braided"]},
+            // {user: "Noggouk",    poll: "best beard", options: ["braided","bushy","big"]},
+            // {user: "Befrot",     poll: "best beard", options: ["braided","big","bushy"]}
+
+            ];

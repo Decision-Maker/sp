@@ -1,0 +1,25 @@
+Front End
+----------------
+
+- link copy area to share link to others in vote view
+- Add links to active and created polls in profile, not just list them
+- do not allow create/profile access is user is not logged in
+- add start vote button that once clicked users can no longer add options
+  to a poll and voting section appears
+- limit on number of options a user can add (10-15?)
+- voting style choice on create (FPP, ranked, etc)
+- load proper voting page based on voting choice
+- remove list of all rooms currently on create page (after testing is done)
+- add list of contributors in results section of a poll (people who voted)
+- make site responsive -> switch to smaller doodle images on tablet and mobile
+- change drag-and-drop on FPP voting to be selection based instead (special radio buttons)
+- fix weird squishing/overlap of voting area for tablet and mobile (switch to bootstrap cols)
+
+
+Back End
+-------------
+
+- create states within room objects where 0 is option phase and 1 is voting phase.
+  If in phase 0, voting cannot be done and only options and the ability to add them are displayed.
+  If in phase 1, ability to add options disappears and users can now vote.
+  Only creators of a poll can change the state of a poll!!

@@ -1,5 +1,5 @@
 // Borda Count Voting system: for each vote, give each option a # of points equal to the # of candidates ranked lower
-var db = require('../models/models');
+var db = require('../models/testModels');
 var Borda = {};
 
 // take room id, return a sorted list of objects reflecting result of Borda algorithm [{optionTitle: x, count: y},...]
@@ -86,6 +86,8 @@ function updateAllVotes(user, room, options){
 function updateVote(user, room, option, bordaValue){
 	return new Promise(function(resolve, reject){
 		db.model.Option.findOne({room: room._id, title: option.title}, function(err, op){
+			console.log("OPTION", option);
+			console.log("OP", op);
 			if(err) return handleError(err);
 			db.model.Vote.update({user: user._id, room: room._id, option: find(option.title, op)._id}, {value: bordaValue}, function(err, vote){
 				if (err) { console.error(err); reject(); };

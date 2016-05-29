@@ -8,15 +8,20 @@ mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 var votes = [
             {user: "Barikhik", poll: "letters"},
             {user: "Doungrak", poll: "letters"},
-            {user: "Kulaeck",  poll: "letters"},
-            {user: "Throfrig", poll: "letters"},
-            {user: "Lorgunli", poll: "letters"},
-            {user: "Groondon", poll: "letters"},
-            {user: "Noggouk",  poll: "letters"},
-            {user: "Befrot",   poll: "letters"},
-            {user: "Bungrom",  poll: "letters"},
-            {user: "Arazzoli", poll: "letters"},
-            {user: "Barikhik", poll: "letters"} // update user's vote
+            // {user: "Kulaeck",  poll: "letters"},
+            // {user: "Throfrig", poll: "letters"},
+            // {user: "Lorgunli", poll: "letters"},
+            // {user: "Groondon", poll: "letters"},
+            // {user: "Noggouk",  poll: "letters"},
+            // {user: "Befrot",   poll: "letters"},
+            // {user: "Bungrom",  poll: "letters"},
+            // {user: "Arazzoli", poll: "letters"},
+            ];
+
+var revotes = [
+            {user: "Barikhik", poll: "letters"}
+            // {user: "Doungrak", poll: "letters"},
+            // {user: "Kulaeck",  poll: "letters"}
             ];
 
 var opList = ["A","B","C", "D", "E", "F", "G"];
@@ -25,6 +30,12 @@ for(var i = 0; i < votes.length; i++){
    var holder = opList.slice();
    shuffle(holder);
    votes[i].options = holder;
+}
+
+for(var i = 0; i < revotes.length; i++){
+   var holder = opList.slice();
+   shuffle(holder);
+   revotes[i].options = holder;
 }
 
 function shuffle(array) {
@@ -40,6 +51,7 @@ function shuffle(array) {
 }
 
 console.log(votes);
+console.log(revotes);
 
 // createVote helper
 function getOptionList(userOrder, options){
@@ -61,6 +73,8 @@ function createVote(userName, pollName, userOrder){
                optionsList = getOptionList(userOrder, options);
                switch(poll.voteType){
                   case 'FPP':
+                     console.log("FPP USER", user);
+                     console.log("FPP POLL", poll);
                      FPP.vote(user, poll, optionsList[0], function(err){
                         if(err){ console.log("err"); }
                         resolve("FPP vote created");
@@ -101,7 +115,17 @@ console.log("creating votes...");
 createAllVotes(votes).then(function(val){
    // console.log("createVotes val", val)
    console.log("votes created");
-   process.exit(0);
+
+   console.log("updating votes...");
+   createAllVotes(revotes).then(function(val){
+      // console.log("createVotes val", val)
+      console.log("votes updated");
+      process.exit(0);
+   }, function(reason){
+      console.log('error in making votes');
+      console.log(reason);
+   });
+
 }, function(reason){
    console.log('error in making votes');
    console.log(reason);

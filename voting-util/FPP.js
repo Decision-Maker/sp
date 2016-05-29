@@ -43,9 +43,9 @@ FPP.vote = function(user, room, option, callback){
 	}
 	db.model.Vote.find({room: room._id}).populate('option user').exec(function(err, votes){
 	  if (err) {return handleError(err);}
+		console.log(votes);
 		//console.log(votes);
-		//console.log(votes);
-		//console.log(user);
+		console.log(user);
 		var match = votes.filter(function(e){return e.user._id.equals(user._id);});
 		if(match.length > 0){
 			//console.log("user matched");

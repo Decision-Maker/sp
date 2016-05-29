@@ -3,7 +3,7 @@ var db = require('../models/testModels');
 mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 
 var polls = [
-            {title: "letters", options: ["A","B","C", "D", "E", "F", "G"], created: "Kulaeck", voteType: "Borda"} ,
+            {title: "letters", options: ["A","B","C", "D", "E", "F", "G"], created: "Kulaeck", voteType: "FPP"} ,
             {title: "numbers", options: ["one","two","three","four","five"], created: "Doungrak", voteType: "FPP"},
 
             ];

@@ -1,13 +1,13 @@
 // Borda Count Voting system: for each vote, give each option a # of points equal to the # of candidates ranked lower
-var db = require('../models/testModels');
+var db = require('../models/models');
 var Borda = {};
 
 // take room id, return a sorted list of objects reflecting result of Borda algorithm [{optionTitle: x, count: y},...]
 Borda.getResult = function(room_id, callback){
-	
+
 	db.model.Option.find({room: room_id}, function(err, ops){ // get options list for the given room
 		db.model.Vote.find({room: room_id}, function(err, votes){ // get votes for this room
-			console.log('algorithm start');
+			// console.log('algorithm start');
 			var results = []
 			for(i = 0; i < ops.length; i++){
 				var other = {title: ops[i].title};
@@ -20,11 +20,11 @@ Borda.getResult = function(room_id, callback){
 				other.count = currentCount;
 				results.push(other);
 			}
-			console.log('sorting start');
+			// console.log('sorting start');
 			results.sort(function(a, b){
 				return b.count - a.count;
 			});
-			console.log(results);
+			// console.log(results);
 			callback(null, results);
 		});
 	});
@@ -34,19 +34,16 @@ Borda.getResult = function(room_id, callback){
 Borda.vote = function(user, room, options, callback){
 	db.model.Vote.find({room: room._id}).populate('option user').exec(function(err, votes){
 		if (err) {return handleError(err);}
-		console.log("VOTES", votes);
-		console.log("USER ID", user._id);
  		var match = votes.filter(function(e){return e.user._id.equals(user._id);});
 		// user has already voted on this poll
  		if(match.length > 0){
-			console.log("user has already voted on this poll");
 			updateAllVotes(user, room, options).then(function(votes){
 				callback(null, votes);
 			}, function(reason){
 				console.log('error in updating votes, Borda');
 				console.log(reason);
 			});
-		// user's first vot in this poll
+		// user's first vote in this poll
 		} else {
 			saveAllVotes(user, room, options).then(function(votes){
 				callback(null, votes);
@@ -89,10 +86,8 @@ function updateAllVotes(user, room, options){
 function updateVote(user, room, option, bordaValue){
 	return new Promise(function(resolve, reject){
 		db.model.Option.findOne({room: room._id, title: option.title}, function(err, op){
-			console.log("OPTION", option);
-			console.log("OP", op);
 			if(err) return handleError(err);
-			db.model.Vote.update({user: user._id, room: room._id, option: find(option.title, op)._id}, {value: bordaValue}, function(err, vote){
+			db.model.Vote.update({user: user._id, room: room._id, option: op._id}, {value: bordaValue}, function(err, vote){
 				if (err) { console.error(err); reject(); };
 				resolve(vote);
 			});

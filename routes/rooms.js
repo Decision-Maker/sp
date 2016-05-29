@@ -52,20 +52,6 @@ router.post('/:room/options', function(req, res, next) {
 		  //console.log("loop started");
 	    option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
 	    option.save(function(err){
-<<<<<<< HEAD
-				if(err) {
-					handleError(err);
-					res.json({message: "Error saving messages", error: true})
-					error = true;
-				}
-			/*console.log("option created")*/
-				savecount++;
-				if(savecount == size && !error){
-					res.json({message: "options saved", error: false});
-				}
-			});
-  	}
-=======
 					if(err) {
 						handleError(err);
 						res.json({message: "Error saving messages", error: true, options: []})
@@ -81,7 +67,6 @@ router.post('/:room/options', function(req, res, next) {
 						});					}
 			});
   }
->>>>>>> 178f917b6d2563dd9e01cb9da666e29090a13b00
 });
 // Vote requests ===============================================================
 // =============================================================================

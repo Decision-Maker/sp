@@ -16,6 +16,15 @@
   <!-- ng-sortable.js -->
   <script src="http://rubaxa.github.io/Sortable/ng-sortable.js"></script>
   <script src="/javascripts/angularApp.js"></script>
+
+  <script src="/javascripts/Factories/authFactory.js"></script>
+  <script src="/javascripts/Factories/roomsFactory.js"></script>
+
+  <script src="/javascripts/Controllers/mainController.js"></script>
+  <script src="/javascripts/Controllers/navController.js"></script>
+  <script src="/javascripts/Controllers/authController.js"></script>
+  <script src="/javascripts/Controllers/roomsController.js"></script>
+  <script src="/javascripts/Controllers/resultController.js"></script>
   <style> .glyphicon-thumbs-up { cursor:pointer } </style>
 </head>
 <body ng-app="decisionMaker">
@@ -29,6 +38,7 @@
       </ul>
     </div>
   </header>
+
   <div id="mainContent">
     <ui-view></ui-view>
   </div>

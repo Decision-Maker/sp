@@ -72,18 +72,7 @@ app.factory('auth', ['$http', '$window', '$state', function($http,$window,$state
     };
 
     auth.getToken = function(){
-      var token = $window.localStorage['usertoken'];
-      if (token){
-        return $http.get('users/profilecheck', {headers : {Authorization: 'Bearer '+ token}}).success(function(valid){
-          if (!valid) {
-            auth.logOut();
-            return;
-          } else {
-            return token;
-          }
-        })
-      }
-      return token;
+      return $window.localStorage['usertoken'];
     };
 
     auth.isLoggedIn = function(){

@@ -15,7 +15,8 @@ var votes = [
             {user: "Noggouk",  poll: "letters"},
             {user: "Befrot",   poll: "letters"},
             {user: "Bungrom",  poll: "letters"},
-            {user: "Arazzoli", poll: "letters"}
+            {user: "Arazzoli", poll: "letters"},
+            {user: "Barikhik", poll: "letters"} // update user's vote
             ];
 
 var opList = ["A","B","C", "D", "E", "F", "G"];

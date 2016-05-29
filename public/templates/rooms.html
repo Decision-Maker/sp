@@ -19,6 +19,11 @@
 </div>
 <div class="pagewrapper-2">
   <div class="vote-vote-block">
+
+    <div ng-show="url" class="alert alert-info row">
+      <span>Share this URL with your Friends: {{url}}</span>
+    </div>
+
     <div ng-show="message" class="alert alert-warning row">
       <span>{{message}}</span>
     </div>

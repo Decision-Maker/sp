@@ -17,6 +17,8 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
   $scope.currentVote = null;
   $scope.error = "";
 
+  $scope.url = $location.absUrl();
+
   console.log($scope.room);
   //alert(user);
   for(var i = 0; i < user.data.voted.length; i++){

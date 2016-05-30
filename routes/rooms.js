@@ -184,7 +184,14 @@ router.post('/:room/statechange', auth, loadUser,  function(req, res, next) {
 
 //Gets the correct room for given id
 router.get('/:room', function(req, res) {
-  var o = {_id: req.room._id, title: req.room.title, voteType: req.room.voteType, created: req.room.created, state: req.room.state, options: []};
+	var username;
+	db.model.User.findOne({_id: req.room.created}, function(err, u){
+		if (err) {
+			return handleError(err)
+		}
+		username = u.name;
+	});
+  var o = {_id: req.room._id, title: req.room.title, voteType: req.room.voteType, created: username, state: req.room.state, options: []};
  0// var o = {title: req.room.title, options: [], votes: [], _id: req.room._id, state: ''};
   db.model.Option.find({room: req.room._id}, function(err, ops){
 	  if (err) handleError(err);

@@ -96,6 +96,7 @@
       </form>
       <div class="votebuttongroup">
         <button class="btn btn-primary" ng-click="submitNewOptions()">Submit Options</button>
+        <button class="btn btn-primary" ng-click="changeState()" ng-show="currentUser == room.created">Start Voting</button>
       </div>
     </div>
 

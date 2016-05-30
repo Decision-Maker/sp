@@ -44,6 +44,12 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
 	  return $http.post('/rooms/' + id + '/options', {options: options});
   };
 
+  o.changeState = function(room){
+    return $http.post('/rooms/' + room._id + '/statechange', room, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    });
+  }
+
 
   return o;
 }]);

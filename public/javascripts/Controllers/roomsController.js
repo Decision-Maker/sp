@@ -17,6 +17,8 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
   $scope.currentVote = null;
   $scope.error = "";
 
+  $scope.currentUser = auth.currentUser();
+
   $scope.url = $location.absUrl();
 
   if($scope.room.state == "options"){
@@ -24,6 +26,13 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
   }
 
   console.log($scope.room);
+
+  $scope.changeState = function(){
+    rooms.changeState(room).success(function(data){
+      $state.go("results", {"id": $stateParams.id})
+    });
+  }
+
   for(var i = 0; i < user.data.voted.length; i++){
     if(user.data.voted[i]._id == $stateParams.id){
       $scope.message = "You have already voted in this poll. Voting again will update your previous vote";

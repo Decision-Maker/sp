@@ -1,13 +1,12 @@
 var mongoose = require('mongoose');
 var db = require('../models/testModels');
-var IRV = require('../voting-util/IRV');
 var FPP = require('../voting-util/FPP');
 var Borda = require('../voting-util/Borda');
 mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 
 var votes = [
-            {user: "Barikhik", poll: "letters"},
-            {user: "Doungrak", poll: "letters"},
+            // {user: "Barikhik", poll: "letters"},
+            // {user: "Doungrak", poll: "letters"},
             // {user: "Kulaeck",  poll: "letters"},
             // {user: "Throfrig", poll: "letters"},
             // {user: "Lorgunli", poll: "letters"},
@@ -16,26 +15,21 @@ var votes = [
             // {user: "Befrot",   poll: "letters"},
             // {user: "Bungrom",  poll: "letters"},
             // {user: "Arazzoli", poll: "letters"},
+
+            {user: "Barikhik", poll: "numbers"},
+            {user: "Doungrak", poll: "numbers"},
+            // {user: "Kulaeck",  poll: "numbers"},
+            // {user: "Throfrig", poll: "numbers"},
+            // {user: "Lorgunli", poll: "numbers"},
             ];
 
-var revotes = [
-            {user: "Barikhik", poll: "letters"}
-            // {user: "Doungrak", poll: "letters"},
-            // {user: "Kulaeck",  poll: "letters"}
-            ];
-
-var opList = ["A","B","C", "D", "E", "F", "G"];
+// var opList = ["A","B","C", "D", "E", "F", "G"];
+var opList = ["one","two","three","four","five"];
 
 for(var i = 0; i < votes.length; i++){
    var holder = opList.slice();
    shuffle(holder);
    votes[i].options = holder;
-}
-
-for(var i = 0; i < revotes.length; i++){
-   var holder = opList.slice();
-   shuffle(holder);
-   revotes[i].options = holder;
 }
 
 function shuffle(array) {
@@ -51,7 +45,6 @@ function shuffle(array) {
 }
 
 console.log(votes);
-console.log(revotes);
 
 // createVote helper
 function getOptionList(userOrder, options){
@@ -73,25 +66,21 @@ function createVote(userName, pollName, userOrder){
                optionsList = getOptionList(userOrder, options);
                switch(poll.voteType){
                   case 'FPP':
-                     console.log("FPP USER", user);
-                     console.log("FPP POLL", poll);
+                     // console.log("FPP USER", user);
+                     // console.log("FPP POLL", poll);
                      FPP.vote(user, poll, optionsList[0], function(err){
                         if(err){ console.log("err"); }
-                        resolve("FPP vote created");
+                        // resolve("FPP vote created");
                      });
                      break;
-                  case 'IRV':
-                     IRV.vote(user, poll, optionsList, function(err){
-                        if(err){ console.log("err"); }
-                        resolve("IRV vote created");
-                     });
-                     break;
+
                   case 'Borda':
                      Borda.vote(user, poll, optionsList, function(err, savedVotes){
                         if(err){ console.log("err"); }
                         resolve(savedVotes);
                      });
                      break;
+
                   default:
                      console.log('bad votetype');
                      reject(new Error("unknown voteType"));
@@ -115,17 +104,7 @@ console.log("creating votes...");
 createAllVotes(votes).then(function(val){
    // console.log("createVotes val", val)
    console.log("votes created");
-
-   console.log("updating votes...");
-   createAllVotes(revotes).then(function(val){
-      // console.log("createVotes val", val)
-      console.log("votes updated");
-      process.exit(0);
-   }, function(reason){
-      console.log('error in making votes');
-      console.log(reason);
-   });
-
+   process.exit(0);
 }, function(reason){
    console.log('error in making votes');
    console.log(reason);

@@ -67,7 +67,7 @@
 
       <div ng-sortable="barConfig" class="optionblock" ng-show="room.voteType == 'Borda'">
         <div ng-repeat="option in vote track by $index">
-          <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-click="selectVote(option)">
+          <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn pick-one-btn btn-primary" ng-click="selectVote(option)">
             <h5>{{option.title}}</h5>
           </button>
         </div>

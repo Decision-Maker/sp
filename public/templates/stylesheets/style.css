@@ -8,7 +8,7 @@ button:focus {
 }
 
 *:focus{
-  outline: none
+  outline: none;
 }
 
 body {
@@ -163,6 +163,7 @@ h5 {
 .option{
   width: 93%;
   float: left;
+  margin-top: .5em;
 }
 
 .icon {
@@ -170,7 +171,6 @@ h5 {
 }
 
 .spacer {
-  background-color: white;
   height: 40px;
 }
 
@@ -222,6 +222,10 @@ h5 {
 
 .btn:hover {
   background-color: #A3524F;
+}
+
+.pick-one-btn {
+  background-color: #84b6c1;
 }
 
 .votebtn {
@@ -287,7 +291,7 @@ h5 {
   clear: both;
   float: right;
   margin-bottom: 2em;
-  margin-top: 1em;
+  margin-top: 2em;
 }
 
 li {
@@ -297,13 +301,13 @@ li {
 .createoptionbutton {
   clear: both;
   float: right;
-  margin-top: .6em;
+  margin-top: 1.5em;
   cursor: pointer;
 }
 
 .deleteoptionbutton {
   float: right;
-  margin-top: .6em;
+  margin-top: 2em;
   cursor: pointer;
 }
 
@@ -402,18 +406,28 @@ img.doodle {
   padding: 2em;
 }
 
+textarea:focus, input:focus {
+    outline: none !important;
+}
+
 ::-webkit-input-placeholder {
    text-transform: uppercase;
+   color: lightgrey !important;
+   letter-spacing: .1em;
+   font-size: 12px;
 }
 
 :-moz-placeholder { /* Firefox 18- */
    text-transform: uppercase;
+   color: lightgrey !important;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
    text-transform: uppercase;
+   color: lightgrey !important;
 }
 
 :-ms-input-placeholder {
    text-transform: uppercase;
+   color: lightgrey !important;
 }

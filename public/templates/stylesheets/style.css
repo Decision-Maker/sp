@@ -368,3 +368,13 @@ img.doodle {
 .grey{
   background: #e8e8e8;
 }
+
+.createpadding {
+  padding: 2em;
+  padding-left: 3em;
+  padding-right: 3em;
+}
+
+.createbg {
+  background-color: #F7ECE3;
+}

@@ -32,7 +32,7 @@ function loadUser(req, res, next){
 
 //Preload a specific room
 router.param('room',  function(req, res, next, id) {
-  var query = db.model.Room.findById(id);
+  var query = db.model.Room.findById(id).populate("created");
 
   query.exec(function (err, room){
     if (err) { return next(err); }
@@ -56,11 +56,25 @@ router.post('/:room/observe', auth, loadUser,  function(req, res, next){
 // Option requests ===============================================================
 // =============================================================================
 
+function contains(e, l){
+	console.log(e);
+	for(var i = 0; i < l.length; i++){
+		if(e === l[i].title){
+			console.log('matched', i);
+			return true;
+		}
+	}
+	return false;
+}
+
 function makeOption(title, room, oldops){
 	return new Promise(function(resolve, reject){
-		if(oldops.filter(function(e){e.title === title}).length > 0) resolve(null);
+		if(contains(title, oldops)){
+			return resolve(null);
+		}
 		var o = new db.model.Option({'title': title, 'room': room._id});
 		o.save(function(err){
+			console.log('new option');
 			if(err) reject(err);
 			resolve(o);
 		});
@@ -68,8 +82,9 @@ function makeOption(title, room, oldops){
 }
 
 router.post('/:room/options', function(req, res, next){
+	console.log('adding options');
 	var ops = req.body.options.filter(function(e, i, a){
-		for(var s = 0; s < i; i++){
+		for(var s = 0; s < i; s++){
 			if(a[s] === e){
 				return false;
 			}
@@ -77,6 +92,7 @@ router.post('/:room/options', function(req, res, next){
 		return true;
 	});
 	db.model.Option.find({room: req.room._id}, function(err, options){
+		console.log(options);
 		if(err) handleError(err);
 		var p = [];
 		for(var i = 0; i < ops.length; i++){
@@ -184,8 +200,8 @@ router.post('/:room/statechange', auth, loadUser,  function(req, res, next) {
 
 //Gets the correct room for given id
 router.get('/:room', function(req, res) {
-  var o = {_id: req.room._id, title: req.room.title, voteType: req.room.voteType, created: req.room.created, state: req.room.state, options: []};
- 0// var o = {title: req.room.title, options: [], votes: [], _id: req.room._id, state: ''};
+  var o = {_id: req.room._id, title: req.room.title, voteType: req.room.voteType, created: req.room.created.name, state: req.room.state, options: []};
+ // var o = {title: req.room.title, options: [], votes: [], _id: req.room._id, state: ''};
   db.model.Option.find({room: req.room._id}, function(err, ops){
 	  if (err) handleError(err);
 	  o.options = ops;

@@ -56,11 +56,25 @@ router.post('/:room/observe', auth, loadUser,  function(req, res, next){
 // Option requests ===============================================================
 // =============================================================================
 
+function contains(e, l){
+	console.log(e);
+	for(var i = 0; i < l.length; i++){
+		if(e === l[i].title){
+			console.log('matched', i);
+			return true;
+		}
+	}
+	return false;
+}
+
 function makeOption(title, room, oldops){
 	return new Promise(function(resolve, reject){
-		if(oldops.filter(function(e){e.title === title}).length > 0) resolve(null);
+		if(contains(title, oldops)){
+			return resolve(null);
+		}
 		var o = new db.model.Option({'title': title, 'room': room._id});
 		o.save(function(err){
+			console.log('new option');
 			if(err) reject(err);
 			resolve(o);
 		});
@@ -78,6 +92,7 @@ router.post('/:room/options', function(req, res, next){
 		return true;
 	});
 	db.model.Option.find({room: req.room._id}, function(err, options){
+		console.log(options);
 		if(err) handleError(err);
 		var p = [];
 		for(var i = 0; i < ops.length; i++){

@@ -1,45 +1,49 @@
-<div class="pagewrapper-2">
-  <h1>Create a Poll</h1>
+<div class="row createbg" id="mainContent">
+  <div class="col-md-6 col-md-offset-3 createpadding">
+    <h1>Create a Poll</h1>
 
-  <div ng-show="error" class="alert alert-danger row">
-    <span>{{error}}</span>
-  </div>
+    <div ng-show="error" class="alert alert-danger row">
+      <span>{{error}}</span>
+    </div>
 
-  <div class="row">
-    <button ng-click="changeType('FPP')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'FPP'}">First Pass</button>
-    <button ng-click="changeType('Borda')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'Borda'}">Borda</button>
-  </div>
+    <div class="row">
+      <button ng-click="changeType('FPP')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'FPP'}">Pick-One</button>
+      <button ng-click="changeType('Borda')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'Borda'}">Ranked</button>
+    </div>
 
-  <hr>
+    <hr>
 
-  <div class="createroomblock">
-      <div class="form-group">
+    <div class="createroomblock">
+        <div class="form-group">
 
-      <input type="title" class="form-control" placeholder="Poll Title" ng-model="title"></input>
+        <input type="title" class="form-control" placeholder="Poll Title" ng-model="title"></input>
 
-      <form ng-submit="addRoom()">
-           <div ng-sortable="barConfig" class="optionblock">
-                  <div ng-repeat="option in options track by $index">
-                      <input type="text" class="form-control option" placeholder="Option" ng-model="options[$index]"></input>
-                      <span style="cursor: pointer;" ng-click="delete($index)">X</span>
-                  </div>
-            </div>
-            <div class="createoptionbutton">
-              <img src="../images/add-icon.svg" ng-click="addOption($event)"></img>
-            </div>
-      </form>
-      </div>
-      <div class="createroombutton">
-      <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
-      </div>
-  </div>
-
-  <div class="roomlist" ng-repeat="room in rooms | reverse">
-        <div class="roomtitle">
-            <h3>{{room.title}}</h3>
+        <form ng-submit="addRoom()">
+             <div ng-sortable="barConfig" class="optionblock">
+                    <div ng-repeat="option in options track by $index">
+                        <input type="text" class="form-control option" placeholder="Option" ng-model="options[$index]"></input>
+                        <div class="deleteoptionbutton">
+                          <span style="cursor: pointer;" ng-click="delete($index)"><img src="../images/delete-icon.svg"></span>
+                        </div>
+                    </div>
+              </div>
+              <div class="createoptionbutton">
+                <img src="../images/add-icon.svg" ng-click="addOption($event)"></img>
+              </div>
+        </form>
         </div>
-        <div class="govote">
-            <a href="#/rooms/{{room._id}}"><button class="btn btn-primary">Vote</button></a>
+        <div class="createroombutton">
+        <button type="submit" ng-click="addRoom()" class="btn btn-primary">Create</button>
         </div>
+    </div>
+
+    <div class="roomlist" ng-repeat="room in rooms | reverse">
+          <div class="roomtitle">
+              <h3>{{room.title}}</h3>
+          </div>
+          <div class="govote">
+              <a href="#/rooms/{{room._id}}"><button class="btn btn-primary">Vote</button></a>
+          </div>
+    </div>
   </div>
-</div>
+<div>

@@ -15,6 +15,10 @@ app.factory('auth', ['$http', '$window', '$state', function($http,$window,$state
       return $window.localStorage['usertoken'];
     };
 
+    auth.validate = function(token){
+      return $http.get('/users/validateToken', {headers: {Authorization: 'Bearer '+token}});
+    };
+
     auth.isLoggedIn = function(){
       var token = auth.getToken();
       if(token){

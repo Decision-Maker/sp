@@ -274,6 +274,7 @@ h5 {
 }
 
 .createroombutton {
+  clear: both;
   float: right;
   margin-bottom: 2em;
   margin-top: 1em;
@@ -284,6 +285,13 @@ li {
 }
 
 .createoptionbutton {
+  clear: both;
+  float: right;
+  margin-top: .6em;
+  cursor: pointer;
+}
+
+.deleteoptionbutton {
   float: right;
   margin-top: .6em;
   cursor: pointer;
@@ -359,4 +367,14 @@ img.doodle {
 
 .grey{
   background: #e8e8e8;
+}
+
+.createpadding {
+  padding: 2em;
+  padding-left: 3em;
+  padding-right: 3em;
+}
+
+.createbg {
+  background-color: #F7ECE3;
 }

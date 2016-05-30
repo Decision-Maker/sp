@@ -59,28 +59,37 @@ router.post('/:room/observe', auth, loadUser,  function(req, res, next){
 //server is sent options in req.body
 router.post('/:room/options', function(req, res, next) {
 	var option;
-	var savecount = 0;
 	var size = req.body.options.length;
 	var error = false;
+	var unique = true;
 	for (i = 0; i < size; i++){
 		  //console.log("loop started");
-	    option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
-	    option.save(function(err){
-					if(err) {
-						handleError(err);
-						res.json({message: "Error saving messages", error: true, options: []})
-						console.error("save error");
-						error = true;
+			unique = true;
+			db.model.Option.findOne({room: req.room._id, title: req.body.options[i]}, function(err, opt){
+					if (opt){
+						unique = false;
 					}
-					//console.log("saved option");
-					/*console.log("option created")*/
-					savecount++;
-					if(savecount == size && !error){
-						db.model.Option.find({room: req.room._id}, function(err, options){
-							res.json({message: "options saved", error: false, options: options});
-						});					}
 			});
+			if (unique){
+				option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
+				option.save(function(err){
+						if(err) {
+							handleError(err);
+							res.json({message: "Error saving messages", error: true, options: []})
+							console.error("save error");
+							error = true;
+						}
+						//console.log("saved option");
+						/*console.log("option created")*/
+
+				});
+			}
   }
+	if(!error){
+		db.model.Option.find({room: req.room._id}, function(err, options){
+			res.json({message: "options saved", error: false, options: options});
+		});
+	}
 });
 // Vote requests ===============================================================
 // =============================================================================

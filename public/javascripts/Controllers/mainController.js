@@ -59,7 +59,7 @@ function($scope, rooms, auth){
       options: uniqueOptions,
       votes: [],
       type: $scope.type,
-      state: "options"
+      state: "options",
     });
     $scope.options = ["",""];
     $scope.title = "";

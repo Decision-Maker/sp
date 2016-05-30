@@ -19,8 +19,11 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
 
   $scope.url = $location.absUrl();
 
+  if($scope.room.state == "options"){
+    $scope.message = "This room is still being edited, come back later to vote";
+  }
+
   console.log($scope.room);
-  //alert(user);
   for(var i = 0; i < user.data.voted.length; i++){
     if(user.data.voted[i]._id == $stateParams.id){
       $scope.message = "You have already voted in this poll. Voting again will update your previous vote";

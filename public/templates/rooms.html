@@ -73,13 +73,13 @@
         </div>
       </div>
 
-      <div class="votebuttongroup">
+      <div class="votebuttongroup" ng-hide="room.state == 'options'">
           <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
           <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
       </div>
     </div>
 
-    <div class="vote-addoption-block">
+    <div class="vote-addoption-block" ng-show="room.state == 'options'">
       <form ng-submit="addRoom()">
         <h3>Add an Option</h3>
            <div ng-sortable="barConfig" class="optionblock">
@@ -98,5 +98,6 @@
         <button class="btn btn-primary" ng-click="submitNewOptions()">Submit Options</button>
       </div>
     </div>
+
   </div>
 </div>

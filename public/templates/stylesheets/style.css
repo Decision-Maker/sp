@@ -40,6 +40,16 @@ a.redlink {
   color: #D55A4D;
 }
 
+a.roomlink {
+  color:#D55A4D;
+  text-transform: capitalize;
+  font-weight: 800;
+}
+
+a.roomlink:active {
+  text-decoration: none;
+}
+
 .pagewrapper-1 {
   margin: 25em;
   margin-top: 2em;
@@ -365,8 +375,15 @@ img.doodle {
   float: left;
 }
 
-.grey{
-  background: #e8e8e8;
+.grey {
+  background: #e0d6d5;
+  color: #5E5E5E;
+  font-weight: 800;
+}
+
+.grey:hover {
+  background: #c5bcba;
+  color: #5E5E5E;
 }
 
 .createpadding {
@@ -377,4 +394,26 @@ img.doodle {
 
 .createbg {
   background-color: #F7ECE3;
+}
+
+.form-control {
+  border-radius: 0px;
+  border-style: none;
+  padding: 2em;
+}
+
+::-webkit-input-placeholder {
+   text-transform: uppercase;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-transform: uppercase;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-transform: uppercase;
+}
+
+:-ms-input-placeholder {
+   text-transform: uppercase;
 }

@@ -4,11 +4,10 @@ var Borda = {};
 
 // take room id, return a sorted list of objects reflecting result of Borda algorithm [{optionTitle: x, count: y},...]
 Borda.getResult = function(room_id, callback){
-
 	db.model.Option.find({room: room_id}, function(err, ops){ // get options list for the given room
-		db.model.Vote.find({room: room_id}, function(err, votes){ // get votes for this room
-			// console.log('algorithm start');
-			var results = []
+		db.model.Vote.find({room: room_id}).populate('user').exec(function(err, votes){ // get votes for this room
+			var results = {};
+			var newList = []; // the outcome of the poll
 			for(i = 0; i < ops.length; i++){
 				var other = {title: ops[i].title};
 				var currentCount = 0; // score to award to the current option
@@ -18,13 +17,28 @@ Borda.getResult = function(room_id, callback){
 					}
 				}
 				other.count = currentCount;
-				results.push(other);
+				newList.push(other);
 			}
-			// console.log('sorting start');
-			results.sort(function(a, b){
+			newList.sort(function(a, b){
 				return b.count - a.count;
 			});
-			// console.log(results);
+			results.result = newList;
+
+			var users = []; // the users who voted in the poll
+			for(i = 0; i < votes.length; i++){
+				var currentUser = votes[i].user;
+				if (users.indexOf(currentUser.name) == -1){
+					users.push(currentUser.name);
+				}
+			}
+			// sort users alphabetically
+			users.sort(function(a, b){
+	    		if(a < b) return -1;
+	    		if(a > b) return 1;
+	    		return 0;
+			});
+			results.users = users;
+
 			callback(null, results);
 		});
 	});

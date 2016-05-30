@@ -1,12 +1,13 @@
 var mongoose = require('mongoose');
-var db = require('../models/models');
+var db = require('../models/testModels');
 var IRV = require('../voting-util/IRV');
 var FPP = require('../voting-util/FPP');
 var Borda = require('../voting-util/Borda');
 mongoose.connect('mongodb://admin:123456@ds019268.mlab.com:19268/votingrooms');
 
 var polls = [
-   {title: "letters", voteType: "Borda"},
+   // {title: "letters", voteType: "Borda"},
+   {title: "numbers", voteType: "FPP"},
    // {title: "best pet", options: ["rabbit","dog","cat","mouse","serpent"], created: "Lorgunli", voteType: "FPP"}*/
 ];
 
@@ -20,12 +21,7 @@ function getResult(pollName){
                   resolve(result);
                });
                break;
-            case 'IRV':
-               IRV.getResult(poll._id, function(err, result){
-                  if(err) return reject(new Error("voting error"));
-                  resolve(result);
-               });
-               break;
+
             case 'Borda':
                Borda.getResult(poll._id, function(err, result){
                   if(err) return reject(new Error("voting error"));

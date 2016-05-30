@@ -56,8 +56,45 @@ router.post('/:room/observe', auth, loadUser,  function(req, res, next){
 // Option requests ===============================================================
 // =============================================================================
 
+function makeOption(title, room, oldops){
+	return new Promise(function(resolve, reject){
+		if(oldops.filter(function(e){e.title === title}).length > 0) resolve(null);
+		var o = new db.model.Option({'title': title, 'room': room._id});
+		o.save(function(err){
+			if(err) reject(err);
+			resolve(o);
+		});
+	});
+}
+
+router.post('/:room/options', function(req, res, next){
+	var ops = req.body.options.filter(function(e, i, a){
+		for(var s = 0; s < i; i++){
+			if(a[s] === e){
+				return false;
+			}
+		}
+		return true;
+	});
+	db.model.Option.find({room: req.room._id}, function(err, options){
+		if(err) handleError(err);
+		var p = [];
+		for(var i = 0; i < ops.length; i++){
+			p.push(makeOption(ops[i], req.room, options));
+		}
+		Promise.all(p).then(function(value){
+			db.model.Option.find({room: req.room._id}, function(err, optns){
+				if(err) handleError(err);
+				res.json({message: 'success', error: false, options: optns});
+			})
+		}, function(reason){
+			res.json({message: 'error making options', error: reason, options: []});
+		});
+	})
+});
+
 //server is sent options in req.body
-router.post('/:room/options', function(req, res, next) {
+/*router.post('/:room/options', function(req, res, next) {
 	var option;
 	var size = req.body.options.length;
 	var error = false;
@@ -80,7 +117,7 @@ router.post('/:room/options', function(req, res, next) {
 							error = true;
 						}
 						//console.log("saved option");
-						/*console.log("option created")*/
+						//console.log("option created")
 
 				});
 			}
@@ -90,7 +127,7 @@ router.post('/:room/options', function(req, res, next) {
 			res.json({message: "options saved", error: false, options: options});
 		});
 	}
-});
+});*/
 // Vote requests ===============================================================
 // =============================================================================
 
@@ -208,6 +245,7 @@ router.get('/:room/results', function(req, res, next) {
 	switch(req.room.voteType){
 		case 'FPP':
 			FPP.getResult(req.room._id, function(err, results){
+				console.log(results);
 				res.json(results);
 			});
 			break;
@@ -218,6 +256,7 @@ router.get('/:room/results', function(req, res, next) {
 			break;
 		case 'Borda':
 			Borda.getResult(req.room._id, function(err, results){
+				console.log(results);
 				res.json(results);
 			})
 			break;

@@ -6,8 +6,8 @@
   </div>
 
   <div class="row">
-    <button ng-click="changeType('FPP')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'FPP'}">First Pass</button>
-    <button ng-click="changeType('Borda')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'Borda'}">Borda</button>
+    <button ng-click="changeType('FPP')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'FPP'}">Pick-One</button>
+    <button ng-click="changeType('Borda')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'Borda'}">Ranked</button>
   </div>
 
   <hr>
@@ -21,7 +21,9 @@
            <div ng-sortable="barConfig" class="optionblock">
                   <div ng-repeat="option in options track by $index">
                       <input type="text" class="form-control option" placeholder="Option" ng-model="options[$index]"></input>
-                      <span style="cursor: pointer;" ng-click="delete($index)">X</span>
+                      <div class="deleteoptionbutton">
+                        <span style="cursor: pointer;" ng-click="delete($index)"><img src="../images/delete-icon.svg"></span>
+                      </div>
                   </div>
             </div>
             <div class="createoptionbutton">

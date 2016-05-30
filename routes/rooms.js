@@ -61,25 +61,29 @@ router.post('/:room/options', function(req, res, next) {
 	var option;
 	var size = req.body.options.length;
 	var error = false;
+	var unique = true;
 	for (i = 0; i < size; i++){
 		  //console.log("loop started");
-			db.model.Option.findOne({room: req.room._id, title: req.body.options[i]}, function(err, op){
-				if (!op){
-					option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
-			    option.save(function(err){
-							if(err) {
-								handleError(err);
-								res.json({message: "Error saving messages", error: true, options: []})
-								console.error("save error");
-								error = true;
-							}
-							//console.log("saved option");
-							/*console.log("option created")*/
-
-					});
-				}
+			unique = true;
+			db.model.Option.findOne({room: req.room._id, title: req.body.options[i]}, function(err, opt){
+					if (opt){
+						unique = false;
+					}
 			});
+			if (unique){
+				option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
+				option.save(function(err){
+						if(err) {
+							handleError(err);
+							res.json({message: "Error saving messages", error: true, options: []})
+							console.error("save error");
+							error = true;
+						}
+						//console.log("saved option");
+						/*console.log("option created")*/
 
+				});
+			}
   }
 	if(!error){
 		db.model.Option.find({room: req.room._id}, function(err, options){

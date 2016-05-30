@@ -8,7 +8,6 @@ app.controller('RoomsCtrl', [
 'user',
 function($scope, $stateParams, $location, rooms, room, auth, user){
 
-
   $scope.room = room;
   $scope.vote = angular.copy($scope.room.options);
   $scope.user = user;

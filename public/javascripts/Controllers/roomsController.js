@@ -62,8 +62,11 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
       return;
     }
 
-    var test = rooms.addOptions($stateParams.id, uniqueOptions);
-    console.log(test);
+    rooms.addOptions($stateParams.id, uniqueOptions).success(function(data){
+      console.log(data);
+      $scope.vote = data.options;
+    });
+    //console.log(test);
 
   }
 

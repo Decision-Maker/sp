@@ -68,8 +68,9 @@ function makeOption(title, room, oldops){
 }
 
 router.post('/:room/options', function(req, res, next){
+	console.log('adding options');
 	var ops = req.body.options.filter(function(e, i, a){
-		for(var s = 0; s < i; i++){
+		for(var s = 0; s < i; s++){
 			if(a[s] === e){
 				return false;
 			}

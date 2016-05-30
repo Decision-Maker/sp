@@ -1,11 +1,11 @@
 <div class="row createbg" id="mainContent">
   <div class="col-md-6 col-md-offset-3 createpadding">
+    <div class="spacer"></div>
     <h1>Create a Poll</h1>
 
     <div ng-show="error" class="alert alert-danger row">
       <span>{{error}}</span>
     </div>
-
     <div class="row">
       <button ng-click="changeType('FPP')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'FPP'}">Pick-One</button>
       <button ng-click="changeType('Borda')" class="btn btn-primary typeButton" ng-class="{'grey': type != 'Borda'}">Ranked</button>

@@ -11,8 +11,10 @@ function($scope, $state, auth){
 
   if($scope.loggedin){
     auth.validate(auth.getToken()).success(function(data){
-      auth.logOut();
-      $state.go("login");
+      if(!data.valid){
+        auth.logOut();
+        $state.go("login");
+      }
     });
   }
 }]);

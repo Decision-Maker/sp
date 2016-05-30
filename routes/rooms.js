@@ -88,13 +88,13 @@ router.post('/:room/options', function(req, res, next){
 				res.json({message: 'success', error: false, options: optns});
 			})
 		}, function(reason){
-			res.json(message: 'error making options', error: reason, options: []);
+			res.json({message: 'error making options', error: reason, options: []});
 		});
 	})
 });
 
 //server is sent options in req.body
-router.post('/:room/options', function(req, res, next) {
+/*router.post('/:room/options', function(req, res, next) {
 	var option;
 	var size = req.body.options.length;
 	var error = false;
@@ -117,7 +117,7 @@ router.post('/:room/options', function(req, res, next) {
 							error = true;
 						}
 						//console.log("saved option");
-						/*console.log("option created")*/
+						//console.log("option created")
 
 				});
 			}
@@ -127,7 +127,7 @@ router.post('/:room/options', function(req, res, next) {
 			res.json({message: "options saved", error: false, options: options});
 		});
 	}
-});
+});*/
 // Vote requests ===============================================================
 // =============================================================================
 

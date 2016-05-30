@@ -2,11 +2,12 @@ app.controller('RoomsCtrl', [
 '$scope',
 '$stateParams',
 '$location',
+'$state',
 'rooms',
 'room',
 'auth',
 'user',
-function($scope, $stateParams, $location, rooms, room, auth, user){
+function($scope, $stateParams, $location, $state, rooms, room, auth, user){
 
   $scope.room = room;
   $scope.vote = angular.copy($scope.room.options);
@@ -43,8 +44,30 @@ function($scope, $stateParams, $location, rooms, room, auth, user){
   }
 
   $scope.submitNewOptions = function(){
-    rooms.addOptions($stateParams.id, $scope.new);
-    $scope.new = [""];
+
+    var uniqueOptions = $scope.new.filter(function(item, pos, self){
+      if(item === ""){
+        return false;
+      }
+      for(i = pos + 1; i < self.length; i++){
+        if(self[i] === item){
+          return false;
+        }
+      }
+      return true;
+    });
+
+    if(uniqueOptions.length == 0){
+      $scope.error = "Please enter valid options"
+      return;
+    }
+
+    rooms.addOptions($stateParams.id, uniqueOptions).success(function(data){
+      console.log(data);
+      $scope.vote = data.options;
+    });
+    //console.log(test);
+
   }
 
   //Used for drag and drop

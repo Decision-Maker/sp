@@ -65,7 +65,9 @@
          <div ng-sortable="barConfig" class="optionblock">
                 <div ng-repeat="option in new track by $index">
                     <input type="text" class="form-control option" placeholder="Option" ng-model="new[$index]"></input>
-                    <span style="cursor: pointer;" ng-click="delete($index)">X</span>
+                    <div class="deleteoptionbutton">
+                      <span style="cursor: pointer;" ng-click="delete($index)"><img src="../images/delete-icon.svg"></span>
+                    </div>
                 </div>
           </div>
           <div class="createoptionbutton">

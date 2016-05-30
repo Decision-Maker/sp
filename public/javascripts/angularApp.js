@@ -23,7 +23,7 @@ function($stateProvider, $urlRouterProvider) {
       },
       onEnter: ['$state', 'auth', function($state, auth){
         if(!auth.isLoggedIn()){
-          $state.go('home');
+          $state.go('login');
         }
       }]
     });
@@ -71,7 +71,7 @@ function($stateProvider, $urlRouterProvider) {
       },
       onEnter: ['$state', 'auth', function($state, auth){
         if(!auth.isLoggedIn()){
-          $state.go('home');
+          $state.go('login');
         }
       }]
     });
@@ -91,7 +91,7 @@ function($stateProvider, $urlRouterProvider) {
       },
       onEnter: ['$state', 'auth', function($state, auth){
         if(!auth.isLoggedIn()){
-          $state.go('home');
+          $state.go('login');
         }
       }]
     });
@@ -111,7 +111,7 @@ function($stateProvider, $urlRouterProvider) {
       },
       onEnter: ['$state', 'auth', function($state, auth){
         if(!auth.isLoggedIn()){
-          $state.go('home');
+          $state.go('login');
         }
       }]
     });

@@ -245,6 +245,7 @@ router.get('/:room/results', function(req, res, next) {
 	switch(req.room.voteType){
 		case 'FPP':
 			FPP.getResult(req.room._id, function(err, results){
+				console.log(results);
 				res.json(results);
 			});
 			break;
@@ -255,6 +256,7 @@ router.get('/:room/results', function(req, res, next) {
 			break;
 		case 'Borda':
 			Borda.getResult(req.room._id, function(err, results){
+				console.log(results);
 				res.json(results);
 			})
 			break;

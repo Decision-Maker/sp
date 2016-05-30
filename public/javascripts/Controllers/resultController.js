@@ -6,12 +6,24 @@ app.controller('ResultsCtrl', [
 function($scope, rooms, room, results){
 
   $scope.room = room;
-  //$scope.votes = angular.copy($scope.room.votes);
-  //voteCount = $scope.votes.length;
-  //finish = voteCount/2 + 1;
-
   $scope.results = results;
+
   console.log(results);
+
+  $scope.getWinners = function(){
+    var topscore = $scope.results.result[0].count;
+    var w = []
+    for(var i = 0; i < $scope.results.result.length; i++){
+      if($scope.results.result[i].count === topscore){
+         w.push($scope.results.result[i]);
+      }
+    }
+    return w;
+  }
+
+  $scope.winners = $scope.getWinners();
+
+  console.log($scope.winners);
 
 }]);
 

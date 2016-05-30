@@ -58,7 +58,8 @@ function($scope, rooms, auth){
       title: $scope.title,
       options: uniqueOptions,
       votes: [],
-      type: $scope.type
+      type: $scope.type,
+      state: "options"
     });
     $scope.options = ["",""];
     $scope.title = "";

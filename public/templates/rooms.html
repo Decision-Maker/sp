@@ -1,4 +1,4 @@
-<div class="doodle-section">
+<div class="doodle-section" ng-show="room.voteType == 'FPP'">
   <div class="homewrapper-1">
     <div class="row">
       <div class="col-md-6">
@@ -17,6 +17,27 @@
     </div>
   </div>
 </div>
+
+<div class="doodle-section" ng-show="room.voteType == 'Borda'">
+  <div class="homewrapper-1">
+    <div class="row">
+      <div class="col-md-6">
+          <div id="centerblock">
+            <div class="center-description">
+              <div><h1>Ranked Poll<h1></div>
+              <div>Drag and drop the options to match the order of your preference.</div>
+            </div>
+          </div>
+      </div>
+      <div class="col-md-6 doodle-padding">
+        <div id="centerblock">
+          <img class="doodle" src="../images/ranked-vote-doodle.png">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="pagewrapper-2">
   <div class="vote-vote-block">
 
@@ -35,7 +56,6 @@
 
     <div class="directions">
       <h1>{{room.title}}</h1>
-      <h2>Select your prefered choice</h2>
     </div>
 
     <div ng-repeat="option in vote track by $index" ng-show="room.voteType == 'FPP'">
@@ -52,7 +72,6 @@
       </div>
     </div>
 
-    stuff here
     <div class="votebuttongroup">
         <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
         <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>

@@ -5,9 +5,12 @@
         {{room.title}}
       </h1>
     </div>
-    <div class="decisionresult">
-      <div><h2>Final Decision &middot; {{results[0].count}} Votes </h2></div>
-      <div><h4>{{results[0].title}}</h4></div>
+    <div class="decisionresult" ng-repeat='res in winners'>
+      <div><h2>Final Decision &middot; {{res.count}} Votes </h2></div>
+      <div><h4>{{res.title}}</h4></div>
+    </div>
+    <div class="participants" ng-repeat="user in results.users">
+      {{user}}
     </div>
   </div>
 </div>

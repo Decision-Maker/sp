@@ -56,6 +56,43 @@ router.post('/:room/observe', auth, loadUser,  function(req, res, next){
 // Option requests ===============================================================
 // =============================================================================
 
+function makeOption(title, room, oldops){
+	return new Promise(function(resolve, reject){
+		if(oldops.filter(function(e){e.title === title}).length > 0) resolve(null);
+		var o = new db.model.Option({'title': title, 'room': room._id});
+		o.save(function(err){
+			if(err) reject(err);
+			resolve(o);
+		});
+	});
+}
+
+router.post('/:room/options', function(req, res, next){
+	var ops = req.body.options.filter(function(e, i, a){
+		for(var s = 0; s < i; i++){
+			if(a[s] === e){
+				return false;
+			}
+		}
+		return true;
+	});
+	db.model.Option.find({room: req.room._id}, function(err, options){
+		if(err) handleError(err);
+		var p = [];
+		for(var i = 0; i < ops.length; i++){
+			p.push(makeOption(ops[i], req.room, options));
+		}
+		Promise.all(p).then(function(value){
+			db.model.Option.find({room: req.room._id}, function(err, optns){
+				if(err) handleError(err);
+				res.json({message: 'success', error: false, options: optns});
+			})
+		}, function(reason){
+			res.json(message: 'error making options', error: reason, options: []);
+		});
+	})
+});
+
 //server is sent options in req.body
 router.post('/:room/options', function(req, res, next) {
 	var option;

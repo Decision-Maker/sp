@@ -39,6 +39,8 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
   };
 
   o.addOptions = function(id, options){
+    console.log('adding Options');
+    console.log(id, options);
 	  return $http.post('/rooms/' + id + '/options', {options: options});
   };
 

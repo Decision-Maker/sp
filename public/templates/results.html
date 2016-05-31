@@ -1,5 +1,46 @@
-<div id="mainContent">
-  <div class="pagewrapper-2">
+<div class="row" id="mainContent">
+
+  <div class="doodle-section" ng-show="room.state=='options'">
+    <div class="homewrapper-1">
+      <div class="row">
+        <div class="col-md-6">
+            <div id="centerblock">
+              <div class="center-description">
+                <div><h3>Result Pending<h3></div>
+                  <h1>Options are Being Added</h1>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-6 doodle-padding">
+          <div id="centerblock">
+            <img class="doodle" src="../images/voting-in-progress.png">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doodle-section" ng-show="room.state=='voting'">
+    <div class="homewrapper-1">
+      <div class="row">
+        <div class="col-md-6">
+            <div id="centerblock">
+              <div class="center-description">
+                <div><h3>Final Result<h3></div>
+                  <h1>{{winners[0].title}}</h1>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-6 doodle-padding">
+          <div id="centerblock">
+            <img class="doodle" src="../images/final-decision-doodle.png">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-md-offset-3 createpadding">
     <div class="page-header">
       <h1>
         {{room.title}}
@@ -9,7 +50,7 @@
       <div><h2>Final Decision: {{tie}} </h2></div>
       <div ng-repeat='res in winners'><h4>{{res.title}} &middot; {{winners[0].count}} {{pointsVotesString}} </h4></div>
     </div>
-    <h2> participants </h2>
+    <h3> Participants </h3>
     <div class="participants" ng-repeat="user in results.users">
       {{user}}
     </div>

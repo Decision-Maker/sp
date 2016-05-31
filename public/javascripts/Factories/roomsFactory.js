@@ -12,8 +12,6 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
   o.create = function(room) {
     return $http.post('/rooms', room,{
       headers: {Authorization: 'Bearer '+auth.getToken()}
-    }).success(function(data){
-      o.rooms.push(data);
     });
   };
 

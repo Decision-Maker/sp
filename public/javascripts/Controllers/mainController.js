@@ -1,8 +1,9 @@
 app.controller('MainCtrl', [
 '$scope',
+'$state',
 'rooms',
 'auth',
-function($scope, rooms, auth){
+function($scope, $state, rooms, auth){
   $scope.rooms = rooms.rooms;
   $scope.options = ["",""];
 
@@ -52,17 +53,16 @@ function($scope, rooms, auth){
       return;
     }
 
-
-
     rooms.create({
       title: $scope.title,
       options: uniqueOptions,
       votes: [],
       type: $scope.type,
       state: "options",
+    })
+    .success(function(data){
+      $state.go("rooms", {"id": data._id})
     });
-    $scope.options = ["",""];
-    $scope.title = "";
   };
 
   $scope.addOption = function(event){

@@ -131,7 +131,7 @@ router.post('/:room/removeops', function(req, res, next){
 			db.model.Option.find({room: req.room._id}, function(err, optns){
 				if(err) handleError(err);
 				console.log(optns);
-				res.json({message: 'success', options: optns});
+				res.json({optns});
 			});
 		});
 	} catch (e) {
@@ -184,11 +184,7 @@ router.post('/:room/statechange', auth,  function(req, res, next) {
 		}
 		req.room.state = "voting";
 		req.room.save(function(err){});
-  	//db.model.Room.update({_id: req.room._id},{ $set: {state: "voting"}});
-		//db.model.Room.findOne({_id: req.room._id}, function(err, roo){
-			//console.log(roo);
-		//})
-		res.json({});
+		res.json({state:'voting'});
 	})
 });
 

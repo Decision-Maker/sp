@@ -69,7 +69,7 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
       return;
     }
     rooms.removeOption($stateParams.id, option).success(function(data){
-      $scope.vote = data.optns;
+      $scope.vote = data;
     })
   }
 

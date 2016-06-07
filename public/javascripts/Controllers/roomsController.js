@@ -44,7 +44,7 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
 
   $scope.changeState = function(){
     rooms.changeState(room).success(function(data){
-      $state.go("results", {"id": $stateParams.id})
+      console.log(data);
     });
   }
 
@@ -61,6 +61,10 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
 
   $scope.addOption = function(event){
     $scope.new.push("");
+  }
+
+  $scope.removeOption = function(option){
+    alert(option);
   }
 
   $scope.delete = function(i){

@@ -78,6 +78,7 @@ along with Myrge.  If not, see <http://www.gnu.org/licenses/>.	 -->
         <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-class="{'grey': currentVote != option}" ng-click="selectVote(option)">
           <h5>{{option.title}}</h5>
         </button>
+        <span style="cursor: pointer;" ng-click="removeOption(option)" ng-show="currentUser == room.created && room.state == 'options'">X</span>
       </div>
 
       <div ng-sortable="barConfig" class="optionblock" ng-show="room.voteType == 'Borda'">

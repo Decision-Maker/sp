@@ -63,6 +63,12 @@ app.factory('rooms', ['$http', 'auth', function($http, auth){
     });
   }
 
+  o.removeOption = function(id, option){
+    return $http.post('/rooms/' + id + '/removeops', option, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    });
+  }
+
 
   return o;
 }]);

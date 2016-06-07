@@ -64,7 +64,9 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
   }
 
   $scope.removeOption = function(option){
-    alert(option);
+    rooms.removeOption($stateParams.id, option).success(function(data){
+      console.console.log(data);
+    })
   }
 
   $scope.delete = function(i){

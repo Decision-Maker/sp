@@ -132,7 +132,7 @@ router.post('/:room/removeops', function(req, res, next){
 		if(err) handleError(err);
 		res.json({message: 'success', options: optns});
 	});
-}
+});
 
 
 // Vote requests ===============================================================

@@ -79,21 +79,21 @@ router.get('/validateToken', auth, function(req, res, next){
 //make new user
 router.post('/register', function(req, res, next){   //make sure '/register' is the same as in auth factory
   if(!req.body.username || !req.body.password){
-      return res.status(400).json({message: 'Please fill out all fields'});
+    return res.status(400).json({message: 'Please fill out all fields'});
   }
   var nu = new db.model.User();
   db.model.User.findOne({name: req.body.username}, function(err, user){
 		if (user){
 			return res.status(400).json({message: 'Username is already taken'});
+		} else {
+			nu.name = req.body.username;
+	  	nu.setPassword(req.body.password);
+	  	nu.save(function(err, user){
+	    	if(err){return next(err);}
+	    	return res.json({not_taken: true, token: user.generateJWT()});
+	  	});
 		}
 	});
-	// this code is still run even if user already exists :(
-  nu.name = req.body.username;
-  nu.setPassword(req.body.password);
-  nu.save(function(err, user){
-    if(err){return next(err);}
-    return res.json({not_taken: true, token: user.generateJWT()});
-  });
 });
 
 //login

@@ -131,7 +131,7 @@ router.post('/:room/removeops', function(req, res, next){
 			db.model.Option.find({room: req.room._id}, function(err, optns){
 				if(err) handleError(err);
 				console.log(optns);
-				res.json({optns});
+				res.json(optns);
 			});
 		});
 	} catch (e) {

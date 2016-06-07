@@ -124,14 +124,19 @@ router.post('/:room/options', function(req, res, next){
 });
 
 router.post('/:room/removeops', function(req, res, next){
-	var ops = req.body.options;
-	for( var i = 0; i < ops.length; i++){
-		db.model.Option.remove({room: req.room._id, title: ops[i].title })
+	console.log(req.body._id);
+	try {
+   	db.model.Option.findOneAndRemove({_id: req.body._id}, function(err){
+			if(err) handleError(err);
+			db.model.Option.find({room: req.room._id}, function(err, optns){
+				if(err) handleError(err);
+				console.log(optns);
+				res.json({message: 'success', options: optns});
+			});
+		});
+	} catch (e) {
+		console.log(e);
 	}
-	db.model.Option.find({room: req.room._id}, function(err, optns){
-		if(err) handleError(err);
-		res.json({message: 'success', options: optns});
-	});
 });
 
 

@@ -44,7 +44,8 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
 
   $scope.changeState = function(){
     rooms.changeState(room).success(function(data){
-      console.log(data);
+      $scope.room.state = data.state;
+      $scope.message = "";
     });
   }
 

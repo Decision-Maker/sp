@@ -123,41 +123,18 @@ router.post('/:room/options', function(req, res, next){
 	})
 });
 
-//server is sent options in req.body
-/*router.post('/:room/options', function(req, res, next) {
-	var option;
-	var size = req.body.options.length;
-	var error = false;
-	var unique = true;
-	for (i = 0; i < size; i++){
-		  //console.log("loop started");
-			unique = true;
-			db.model.Option.findOne({room: req.room._id, title: req.body.options[i]}, function(err, opt){
-					if (opt){
-						unique = false;
-					}
-			});
-			if (unique){
-				option = new db.model.Option({room: req.room._id, title: req.body.options[i]});
-				option.save(function(err){
-						if(err) {
-							handleError(err);
-							res.json({message: "Error saving messages", error: true, options: []})
-							console.error("save error");
-							error = true;
-						}
-						//console.log("saved option");
-						//console.log("option created")
-
-				});
-			}
-  }
-	if(!error){
-		db.model.Option.find({room: req.room._id}, function(err, options){
-			res.json({message: "options saved", error: false, options: options});
-		});
+router.post('/:room/removeops', function(req, res, next){
+	var ops = req.body.options;
+	for( var i = 0; i < ops.length; i++){
+		db.model.Option.remove({room: req.room._id, title: ops[i].title })
 	}
-});*/
+	db.model.Option.find({room: req.room._id}, function(err, optns){
+		if(err) handleError(err);
+		res.json({message: 'success', options: optns});
+	});
+}
+
+
 // Vote requests ===============================================================
 // =============================================================================
 

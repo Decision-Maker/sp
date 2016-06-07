@@ -64,8 +64,11 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
   }
 
   $scope.removeOption = function(option){
+    if($scope.vote.length <= 2){
+      return;
+    }
     rooms.removeOption($stateParams.id, option).success(function(data){
-      console.console.log(data);
+      $scope.vote = data.optns;
     })
   }
 

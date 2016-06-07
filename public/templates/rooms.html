@@ -14,23 +14,24 @@ You should have received a copy of the GNU General Public License
 along with Myrge.  If not, see <http://www.gnu.org/licenses/>.	 -->
 
 <div id="mainContent">
-  <div class="doodle-section" ng-show="room.voteType == 'FPP'">
-    <div class="homewrapper-1">
-      <div class="row">
-        <div class="col-md-6">
-            <div id="centerblock">
-              <div class="center-description">
-                <div><h1>Pick-One Poll<h1></div>
-                <div>Select the option that is your #1 choice.</div>
+
+    <div class="doodle-section" ng-show="room.voteType == 'FPP'">
+      <div class="homewrapper-1">
+        <div class="row">
+          <div class="col-md-6">
+              <div id="centerblock">
+                <div class="center-description">
+                  <div><h1>Pick-One Poll<h1></div>
+                  <div>Select the option that is your #1 choice.</div>
+                </div>
               </div>
+          </div>
+          <div class="col-md-6 doodle-padding">
+            <div id="centerblock">
+              <img class="doodle" src="../images/pick-one-doodle.png">
             </div>
-        </div>
-        <div class="col-md-6 doodle-padding">
-          <div id="centerblock">
-            <img class="doodle" src="../images/pick-one-doodle.png">
           </div>
         </div>
-      </div>
     </div>
   </div>
 
@@ -54,67 +55,68 @@ along with Myrge.  If not, see <http://www.gnu.org/licenses/>.	 -->
     </div>
   </div>
 
-  <div class="pagewrapper-2">
-    <div class="vote-vote-block">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 createpadding">
+      <div class="vote-vote-block">
 
-      <div ng-show="url" class="alert alert-info row">
-        <span>Share this URL with your Friends: {{url}}</span>
-      </div>
+        <div ng-show="url" class="alert alert-info row">
+          <span>Share this URL with your Friends: {{url}}</span>
+        </div>
 
-      <div ng-show="message" class="alert alert-warning row">
-        <span>{{message}}</span>
-      </div>
+        <div ng-show="message" class="alert alert-warning row">
+          <span>{{message}}</span>
+        </div>
 
-      <div ng-show="error" class="alert alert-danger row">
-        <span>{{error}}</span>
-      </div>
+        <div ng-show="error" class="alert alert-danger row">
+          <span>{{error}}</span>
+        </div>
 
 
-      <div class="directions">
-        <h1>{{room.title}}</h1>
-      </div>
+        <div class="directions">
+          <h1>{{room.title}}</h1>
+        </div>
 
-      <div ng-repeat="option in vote track by $index" ng-show="room.voteType == 'FPP'">
-        <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-class="{'grey': currentVote != option}" ng-click="selectVote(option)">
-          <h5>{{option.title}}</h5>
-        </button>
-        <span style="cursor: pointer;" ng-click="removeOption(option)" ng-show="currentUser == room.created && room.state == 'options'">X</span>
-      </div>
-
-      <div ng-sortable="barConfig" class="optionblock" ng-show="room.voteType == 'Borda'">
-        <div ng-repeat="option in vote track by $index">
-          <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn pick-one-btn btn-primary" ng-click="selectVote(option)">
+        <div ng-repeat="option in vote track by $index" ng-show="room.voteType == 'FPP'">
+          <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-class="{'grey': currentVote != option}" ng-click="selectVote(option)">
             <h5>{{option.title}}</h5>
           </button>
+          <span style="cursor: pointer;" ng-click="removeOption(option)" ng-show="currentUser == room.created && room.state == 'options'">X</span>
+        </div>
+
+        <div ng-sortable="barConfig" class="optionblock" ng-show="room.voteType == 'Borda'">
+          <div ng-repeat="option in vote track by $index">
+            <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn pick-one-btn btn-primary" ng-click="selectVote(option)">
+              <h5>{{option.title}}</h5>
+            </button>
+          </div>
+        </div>
+
+        <div class="votebuttongroup" ng-hide="room.state == 'options'">
+            <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
+            <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
         </div>
       </div>
 
-      <div class="votebuttongroup" ng-hide="room.state == 'options'">
-          <button class="btn btn-primary" ng-click="addVote()">Submit Vote</button>
-          <a href="#/results/{{room._id}}" class="btn btn-primary">Results</a>
+      <div class="vote-addoption-block" ng-show="room.state == 'options'">
+        <form ng-submit="addRoom()">
+          <h3>Add an Option</h3>
+             <div ng-sortable="barConfig" class="optionblock">
+                    <div ng-repeat="option in new track by $index">
+                        <input type="text" class="form-control option" placeholder="Option" ng-model="new[$index]"></input>
+                        <div class="deleteoptionbutton">
+                          <span style="cursor: pointer;" ng-click="delete($index)"><img src="../images/delete-icon.svg"></span>
+                        </div>
+                    </div>
+              </div>
+              <div class="createoptionbutton">
+                <img src="../images/add-icon.svg" ng-click="addOption($event)"></i>
+              </div>
+        </form>
+        <div class="votebuttongroup">
+          <button class="btn btn-primary" ng-click="submitNewOptions()">Submit Options</button>
+          <button class="btn btn-primary" ng-click="changeState()" ng-show="currentUser == room.created">Start Voting</button>
+        </div>
       </div>
     </div>
-
-    <div class="vote-addoption-block" ng-show="room.state == 'options'">
-      <form ng-submit="addRoom()">
-        <h3>Add an Option</h3>
-           <div ng-sortable="barConfig" class="optionblock">
-                  <div ng-repeat="option in new track by $index">
-                      <input type="text" class="form-control option" placeholder="Option" ng-model="new[$index]"></input>
-                      <div class="deleteoptionbutton">
-                        <span style="cursor: pointer;" ng-click="delete($index)"><img src="../images/delete-icon.svg"></span>
-                      </div>
-                  </div>
-            </div>
-            <div class="createoptionbutton">
-              <img src="../images/add-icon.svg" ng-click="addOption($event)"></i>
-            </div>
-      </form>
-      <div class="votebuttongroup">
-        <button class="btn btn-primary" ng-click="submitNewOptions()">Submit Options</button>
-        <button class="btn btn-primary" ng-click="changeState()" ng-show="currentUser == room.created">Start Voting</button>
-      </div>
-    </div>
-
   </div>
 </div>

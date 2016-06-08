@@ -54,11 +54,12 @@ along with Myrge.  If not, see <http://www.gnu.org/licenses/>.	 -->
     </div>
   </div>
 
-  <div class="pagewrapper-2">
+  <div class="row" id="mainContent">
+  <div class="col-md-6 col-md-offset-3 createpadding">
     <div class="vote-vote-block">
 
       <div ng-show="url" class="alert alert-info row">
-        <span>Share this URL with your Friends: {{url}}</span>
+        <span>Share this URL to get others involved! {{url}}</span>
       </div>
 
       <div ng-show="message" class="alert alert-warning row">
@@ -69,25 +70,30 @@ along with Myrge.  If not, see <http://www.gnu.org/licenses/>.	 -->
         <span>{{error}}</span>
       </div>
 
-
       <div class="directions">
         <h1>{{room.title}}</h1>
       </div>
 
       <div ng-repeat="option in vote track by $index" ng-show="room.voteType == 'FPP'">
-        <button style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-class="{'grey': currentVote != option}" ng-click="selectVote(option)">
+        <button style="margin-bottom:10px; border-radius:0px; color:white;" class="btn btn-primary" ng-class="{'grey': currentVote != option, 'option':room.state == 'options', 'fullwidth':room.state == 'voting'}" ng-click="selectVote(option)">
+          <!-- <i ng-class="room.state == 'options' ? 'option' : 'fullwidth'"></i> -->
           <h5>{{option.title}}</h5>
         </button>
-        <span style="cursor: pointer;" ng-click="removeOption(option)" ng-show="currentUser == room.created && room.state == 'options'">X</span>
+        <div class="deleteoptionbutton">
+          <span style="cursor: pointer;" ng-click="removeOption(option)" ng-show="currentUser == room.created && room.state == 'options'"><img src="../images/delete-icon.svg">
+          </span>
+        </div>
       </div>
 
       <div ng-sortable="barConfig" class="optionblock" ng-show="room.voteType == 'Borda'">
         <div ng-repeat="option in vote track by $index">
           <div>
-            <div style="width:100%; margin-bottom:10px; border-radius:0px; color:white;" class="btn pick-one-btn btn-primary" ng-click="selectVote(option)">
+            <div style="margin-bottom:10px; border-radius:0px; color:white;" class="btn pick-one-btn btn-primary option" ng-click="selectVote(option)">
               <h5>{{option.title}}</h5>
             </div>
-            <span style="cursor: pointer;" ng-click="removeOption(option)" ng-show="currentUser == room.created && room.state == 'options'">X</span>
+            <div class="deleteoptionbutton">
+              <span style="cursor: pointer;" ng-click="removeOption(option)" ng-show="currentUser == room.created && room.state == 'options'"><img src="../images/delete-icon.svg"></span>
+            </div>
           </div>
         </div>
       </div>
@@ -119,5 +125,6 @@ along with Myrge.  If not, see <http://www.gnu.org/licenses/>.	 -->
       </div>
     </div>
 
+  </div>
   </div>
 </div>

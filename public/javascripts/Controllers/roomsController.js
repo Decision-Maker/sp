@@ -37,7 +37,7 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
   $scope.url = $location.absUrl();
 
   if($scope.room.state == "options"){
-    $scope.message = "This room is still being edited, come back later to vote";
+    $scope.message = "This room is still being edited by others, come back later to vote.";
   }
 
   console.log($scope.room);
@@ -59,6 +59,10 @@ function($scope, $stateParams, $location, $state, rooms, room, auth, user){
     $scope.currentVote = option;
     $scope.error = "";
   }
+
+  $scope.changeWidth = function(){
+    $scope.class = "fullwidth";
+  };
 
   $scope.addOption = function(event){
     $scope.new.push("");

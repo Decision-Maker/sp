@@ -141,6 +141,10 @@ a.roomlink:active {
   margin-right: 1em;
 }
 
+.alert {
+  text-align: center;
+}
+
 h1 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
@@ -183,6 +187,10 @@ h5 {
 
 .icon {
   margin-right: .3em;
+}
+
+.fullwidth {
+  width: 100%;
 }
 
 .spacer {
@@ -420,6 +428,7 @@ img.doodle {
   border-style: none;
   padding: 2em;
 }
+
 
 textarea:focus, input:focus {
     outline: none !important;
